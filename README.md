@@ -31,7 +31,7 @@ No. You have to set additional domains, DNS and everything to use this domain.
 **Can I have a different theme/content/plugins for each domain?**
 
 Nope. If you want a complex set up like this, you may be interested on WordPress Multisite. It's delivered with every 
-WordPress installation since 3.0, you can find more info here: [https://codex.wordpress.org/Create_A_Network].
+WordPress installation since 3.0, you can find more info here: https://codex.wordpress.org/Create_A_Network.
 
 ## Changelog
 
@@ -41,10 +41,10 @@ This is the inital version. It supports setting domains and an optional base URL
 
 ## Meta
 
-Contributors: gustavostraube
-Tags: multiple, domains, redirect
-Requires at least: 4.0
-Tested up to: 4.5.3
-Stable tag: trunk
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Contributors: gustavostraube  
+Tags: multiple, domains, redirect  
+Requires at least: 4.0  
+Tested up to: 4.5.3  
+Stable tag: trunk  
+License: GPLv2 or later  
+License URI: http://www.gnu.org/licenses/gpl-2.0.html  
