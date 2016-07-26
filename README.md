@@ -1,8 +1,5 @@
 # Multiple Domain
 
-This plugin allows you to have multiple domains in a single Wordpress installation and enables custom redirects for each 
-domain.
-
 Multiple Domain allows you having more than one domain in a single WordPress installation. Differently than WordPress 
 Multisite (MU), this plugin doesn't support a different theme or advanced customizations for each domain. It's only 
 intended to enable constant navigation under a different domain than the one you set under WordPress options.
