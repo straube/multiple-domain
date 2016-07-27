@@ -52,7 +52,7 @@ class MultipleDomain
 
     public function filterHome($home)
     {
-        if (isset($this->domains[$this->host])) {
+        if (array_key_exists($this->host, $this->domains)) {
             $parts = parse_url($home);
             $search = $parts['host'];
             if (!empty($parts['port'])) {
