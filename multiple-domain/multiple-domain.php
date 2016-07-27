@@ -14,13 +14,36 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 
+/**
+ * Mutiple Domain WordPress plugin.
+ *
+ * @author Gustavo Straube <gustavo@creativeduo.com.br>
+ * @package multiple-domain
+ */
 class MultipleDomain
 {
 
+    /**
+     * The current host.
+     *
+     * @var string
+     */
     private $host = null;
 
+    /**
+     * The list of available domains.
+     *
+     * In standard situtations, this array will hold all available domains as 
+     * its keys. The optional base URL will be the value for a given domain 
+     * (key) when set, otherwise the value will be `NULL`.
+     *
+     * @var string
+     */
     private $domains = [];
 
+    /**
+     * Sets the host and domains based on server info and WordPress settings.
+     */
     public function __construct()
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
@@ -32,6 +55,11 @@ class MultipleDomain
         }
     }
 
+    /**
+     * Adds actions and filters required by the plugin.
+     *
+     * @return void
+     */
     public function setup()
     {
         add_action('init', [ $this, 'redirect' ]);
@@ -39,6 +67,12 @@ class MultipleDomain
         add_filter('option_home', [ $this, 'filterHome' ]);
     }
 
+    /**
+     * When the current domains has a base URL restriction, redirects the user 
+     * if the current request URI doesn't match it.
+     *
+     * @return void
+     */
     public function redirect()
     {
         if (!empty($this->domains[$this->host])) {
@@ -50,6 +84,14 @@ class MultipleDomain
         }
     }
 
+    /**
+     * Filters home URL.
+     *
+     * Replace the default home URL domain with the current domain.
+     *
+     * @param  string $home The default home URL.
+     * @return string       The filtered home URL.
+     */
     public function filterHome($home)
     {
         if (array_key_exists($this->host, $this->domains)) {
@@ -63,6 +105,11 @@ class MultipleDomain
         return $home;
     }
 
+    /**
+     * Sets up the required settings to show in the admin.
+     *
+     * @return void
+     */
     public function settings()
     {
         add_settings_section('multiple-domain', 'Multiple Domain', [ $this, 'settingsHeading' ], 'general');
@@ -70,6 +117,15 @@ class MultipleDomain
         register_setting('general', 'multiple-domain-domains', [ $this, 'sanitizeSettings' ]);
     }
 
+    /**
+     * Sanitizes the settings.
+     *
+     * It takes the value sent by the user in the settings form and parses it 
+     * to store in the correct format.
+     *
+     * @param  string $value The user defined option value.
+     * @return array         The sanitized option value.
+     */
     public function sanitizeSettings($value)
     {
         $domains = [];
@@ -87,11 +143,21 @@ class MultipleDomain
         return $domains;
     }
 
+    /**
+     * Renders the settings heading.
+     *
+     * @return void
+     */
     public function settingsHeading()
     {
         echo '<p>' . __('You can use multiple domains in your WordPress defining them below. It\'s possible to limit the access for each domain to a base URL.', 'multiple-domain') . '</p>';
     }
 
+    /**
+     * Renders the settings field.
+     *
+     * @return void
+     */
     public function settingsField()
     {
         $value = '';
@@ -109,5 +175,6 @@ class MultipleDomain
     }
 }
 
+// Plugin bootstrap
 $domains = new MultipleDomain();
 $domains->setup();
