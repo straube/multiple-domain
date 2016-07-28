@@ -6,7 +6,7 @@ Plugin URI:  http://creativeduo.com.br
 Description: This plugin allows you to have multiple domains in a single 
              WordPress installation and enables custom redirects for each 
              domain.
-Version:     0.1
+Version:     0.2
 Author:      Gustavo Straube (Creative Duo)
 Author URI:  http://creativeduo.com.br
 License:     GPLv2 or later
@@ -24,11 +24,15 @@ class MultipleDomain
 {
 
     /**
-     * The current host.
+     * The current domain.
+     *
+     * This property's value also may includes the host port when it's 
+     * different than 80 (default HTTP port) or 443 (default HTTPS port).
      *
      * @var string
+     * @since 0.2
      */
-    private $host = null;
+    private $domain = null;
 
     /**
      * The list of available domains.
@@ -42,16 +46,21 @@ class MultipleDomain
     private $domains = [];
 
     /**
-     * Sets the host and domains based on server info and WordPress settings.
+     * Sets the current domain and multiple domain options based on server info 
+     * and plugins settings.
      */
     public function __construct()
     {
+        $ignoreDefaultPort = true;
         if (!empty($_SERVER['HTTP_HOST'])) {
-            $this->host = $_SERVER['HTTP_HOST'];
+            $this->domain = $this->getDomainFromUrl($_SERVER['HTTP_HOST'], $ignoreDefaultPort);
         }
         $this->domains = get_option('multiple-domain-domains');
         if (!is_array($this->domains)) {
             $this->domains = [];
+        }
+        if (!array_key_exists($this->domain, $this->domains)) {
+            $this->domain = $this->getDomainFromUrl(get_option('home'), $ignoreDefaultPort);
         }
     }
 
@@ -68,6 +77,20 @@ class MultipleDomain
     }
 
     /**
+     * Return the current domain.
+     *
+     * Since this value is checked against plugin settings, it may not reflect 
+     * the actual current domain in `HTTP_HOST` element from `$_SERVER`.
+     *
+     * @return string|null The domain.
+     * @since 0.2
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
      * When the current domains has a base URL restriction, redirects the user 
      * if the current request URI doesn't match it.
      *
@@ -75,9 +98,9 @@ class MultipleDomain
      */
     public function redirect()
     {
-        if (!empty($this->domains[$this->host])) {
-            $base = $this->domains[$this->host];
-            if (strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
+        if (!empty($this->domains[$this->domain])) {
+            $base = $this->domains[$this->domain];
+            if (!empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
                 wp_redirect(home_url($base));
                 exit;
             }
@@ -94,13 +117,9 @@ class MultipleDomain
      */
     public function filterHome($home)
     {
-        if (array_key_exists($this->host, $this->domains)) {
-            $parts = parse_url($home);
-            $search = $parts['host'];
-            if (!empty($parts['port'])) {
-                $search .= ':' . $parts['port'];
-            }
-            $home = str_replace($search, $this->host, $home);
+        if (array_key_exists($this->domain, $this->domains)) {
+            $domain = $this->getDomainFromUrl($home);
+            $home = str_replace($domain, $this->domain, $home);
         }
         return $home;
     }
@@ -112,8 +131,8 @@ class MultipleDomain
      */
     public function settings()
     {
-        add_settings_section('multiple-domain', 'Multiple Domain', [ $this, 'settingsHeading' ], 'general');
-        add_settings_field('multiple-domain-domains', 'Domains', [ $this, 'settingsField' ], 'general', 'multiple-domain');
+        add_settings_section('multiple-domain', __('Multiple Domain', 'multiple-domain'), [ $this, 'settingsHeading' ], 'general');
+        add_settings_field('multiple-domain-domains', __('Domains', 'multiple-domain'), [ $this, 'settingsField' ], 'general', 'multiple-domain');
         register_setting('general', 'multiple-domain-domains', [ $this, 'sanitizeSettings' ]);
     }
 
@@ -161,20 +180,72 @@ class MultipleDomain
     public function settingsField()
     {
         $value = '';
-        foreach ($this->domains as $host => $base) {
+        foreach ($this->domains as $domain => $base) {
             if (!empty($value)) {
                 $value .= "\n";
             }
-            $value .= $host;
+            $value .= $domain;
             if (!empty($base)) {
                 $value .= ',' . $base;
             }
         }
         echo '<textarea id="multiple-domain-domains" name="multiple-domain-domains" class="large-text code" rows="5">' . $value . '</textarea>'
-            . '<p class="description">' . __('Add one domain per line, without protocol. To define a base URL restriction, add it in the same line as the domain after a comma. All requests to a URL under the domain that don\'t start with the base URL, will be redirected to the base URL. Example: <code>example.com,/base/path</code>', 'multiple-domain') . '</p>';
+            . '<p class="description">' . __('Add one domain per line, without protocol. It may include the port number when it\'s not the default HTTP (80) or HTTPS (443) port. To define a base URL restriction, add it in the same line as the domain after a comma. All requests to a URL under the domain that don\'t start with the base URL, will be redirected to the base URL. Example: <code>example.com,/base/path</code>', 'multiple-domain') . '</p>';
+    }
+
+    /**
+     * Parses the given URL to return only its domain.
+     *
+     * The server port may be included in the returning value.
+     *
+     * @param string  $url               The URL to parse.
+     * @param boolean $ignoreDefaultPort If `true` is passed to this value, a 
+     *                                   default HTTP or HTTPS port will be 
+     *                                   ignored even if it's present in the 
+     *                                   URL.
+     * @return string                    The domain.
+     * @since 0.2
+     */
+    private function getDomainFromUrl($url, $ignoreDefaultPort = false)
+    {
+        $parts = parse_url($url);
+        $domain = $parts['host'];
+        if (!empty($parts['port']) && !($ignoreDefaultPort && $this->isDefaultPort($parts['port']))) {
+            $domain .= ':' . $parts['port'];
+        }
+        return $domain;
+    }
+
+    /**
+     * Checks if the given port is a default HTTP (80) or HTTPS (443) port.
+     *
+     * @param  int $port The port to check.
+     * @return boolean   Indicates if the port is a default one.
+     * @since 0.2
+     */
+    private function isDefaultPort($port)
+    {
+        $port = (int) $port;
+        return $port === 80 || $port === 443;
     }
 }
 
-// Plugin bootstrap
-$domains = new MultipleDomain();
-$domains->setup();
+
+// Bootstraping...
+$multipleDomain = new MultipleDomain();
+$multipleDomain->setup();
+$multipleDomainDomain = $multipleDomain->getDomain();
+
+
+/**
+ * The current domain.
+ *
+ * Since this value is checked against plugin settings, it may not reflect the 
+ * actual domain in `HTTP_HOST` element from `$_SERVER`. It also may includes 
+ * the host port when it's different than 80 (default HTTP port) or 443 
+ * (default HTTPS port).
+ *
+ * @var string
+ * @since 0.2
+ */
+define('MULTPLE_DOMAIN_DOMAIN', $multipleDomainDomain);

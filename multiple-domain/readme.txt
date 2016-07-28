@@ -45,9 +45,21 @@ No. You have to set additional domains, DNS and everything to use this domain.
 Nope. If you want a complex set up like this, you may be interested on WordPress Multisite. It's delivered with every 
 WordPress installation since 3.0, you can find more info here: [https://codex.wordpress.org/Create_A_Network].
 
+= There is way to add domain based logic to my themes? =
+
+Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` constant to get the current domain. Just notice that since this 
+value is checked against plugin settings, it may not reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or 
+user's browser. It also may includes the host port when it's different than 80 (default HTTP port) or 443 (default HTTPS 
+port).
+
 == Screenshots ==
 
 == Changelog ==
+
+= 0.2 =
+* Code refactoring.
+* Improved port verification.
+* Added `MULTPLE_DOMAIN_DOMAIN` constant for theme/plugin customization.
 
 = 0.1 =
 This is the inital version. It supports setting domains and an optional base URL for each one.
