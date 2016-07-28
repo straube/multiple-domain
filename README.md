@@ -42,6 +42,12 @@ port).
 
 ## Changelog
 
+### 0.3
+
+* Fixed bug when removing the port from current domain.
+* Added `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constant to hold the original WP home domain.
+* ...
+
 ### 0.2
 
 * Improved port verification.
