@@ -6,7 +6,7 @@ Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single 
              WordPress installation and enables custom redirects for each 
              domain.
-Version:     0.2
+Version:     0.3
 Author:      Gustavo Straube (Creative Duo)
 Author URI:  http://creativeduo.com.br
 License:     GPLv2 or later
@@ -35,6 +35,14 @@ class MultipleDomain
     private $domain = null;
 
     /**
+     * The original domain set in WordPress installation.
+     *
+     * @var string
+     * @since 0.3
+     */
+    private $originalDomain = null;
+
+    /**
      * The list of available domains.
      *
      * In standard situtations, this array will hold all available domains as 
@@ -59,8 +67,9 @@ class MultipleDomain
         if (!is_array($this->domains)) {
             $this->domains = [];
         }
+        $this->originalDomain = $this->getDomainFromUrl(get_option('home'), $ignoreDefaultPort);
         if (!array_key_exists($this->domain, $this->domains)) {
-            $this->domain = $this->getDomainFromUrl(get_option('home'), $ignoreDefaultPort);
+            $this->domain = $this->originalDomain;
         }
     }
 
@@ -88,6 +97,17 @@ class MultipleDomain
     public function getDomain()
     {
         return $this->domain;
+    }
+
+    /**
+     * Return original domain set in WordPress installation.
+     *
+     * @return string The domain.
+     * @since 0.3
+     */
+    public function getOriginalDomain()
+    {
+        return $this->originalDomain;
     }
 
     /**
@@ -234,7 +254,8 @@ class MultipleDomain
 // Bootstraping...
 $multipleDomain = new MultipleDomain();
 $multipleDomain->setup();
-$multipleDomainDomain = $multipleDomain->getDomain();
+$domain = $multipleDomain->getDomain();
+$originalDomain = $multipleDomain->getOriginalDomain();
 
 
 /**
@@ -248,4 +269,13 @@ $multipleDomainDomain = $multipleDomain->getDomain();
  * @var string
  * @since 0.2
  */
-define('MULTPLE_DOMAIN_DOMAIN', $multipleDomainDomain);
+define('MULTPLE_DOMAIN_DOMAIN', $domain);
+
+
+/**
+ * The original domain set in WordPress installation.
+ *
+ * @var string
+ * @since 0.3
+ */
+define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
