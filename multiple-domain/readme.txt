@@ -38,18 +38,18 @@ Follow the steps below to install the plugin:
 
 = Does this plugin set extra domains within my host? =
 
-No. You have to set additional domains, DNS and everything to use this domain.
+No. You have to set additional domains, DNS, and everything else to use this domain.
 
 = Can I have a different theme/content/plugins for each domain? =
 
-Nope. If you want a complex set up like this, you may be interested on WordPress Multisite. It's delivered with every 
+Nope. If you want a complex set up like this, you may be interested in WordPress Multisite. It's delivered with every 
 WordPress installation since 3.0, you can find more info here: [https://codex.wordpress.org/Create_A_Network].
 
-= There is way to add domain based logic to my themes? =
+= There is a way to add domain based logic to my themes? =
 
 Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` constant to get the current domain. Just notice that since this 
 value is checked against plugin settings, it may not reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or 
-user's browser. It also may includes the host port when it's different than 80 (default HTTP port) or 443 (default HTTPS 
+user's browser. It also may include the host port when it's different than 80 (default HTTP port) or 443 (default HTTPS 
 port).
 
 == Screenshots ==
@@ -57,12 +57,12 @@ port).
 == Changelog ==
 
 = 0.2 =
-* Code refactoring.
 * Improved port verification.
 * Added `MULTPLE_DOMAIN_DOMAIN` constant for theme/plugin customization.
+* And, last but not least, code refactoring.
 
 = 0.1 =
-This is the inital version. It supports setting domains and an optional base URL for each one.
+This is the first release. It supports setting domains and an optional base URL for each one.
 
 == Upgrade Notice ==
 

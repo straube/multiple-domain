@@ -26,7 +26,7 @@ class MultipleDomain
     /**
      * The current domain.
      *
-     * This property's value also may includes the host port when it's 
+     * This property's value also may include the host port when it's 
      * different than 80 (default HTTP port) or 443 (default HTTPS port).
      *
      * @var string
@@ -241,7 +241,7 @@ $multipleDomainDomain = $multipleDomain->getDomain();
  * The current domain.
  *
  * Since this value is checked against plugin settings, it may not reflect the 
- * actual domain in `HTTP_HOST` element from `$_SERVER`. It also may includes 
+ * actual domain in `HTTP_HOST` element from `$_SERVER`. It also may include 
  * the host port when it's different than 80 (default HTTP port) or 443 
  * (default HTTPS port).
  *
