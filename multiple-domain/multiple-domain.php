@@ -61,7 +61,12 @@ class MultipleDomain
     {
         $ignoreDefaultPort = true;
         if (!empty($_SERVER['HTTP_HOST'])) {
-            $this->domain = $this->getDomainFromUrl($_SERVER['HTTP_HOST'], $ignoreDefaultPort);
+            $domain = $_SERVER['HTTP_HOST'];
+            $matches = [];
+            if (preg_match('/^(.*):(\d+)$/', $domain, $matches) && $this->isDefaultPort($matches[2])) {
+                $domain = $matches[1];
+            }
+            $this->domain = $domain;
         }
         $this->domains = get_option('multiple-domain-domains');
         if (!is_array($this->domains)) {
