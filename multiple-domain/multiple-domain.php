@@ -87,7 +87,9 @@ class MultipleDomain
     {
         add_action('init', [ $this, 'redirect' ]);
         add_action('admin_init', [ $this, 'settings' ]);
-        add_filter('option_home', [ $this, 'filterHome' ]);
+        add_filter('content_url', [ $this, 'replaceDomain' ]);
+        add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
+        add_filter('option_home', [ $this, 'replaceDomain' ]);
     }
 
     /**
@@ -136,23 +138,6 @@ class MultipleDomain
                 exit;
             }
         }
-    }
-
-    /**
-     * Filters home URL.
-     *
-     * Replace the default home URL domain with the current domain.
-     *
-     * @param  string $home The default home URL.
-     * @return string       The filtered home URL.
-     */
-    public function filterHome($home)
-    {
-        if (array_key_exists($this->domain, $this->domains)) {
-            $domain = $this->getDomainFromUrl($home);
-            $home = str_replace($domain, $this->domain, $home);
-        }
-        return $home;
     }
 
     /**
@@ -222,6 +207,25 @@ class MultipleDomain
         }
         echo '<textarea id="multiple-domain-domains" name="multiple-domain-domains" class="large-text code" rows="5">' . $value . '</textarea>'
             . '<p class="description">' . __('Add one domain per line, without protocol. It may include the port number when it\'s not the default HTTP (80) or HTTPS (443) port. To define a base URL restriction, add it in the same line as the domain after a comma. All requests to a URL under the domain that don\'t start with the base URL, will be redirected to the base URL. Example: <code>example.com,/base/path</code>', 'multiple-domain') . '</p>';
+    }
+
+    /**
+     * Replaces the domain.
+     *
+     * The domain in the given URL is replaced by the current domain. If the 
+     * URL contains `/wp-admin/` it'll be ignored when replacing the domain and 
+     * returned as is.
+     *
+     * @param  string $url The URL to update.
+     * @return string      The domain replaced URL.
+     */
+    public function replaceDomain($url)
+    {
+        if (array_key_exists($this->domain, $this->domains) && !preg_match('/\/wp-admin\/?/', $url)) {
+            $domain = $this->getDomainFromUrl($url);
+            $url = str_replace($domain, $this->domain, $url);
+        }
+        return $url;
     }
 
     /**
