@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Multiple Domain
-Plugin URI:  http://creativeduo.com.br
+Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single 
              WordPress installation and enables custom redirects for each 
              domain.
