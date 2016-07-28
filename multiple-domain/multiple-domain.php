@@ -123,6 +123,12 @@ class MultipleDomain
      */
     public function redirect()
     {
+
+        /*
+         * Allow developers to create their own logic for redirection.
+         */
+        do_action('multiple_domain_redirect', $this->domain);
+
         if (!empty($this->domains[$this->domain])) {
             $base = $this->domains[$this->domain];
             if (!empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {

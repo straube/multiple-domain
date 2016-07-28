@@ -35,10 +35,29 @@ WordPress installation since 3.0, you can find more info here: https://codex.wor
 
 **There is a way to add domain based logic to my themes?**
 
-Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` constant to get the current domain. Just notice that since this 
-value is checked against plugin settings, it may not reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or 
-user's browser. It also may include the host port when it's different than 80 (default HTTP port) or 443 (default HTTPS 
-port).
+Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` and `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constants to get the current 
+and original domains. Just notice that since the value of the first one is checked against plugin settings, it may not 
+reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or user's browser. They also may include the host port 
+when it's different than 80 (default HTTP port) or 443 (default HTTPS port).
+
+**Can I create a custom access restriction logic for each domain?**
+
+Yes. You can use the `multiple_domain_redirect` action to do that. For example:
+
+    function my_custom_redirect($domain)
+    {
+        // Do nothing if the request is using the original domain.
+        if ($domain === MULTPLE_DOMAIN_ORIGINAL_DOMAIN) {
+            return;
+        }
+        // If the URI doesn't start with /cool/path, redirect the user to the original domain.
+        if (!empty($_SERVER['REQUEST_URI']) && !preg_match('/^\/cool\/path/i', $_SERVER['REQUEST_URI'])) {
+            wp_redirect('http://' . MULTPLE_DOMAIN_ORIGINAL_DOMAIN . '/');
+            exit;
+        }
+    }
+    
+    add_action('multiple_domain_redirect', 'my_custom_redirect');
 
 ## Changelog
 
@@ -46,6 +65,7 @@ port).
 
 * Fixed bug when removing the port from current domain.
 * Added `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constant to hold the original WP home domain.
+* Allowing developers to create custom URL restriction logic through `multiple_domain_redirect` action.
 * ...
 
 ### 0.2
