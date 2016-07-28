@@ -42,22 +42,8 @@ when it's different than 80 (default HTTP port) or 443 (default HTTPS port).
 
 **Can I create a custom access restriction logic for each domain?**
 
-Yes. You can use the `multiple_domain_redirect` action to do that. For example:
-
-    function my_custom_redirect($domain)
-    {
-        // Do nothing if the request is using the original domain.
-        if ($domain === MULTPLE_DOMAIN_ORIGINAL_DOMAIN) {
-            return;
-        }
-        // If the URI doesn't start with /cool/path, redirect the user to the original domain.
-        if (!empty($_SERVER['REQUEST_URI']) && !preg_match('/^\/cool\/path/i', $_SERVER['REQUEST_URI'])) {
-            wp_redirect('http://' . MULTPLE_DOMAIN_ORIGINAL_DOMAIN . '/');
-            exit;
-        }
-    }
-    
-    add_action('multiple_domain_redirect', 'my_custom_redirect');
+Yes. You can use the `multiple_domain_redirect` action to do that. Please check 
+https://github.com/straube/multiple-domain/issues/2 for an example on how to do that.
 
 ## Changelog
 
