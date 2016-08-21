@@ -24,6 +24,14 @@ class MultipleDomain
 {
 
     /**
+     * The plugin version.
+     *
+     * @var string
+     * @since 0.3
+     */
+    const VERSION = '0.3';
+
+    /**
      * The current domain.
      *
      * This property's value also may include the host port when it's 
@@ -87,6 +95,7 @@ class MultipleDomain
     {
         add_action('init', [ $this, 'redirect' ]);
         add_action('admin_init', [ $this, 'settings' ]);
+        add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
@@ -148,7 +157,7 @@ class MultipleDomain
     public function settings()
     {
         add_settings_section('multiple-domain', __('Multiple Domain', 'multiple-domain'), [ $this, 'settingsHeading' ], 'general');
-        add_settings_field('multiple-domain-domains', __('Domains', 'multiple-domain'), [ $this, 'settingsField' ], 'general', 'multiple-domain');
+        add_settings_field('multiple-domain-domains', __('Domains', 'multiple-domain'), [ $this, 'settingsFields' ], 'general', 'multiple-domain');
         register_setting('general', 'multiple-domain-domains', [ $this, 'sanitizeSettings' ]);
     }
 
@@ -158,21 +167,18 @@ class MultipleDomain
      * It takes the value sent by the user in the settings form and parses it 
      * to store in the correct format.
      *
-     * @param  string $value The user defined option value.
-     * @return array         The sanitized option value.
+     * @param  array $value The user defined option value.
+     * @return array        The sanitized option value.
      */
     public function sanitizeSettings($value)
     {
         $domains = [];
-        foreach (explode("\n", $value) as $row) {
-            if (empty($row)) {
-                continue;
-            }
-            if (strpos($row, ',') !== false) {
-                list($host, $base) = explode(',', $row);
-                $domains[$host] = $base;
-            } else {
-                $domains[$row] = null;
+        if (is_array($value)) {
+            foreach ($value as $row) {
+                if (empty($row['host'])) {
+                    continue;
+                }
+                $domains[$row['host']] = !empty($row['base']) ? $row['base'] : null;
             }
         }
         return $domains;
@@ -193,20 +199,36 @@ class MultipleDomain
      *
      * @return void
      */
-    public function settingsField()
+    public function settingsFields()
     {
-        $value = '';
+        $fields = '';
+        $i = 0;
         foreach ($this->domains as $domain => $base) {
-            if (!empty($value)) {
-                $value .= "\n";
-            }
-            $value .= $domain;
-            if (!empty($base)) {
-                $value .= ',' . $base;
-            }
+            $fields .= $this->getDomainFields($i++, $domain, $base);
         }
-        echo '<textarea id="multiple-domain-domains" name="multiple-domain-domains" class="large-text code" rows="5">' . $value . '</textarea>'
-            . '<p class="description">' . __('Add one domain per line, without protocol. It may include the port number when it\'s not the default HTTP (80) or HTTPS (443) port. To define a base URL restriction, add it in the same line as the domain after a comma. All requests to a URL under the domain that don\'t start with the base URL, will be redirected to the base URL. Example: <code>example.com,/base/path</code>', 'multiple-domain') . '</p>';
+        if (empty($fields)) {
+            $fields = $this->getDomainFields(0);
+        }
+        $fieldsToAdd = $this->getDomainFields('COUNT');
+        echo $fields .
+            '<p><button type="button" class="button multiple-domain-add">Add domain</button></p>' .
+            '<p class="description">' . __('A domain may contain the port number when that\'s not the default HTTP (80) or HTTPS (443) port. If a base URL restriction is set for a domain, all requests that don\'t start with the base URL will be redirected to the base URL. <b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, when requesting <code>example.com/other/path</code> it will be redirected to <code>example.com/base/path</code>.', 'multiple-domain') . '</p>' .
+            '<script type="text/javascript">var multipleDomainFields = ' . json_encode($fieldsToAdd) . ';</script>';
+    }
+
+    /**
+     * Enqueues the required scripts.
+     *
+     * @param  string $hook The current admin page.
+     * @return void
+     * @since 0.3
+     */
+    public function scripts($hook)
+    {
+        if ($hook !== 'options-general.php') {
+            return;
+        }
+        wp_enqueue_script('multiple-domain-settings', plugins_url('settings.js', __FILE__), [ 'jquery' ], self::VERSION, true);
     }
 
     /**
@@ -263,10 +285,32 @@ class MultipleDomain
         $port = (int) $port;
         return $port === 80 || $port === 443;
     }
+
+    /**
+     * Returns the fields for a domain setting.
+     *
+     * @param  int    $count The field count. It's used within the field name, 
+     *                       since it's an array.
+     * @param  string $host  The host field value.
+     * @param  string $base  The base URL field value.
+     * @return string
+     * @since 0.3
+     */
+    private function getDomainFields($count, $host = null, $base = null)
+    {
+        $fields = '<p class="multiple-domain-domain">' .
+            '<input type="text" name="multiple-domain-domains[' . $count . '][host]" value="' . ($host ?: '') . '" class="regular-text code" placeholder="example.com" title="Domain"> ' .
+            '<input type="text" name="multiple-domain-domains[' . $count . '][base]" value="' . ($base ?: '') . '" class="regular-text code" placeholder="/base/path" title="Base path restriction"> ' .
+            '<button type="button" class="button multiple-domain-remove"><span class="required">Remove</span></button>' .
+            '</p>';
+        return $fields;
+    }
 }
 
 
-// Bootstraping...
+/*
+ * Bootstrap...
+ */
 $multipleDomain = new MultipleDomain();
 $multipleDomain->setup();
 $domain = $multipleDomain->getDomain();
