@@ -52,7 +52,7 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 * Fixed bug when removing the port from current domain.
 * Added `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constant to hold the original WP home domain.
 * Allowing developers to create custom URL restriction logic through `multiple_domain_redirect` action.
-* ...
+* Improved settings interface.
 
 ### 0.2
 
