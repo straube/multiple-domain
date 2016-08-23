@@ -19,7 +19,7 @@ many domains. For a more complex setup, there is
 
 When there is more than one domain set in your host, all links and resources will point to the default domain. This is 
 the default WordPress behavior. With Multiple Domain installed and properly configured, it'll update all link on the 
-flow. This way, the user navigation will be end-to-end under the same domain.
+fly. This way, the user navigation will be end-to-end under the same domain.
 
 You can also set an optional base URL. If you want only a set of URL's available under a given domain, you can use this 
 restriction.
