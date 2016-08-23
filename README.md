@@ -1,17 +1,16 @@
 # Multiple Domain
 
-Multiple Domain allows you having more than one domain in a single WordPress installation. Differently than WordPress 
-Multisite (MU), this plugin doesn't support a different theme or advanced customizations for each domain. It's only 
-intended to enable constant navigation under a different domain than the one you set under WordPress options.
+Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support 
+more than one theme or advanced customizations for each domain. It's only intended to enable constant navigation under 
+many domains. For a more complex setup, there is 
+[WordPress Multisite (MU)](https://codex.wordpress.org/Create_A_Network).
 
-Without this plugin, if you have more than one domain set in your host, when a user access the website from a domain 
-that is not the one defined in WordPress settings, all links will point to the default domain. After installing this 
-plugin, you can set other domains and all links will be updated on the flow to use those domains.
+When there is more than one domain set in your host, all links and resources will point to the default domain. This is 
+the default WordPress behavior. With Multiple Domain installed and properly configured, it'll update all link on the 
+flow. This way, the user navigation will be end-to-end under the same domain.
 
-This way, the user navigation will be end-to-end under the same domain.
-
-You can also set an optional base URL. If you want to only a set of URL's to be accessed under a given domain, you can 
-use this restriction.
+You can also set an optional base URL. If you want only a set of URL's available under a given domain, you can use this 
+restriction.
 
 ## Installation
 
