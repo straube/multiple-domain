@@ -99,6 +99,9 @@ class MultipleDomain
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
+        add_filter('plugins_url', [ $this, 'replaceDomain' ]); //\//\//\// added by Vivek Athalye (@vnathalye)
+        add_filter('wp_get_attachment_url', [ $this, 'replaceDomain' ]); //\//\//\// added by Vivek Athalye (@vnathalye)
+        add_filter('upload_dir', [ $this, 'process_upload_dir' ]); //\//\//\// added by Vivek Athalye (@vnathalye)
     }
 
     /**
@@ -249,6 +252,23 @@ class MultipleDomain
         }
         return $url;
     }
+
+    //\//\//\// added by Vivek Athalye (@vnathalye) - start
+    /**
+     * Replaces the domain in upload_dir filter used by wp_upload_dir().
+     *
+     * The domain in the given `url` and `baseurl` is replaced by the current domain. 
+     *
+     * @param  array $uploads The array of `url`, `baseurl` and other properties.
+     * @return array      The domain replaced URLs in the given array.
+     */
+    public function process_upload_dir($uploads)
+    {
+        $uploads['url'] = $this->replaceDomain($uploads['url']);
+        $uploads['baseurl'] = $this->replaceDomain($uploads['baseurl']);
+        return $uploads;
+    }
+    //\//\//\// added by Vivek Athalye (@vnathalye) - end
 
     /**
      * Parses the given URL to return only its domain.
