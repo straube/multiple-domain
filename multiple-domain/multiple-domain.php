@@ -68,8 +68,9 @@ class MultipleDomain
     public function __construct()
     {
         $ignoreDefaultPort = true;
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            $domain = $_SERVER['HTTP_HOST'];
+        $headerHost = $_SERVER['HTTP_X_HOST'] || $_SERVER['HTTP_HOST'];
+        if (!empty($headerHost)) {
+            $domain = $headerHost;
             $matches = [];
             if (preg_match('/^(.*):(\d+)$/', $domain, $matches) && $this->isDefaultPort($matches[2])) {
                 $domain = $matches[1];
