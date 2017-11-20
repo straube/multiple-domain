@@ -1,5 +1,5 @@
 === Multiple Domain ===
-Contributors: gustavostraube
+Contributors: cyberaleks, gustavostraube
 Tags: multiple, domains, redirect
 Requires at least: 4.0
 Tested up to: 4.5.3
@@ -59,6 +59,13 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 == Screenshots ==
 
 == Changelog ==
+
+= 0.4 =
+* Fixed resolving host name to boolean.
+* Added Reflang links to head for SEO purpose.
+* e.g. 
+* <link rel="alternate" hreflang="x-default" href="https://example.com/">
+* <link rel="alternate" hreflang="de-DE" href="https://de.example.com/">
 
 = 0.3 =
 * Fixed bug when removing the port from current domain.

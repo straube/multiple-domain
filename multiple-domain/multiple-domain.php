@@ -6,7 +6,7 @@ Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single 
              WordPress installation and enables custom redirects for each 
              domain.
-Version:     0.3
+Version:     0.4
 Author:      Gustavo Straube (Creative Duo)
 Author URI:  http://creativeduo.com.br
 License:     GPLv2 or later
@@ -29,7 +29,7 @@ class MultipleDomain
      * @var string
      * @since 0.3
      */
-    const VERSION = '0.3';
+    const VERSION = '0.4';
 
     /**
      * The current domain.
@@ -68,7 +68,8 @@ class MultipleDomain
     public function __construct()
     {
         $ignoreDefaultPort = true;
-        $headerHost = $_SERVER['HTTP_X_HOST'] || $_SERVER['HTTP_HOST'];
+        $headerHost = filter_input(INPUT_SERVER, 'HTTP_X_HOST', FILTER_DEFAULT, 
+                array('options'=>array('default'=> filter_input(INPUT_SERVER, 'HTTP_HOST'))));
         if (!empty($headerHost)) {
             $domain = $headerHost;
             $matches = [];
@@ -97,6 +98,7 @@ class MultipleDomain
         add_action('init', [ $this, 'redirect' ]);
         add_action('admin_init', [ $this, 'settings' ]);
         add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
+        add_action('wp_head', [ $this, 'hreflang' ]);
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
@@ -143,13 +145,11 @@ class MultipleDomain
          * Allow developers to create their own logic for redirection.
          */
         do_action('multiple_domain_redirect', $this->domain);
-
-        if (!empty($this->domains[$this->domain])) {
-            $base = $this->domains[$this->domain];
-            if (!empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
-                wp_redirect(home_url($base));
-                exit;
-            }
+        $base = !empty($this->domains[$this->domain])? $this->domains[$this->domain]: "";
+        $base = is_array($base)? $base['base'] : $base;
+        if (!empty($base) && !empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
+            wp_redirect(home_url($base));
+            exit;
         }
     }
 
@@ -182,7 +182,8 @@ class MultipleDomain
                 if (empty($row['host'])) {
                     continue;
                 }
-                $domains[$row['host']] = !empty($row['base']) ? $row['base'] : null;
+                $base = !empty($row['base']) ? $row['base'] : null;
+                $domains[$row['host']] = ['base' => $base, 'lang' => $row['lang']];
             }
         }
         return $domains;
@@ -207,8 +208,10 @@ class MultipleDomain
     {
         $fields = '';
         $i = 0;
-        foreach ($this->domains as $domain => $base) {
-            $fields .= $this->getDomainFields($i++, $domain, $base);
+        foreach ($this->domains as $domain => $values) {
+            $base = is_array($values)?$values['base']: $values;
+            $lang = is_array($values)?$values['lang']: null;
+            $fields .= $this->getDomainFields($i++, $domain, $base, $lang);
         }
         if (empty($fields)) {
             $fields = $this->getDomainFields(0);
@@ -317,14 +320,28 @@ class MultipleDomain
      * @return string
      * @since 0.3
      */
-    private function getDomainFields($count, $host = null, $base = null)
+    private function getDomainFields($count, $host = null, $base = null, $lang = null)
     {
         $fields = '<p class="multiple-domain-domain">' .
             '<input type="text" name="multiple-domain-domains[' . $count . '][host]" value="' . ($host ?: '') . '" class="regular-text code" placeholder="example.com" title="Domain"> ' .
             '<input type="text" name="multiple-domain-domains[' . $count . '][base]" value="' . ($base ?: '') . '" class="regular-text code" placeholder="/base/path" title="Base path restriction"> ' .
+            '<input type="text" name="multiple-domain-domains[' . $count . '][lang]" value="' . ($lang ?: '') . '" class="regular-text code" placeholder="en-US" title="Language"> ' .
             '<button type="button" class="button multiple-domain-remove"><span class="required">Remove</span></button>' .
             '</p>';
         return $fields;
+    }
+
+    /**
+     * Add hreflang links to head for SEO purpose
+     */
+    public function hreflang(){
+        echo '<link rel="alternate" hreflang="x-default" href="'.$this->originalDomain.$_SERVER['REQUEST_URI'].'"/>';
+
+        foreach ($this->domains as $key => $values){
+            if(is_array($values) && !empty($values['lang'])){
+                echo '<link rel="alternate" hreflang="'.$values['lang'].'" href="'.$key.$values['base'].$_SERVER['REQUEST_URI'].'"/>';
+            }
+        }
     }
 }
 
