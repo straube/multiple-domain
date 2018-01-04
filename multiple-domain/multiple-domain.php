@@ -6,7 +6,7 @@ Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single 
              WordPress installation and enables custom redirects for each 
              domain.
-Version:     0.4
+Version:     0.5
 Author:      Gustavo Straube (Creative Duo)
 Author URI:  http://creativeduo.com.br
 License:     GPLv2 or later
@@ -29,7 +29,7 @@ class MultipleDomain
      * @var string
      * @since 0.3
      */
-    const VERSION = '0.4';
+    const VERSION = '0.5';
 
     /**
      * The current domain.
@@ -335,11 +335,13 @@ class MultipleDomain
      * Add hreflang links to head for SEO purpose
      */
     public function hreflang(){
-        echo '<link rel="alternate" hreflang="x-default" href="'.$this->originalDomain.$_SERVER['REQUEST_URI'].'"/>';
+        $port = !isset($_SERVER['HTTPS']) || "off" == $_SERVER['HTTPS']? "http://":"https://";
+        echo '<link rel="alternate" hreflang="x-default" href="'.$port.$this->originalDomain.$_SERVER['REQUEST_URI'].'"/>';
 
         foreach ($this->domains as $key => $values){
             if(is_array($values) && !empty($values['lang'])){
-                echo '<link rel="alternate" hreflang="'.$values['lang'].'" href="'.$key.$values['base'].$_SERVER['REQUEST_URI'].'"/>';
+                $port = !preg_match("/http:|https:/", $values['base'])? $port : "";
+                echo '<link rel="alternate" hreflang="'.$values['lang'].'" href="'.$port.$key.$values['base'].$_SERVER['REQUEST_URI'].'"/>';
             }
         }
     }
