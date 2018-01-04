@@ -60,12 +60,15 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 == Changelog ==
 
+= 0.5 =
+* Added http/https for alternate link
+
 = 0.4 =
 * Fixed resolving host name to boolean.
 * Added Reflang links to head for SEO purpose.
 * e.g. 
-* <link rel="alternate" hreflang="x-default" href="https://example.com/">
-* <link rel="alternate" hreflang="de-DE" href="https://de.example.com/">
+* &lt;link rel="alternate" hreflang="x-default" href="https://example.com/"&gt;
+* &lt;link rel="alternate" hreflang="de-DE" href="https://de.example.com/"&gt;
 
 = 0.3 =
 * Fixed bug when removing the port from current domain.

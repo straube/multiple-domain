@@ -48,6 +48,9 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 ## Changelog
 
+### 0.5 
+* Added http/https for alternate link
+
 ### 0.4
 
 * Fixed resolving host name to boolean.
