@@ -6,9 +6,9 @@ Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single 
              WordPress installation and enables custom redirects for each 
              domain.
-Version:     0.4
-Author:      Gustavo Straube (Creative Duo)
-Author URI:  http://creativeduo.com.br
+Version:     0.6
+Author:      Gustavo Straube
+Author URI:  https://github.com/straube
 License:     GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -17,7 +17,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 /**
  * Mutiple Domain WordPress plugin.
  *
- * @author Gustavo Straube <gustavo@creativeduo.com.br>
+ * @author  Gustavo Straube <https://github.com/straube>
+ * @author  Vivek Athalye <https://github.com/vnathalye>
+ * @author  Clay Allsopp <https://github.com/clayallsopp>
+ * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @package multiple-domain
  */
 class MultipleDomain
@@ -26,10 +29,10 @@ class MultipleDomain
     /**
      * The plugin version.
      *
-     * @var string
+     * @var   string
      * @since 0.3
      */
-    const VERSION = '0.4';
+    const VERSION = '0.6';
 
     /**
      * The current domain.
@@ -37,7 +40,7 @@ class MultipleDomain
      * This property's value also may include the host port when it's 
      * different than 80 (default HTTP port) or 443 (default HTTPS port).
      *
-     * @var string
+     * @var   string
      * @since 0.2
      */
     private $domain = null;
@@ -45,7 +48,7 @@ class MultipleDomain
     /**
      * The original domain set in WordPress installation.
      *
-     * @var string
+     * @var   string
      * @since 0.3
      */
     private $originalDomain = null;
@@ -64,12 +67,16 @@ class MultipleDomain
     /**
      * Sets the current domain and multiple domain options based on server info 
      * and plugins settings.
+     *
      */
     public function __construct()
     {
         $ignoreDefaultPort = true;
-        $headerHost = filter_input(INPUT_SERVER, 'HTTP_X_HOST', FILTER_DEFAULT, 
-                array('options'=>array('default'=> filter_input(INPUT_SERVER, 'HTTP_HOST'))));
+        $headerHost = filter_input(INPUT_SERVER, 'HTTP_X_HOST', FILTER_DEFAULT, [
+            'options' => [
+                'default'=> filter_input(INPUT_SERVER, 'HTTP_HOST'),
+            ],
+        ]);
         if (!empty($headerHost)) {
             $domain = $headerHost;
             $matches = [];
@@ -98,7 +105,7 @@ class MultipleDomain
         add_action('init', [ $this, 'redirect' ]);
         add_action('admin_init', [ $this, 'settings' ]);
         add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
-        add_action('wp_head', [ $this, 'hreflang' ]);
+        add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
@@ -114,7 +121,7 @@ class MultipleDomain
      * the actual current domain in `HTTP_HOST` element from `$_SERVER`.
      *
      * @return string|null The domain.
-     * @since 0.2
+     * @since  0.2
      */
     public function getDomain()
     {
@@ -125,7 +132,7 @@ class MultipleDomain
      * Return original domain set in WordPress installation.
      *
      * @return string The domain.
-     * @since 0.3
+     * @since  0.3
      */
     public function getOriginalDomain()
     {
@@ -228,7 +235,7 @@ class MultipleDomain
      *
      * @param  string $hook The current admin page.
      * @return void
-     * @since 0.3
+     * @since  0.3
      */
     public function scripts($hook)
     {
@@ -257,14 +264,17 @@ class MultipleDomain
         return $url;
     }
 
-    //\//\//\// added by Vivek Athalye (@vnathalye) - start
     /**
-     * Replaces the domain in upload_dir filter used by wp_upload_dir().
+     * Replaces the domain in `upload_dir` filter used by `wp_upload_dir()`.
      *
-     * The domain in the given `url` and `baseurl` is replaced by the current domain. 
+     * The domain in the given `url` and `baseurl` is replaced by the current
+     * domain.
      *
-     * @param  array $uploads The array of `url`, `baseurl` and other properties.
-     * @return array      The domain replaced URLs in the given array.
+     * @param  array $uploads The array of `url`, `baseurl` and other
+     *                        properties.
+     * @return array          The domain replaced URLs in the given array.
+     * @author Vivek Athalye <https://github.com/vnathalye>
+     * @since  0.4
      */
     public function process_upload_dir($uploads)
     {
@@ -272,20 +282,46 @@ class MultipleDomain
         $uploads['baseurl'] = $this->replaceDomain($uploads['baseurl']);
         return $uploads;
     }
-    //\//\//\// added by Vivek Athalye (@vnathalye) - end
+
+    /**
+     * Add `hreflang` links to head for SEO purpose.
+     *
+     * @return void
+     * @author Alexander Nosov <https://github.com/cyberaleks>
+     * @since  0.4
+     */
+    public function addHrefLangHeader()
+    {
+        $uri = $_SERVER['REQUEST_URI'];
+        $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
+        $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
+
+        foreach ($this->domains as $key => $values) {
+            if (is_array($values) && !empty($values['lang'])) {
+                $url = $key . $values['base'] . $uri;
+                /*
+                 * Prepend the current protocol if none is set.
+                 */
+                if (!preg_match('/https?:\/\//', $values['base'])) {
+                    $url = $protocol . $url;
+                }
+                $this->outputHrefLangHeader($url, $values['lang']);
+            }
+        }
+    }
 
     /**
      * Parses the given URL to return only its domain.
      *
      * The server port may be included in the returning value.
      *
-     * @param string  $url               The URL to parse.
-     * @param boolean $ignoreDefaultPort If `true` is passed to this value, a 
-     *                                   default HTTP or HTTPS port will be 
-     *                                   ignored even if it's present in the 
-     *                                   URL.
-     * @return string                    The domain.
-     * @since 0.2
+     * @param  string  $url               The URL to parse.
+     * @param  boolean $ignoreDefaultPort If `true` is passed to this value, a
+     *                                    default HTTP or HTTPS port will be
+     *                                    ignored even if it's present in the
+     *                                    URL.
+     * @return string                     The domain.
+     * @since  0.2
      */
     private function getDomainFromUrl($url, $ignoreDefaultPort = false)
     {
@@ -313,12 +349,12 @@ class MultipleDomain
     /**
      * Returns the fields for a domain setting.
      *
-     * @param  int    $count The field count. It's used within the field name, 
+     * @param  int    $count The field count. It's used within the field name,
      *                       since it's an array.
      * @param  string $host  The host field value.
      * @param  string $base  The base URL field value.
      * @return string
-     * @since 0.3
+     * @since  0.3
      */
     private function getDomainFields($count, $host = null, $base = null, $lang = null)
     {
@@ -332,16 +368,17 @@ class MultipleDomain
     }
 
     /**
-     * Add hreflang links to head for SEO purpose
+     * Prints a `hreflang` link tag.
+     *
+     * @param  string $url  The URL to be set into `href` attribute.
+     * @param  string $lang The language code to be set into `hreflang`
+     *                      attribute. Defaults to `'x-default'`.
+     * @return void
+     * @since  0.5
      */
-    public function hreflang(){
-        echo '<link rel="alternate" hreflang="x-default" href="'.$this->originalDomain.$_SERVER['REQUEST_URI'].'"/>';
-
-        foreach ($this->domains as $key => $values){
-            if(is_array($values) && !empty($values['lang'])){
-                echo '<link rel="alternate" hreflang="'.$values['lang'].'" href="'.$key.$values['base'].$_SERVER['REQUEST_URI'].'"/>';
-            }
-        }
+    private function outputHrefLangHeader($url, $lang = 'x-default')
+    {
+        printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
     }
 }
 
