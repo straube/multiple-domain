@@ -67,12 +67,16 @@ class MultipleDomain
     /**
      * Sets the current domain and multiple domain options based on server info 
      * and plugins settings.
+     *
      */
     public function __construct()
     {
         $ignoreDefaultPort = true;
-        $headerHost = filter_input(INPUT_SERVER, 'HTTP_X_HOST', FILTER_DEFAULT, 
-                array('options'=>array('default'=> filter_input(INPUT_SERVER, 'HTTP_HOST'))));
+        $headerHost = filter_input(INPUT_SERVER, 'HTTP_X_HOST', FILTER_DEFAULT, [
+            'options' => [
+                'default'=> filter_input(INPUT_SERVER, 'HTTP_HOST'),
+            ],
+        ]);
         if (!empty($headerHost)) {
             $domain = $headerHost;
             $matches = [];
@@ -101,7 +105,7 @@ class MultipleDomain
         add_action('init', [ $this, 'redirect' ]);
         add_action('admin_init', [ $this, 'settings' ]);
         add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
-        add_action('wp_head', [ $this, 'hreflang' ]);
+        add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
@@ -278,7 +282,33 @@ class MultipleDomain
         $uploads['baseurl'] = $this->replaceDomain($uploads['baseurl']);
         return $uploads;
     }
-    //\//\//\// added by Vivek Athalye (@vnathalye) - end
+
+    /**
+     * Add `hreflang` links to head for SEO purpose.
+     *
+     * @return void
+     * @author Alexander Nosov <https://github.com/cyberaleks>
+     * @since  0.4
+     */
+    public function addHrefLangHeader()
+    {
+        $uri = $_SERVER['REQUEST_URI'];
+        $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http' : 'https';
+        $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
+
+        foreach ($this->domains as $key => $values) {
+            if (is_array($values) && !empty($values['lang'])) {
+                $url = $key . $values['base'] . $uri;
+                /*
+                 * Prepend the current protocol if none is set.
+                 */
+                if (!preg_match('/https?:\/\//', $values['base'])) {
+                    $url = $protocol . $url;
+                }
+                $this->outputHrefLangHeader($url, $values['lang']);
+            }
+        }
+    }
 
     /**
      * Parses the given URL to return only its domain.
@@ -338,18 +368,17 @@ class MultipleDomain
     }
 
     /**
-     * Add hreflang links to head for SEO purpose
+     * Prints a `hreflang` link tag.
+     *
+     * @param  string $url  The URL to be set into `href` attribute.
+     * @param  string $lang The language code to be set into `hreflang`
+     *                      attribute. Defaults to `'x-default'`.
+     * @return void
+     * @since  0.5
      */
-    public function hreflang(){
-        $port = !isset($_SERVER['HTTPS']) || "off" == $_SERVER['HTTPS']? "http://":"https://";
-        echo '<link rel="alternate" hreflang="x-default" href="'.$port.$this->originalDomain.$_SERVER['REQUEST_URI'].'"/>';
-
-        foreach ($this->domains as $key => $values){
-            if(is_array($values) && !empty($values['lang'])){
-                $port = !preg_match("/http:|https:/", $values['base'])? $port : "";
-                echo '<link rel="alternate" hreflang="'.$values['lang'].'" href="'.$port.$key.$values['base'].$_SERVER['REQUEST_URI'].'"/>';
-            }
-        }
+    private function outputHrefLangHeader($url, $lang = 'x-default')
+    {
+        printf('<link rel="alternate" hreflang="%s" href="%s"/>', $url, $lang);
     }
 }
 
