@@ -7,8 +7,8 @@ Description: This plugin allows you to have multiple domains in a single
              WordPress installation and enables custom redirects for each 
              domain.
 Version:     0.5
-Author:      Gustavo Straube (Creative Duo)
-Author URI:  http://creativeduo.com.br
+Author:      Gustavo Straube
+Author URI:  https://github.com/straube
 License:     GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -17,7 +17,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 /**
  * Mutiple Domain WordPress plugin.
  *
- * @author Gustavo Straube <gustavo@creativeduo.com.br>
+ * @author  Gustavo Straube <https://github.com/straube>
+ * @author  Vivek Athalye <https://github.com/vnathalye>
+ * @author  Clay Allsopp <https://github.com/clayallsopp>
+ * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @package multiple-domain
  */
 class MultipleDomain
@@ -26,7 +29,7 @@ class MultipleDomain
     /**
      * The plugin version.
      *
-     * @var string
+     * @var   string
      * @since 0.3
      */
     const VERSION = '0.5';
@@ -37,7 +40,7 @@ class MultipleDomain
      * This property's value also may include the host port when it's 
      * different than 80 (default HTTP port) or 443 (default HTTPS port).
      *
-     * @var string
+     * @var   string
      * @since 0.2
      */
     private $domain = null;
@@ -45,7 +48,7 @@ class MultipleDomain
     /**
      * The original domain set in WordPress installation.
      *
-     * @var string
+     * @var   string
      * @since 0.3
      */
     private $originalDomain = null;
@@ -114,7 +117,7 @@ class MultipleDomain
      * the actual current domain in `HTTP_HOST` element from `$_SERVER`.
      *
      * @return string|null The domain.
-     * @since 0.2
+     * @since  0.2
      */
     public function getDomain()
     {
@@ -125,7 +128,7 @@ class MultipleDomain
      * Return original domain set in WordPress installation.
      *
      * @return string The domain.
-     * @since 0.3
+     * @since  0.3
      */
     public function getOriginalDomain()
     {
@@ -228,7 +231,7 @@ class MultipleDomain
      *
      * @param  string $hook The current admin page.
      * @return void
-     * @since 0.3
+     * @since  0.3
      */
     public function scripts($hook)
     {
@@ -257,14 +260,17 @@ class MultipleDomain
         return $url;
     }
 
-    //\//\//\// added by Vivek Athalye (@vnathalye) - start
     /**
-     * Replaces the domain in upload_dir filter used by wp_upload_dir().
+     * Replaces the domain in `upload_dir` filter used by `wp_upload_dir()`.
      *
-     * The domain in the given `url` and `baseurl` is replaced by the current domain. 
+     * The domain in the given `url` and `baseurl` is replaced by the current
+     * domain.
      *
-     * @param  array $uploads The array of `url`, `baseurl` and other properties.
-     * @return array      The domain replaced URLs in the given array.
+     * @param  array $uploads The array of `url`, `baseurl` and other
+     *                        properties.
+     * @return array          The domain replaced URLs in the given array.
+     * @author Vivek Athalye <https://github.com/vnathalye>
+     * @since  0.4
      */
     public function process_upload_dir($uploads)
     {
@@ -279,13 +285,13 @@ class MultipleDomain
      *
      * The server port may be included in the returning value.
      *
-     * @param string  $url               The URL to parse.
-     * @param boolean $ignoreDefaultPort If `true` is passed to this value, a 
-     *                                   default HTTP or HTTPS port will be 
-     *                                   ignored even if it's present in the 
-     *                                   URL.
-     * @return string                    The domain.
-     * @since 0.2
+     * @param  string  $url               The URL to parse.
+     * @param  boolean $ignoreDefaultPort If `true` is passed to this value, a
+     *                                    default HTTP or HTTPS port will be
+     *                                    ignored even if it's present in the
+     *                                    URL.
+     * @return string                     The domain.
+     * @since  0.2
      */
     private function getDomainFromUrl($url, $ignoreDefaultPort = false)
     {
@@ -313,12 +319,12 @@ class MultipleDomain
     /**
      * Returns the fields for a domain setting.
      *
-     * @param  int    $count The field count. It's used within the field name, 
+     * @param  int    $count The field count. It's used within the field name,
      *                       since it's an array.
      * @param  string $host  The host field value.
      * @param  string $base  The base URL field value.
      * @return string
-     * @since 0.3
+     * @since  0.3
      */
     private function getDomainFields($count, $host = null, $base = null, $lang = null)
     {
