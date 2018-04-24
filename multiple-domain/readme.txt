@@ -60,6 +60,9 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 == Changelog ==
 
+= 0.6 =
+* Fix: #11 Redirect to original domain if SSL / https 
+
 = 0.5 =
 * Added http/https for alternate link
 

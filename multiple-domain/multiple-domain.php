@@ -6,7 +6,7 @@ Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single 
              WordPress installation and enables custom redirects for each 
              domain.
-Version:     0.5
+Version:     0.6
 Author:      Gustavo Straube
 Author URI:  https://github.com/straube
 License:     GPLv2 or later
@@ -32,7 +32,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.5';
+    const VERSION = '0.6';
 
     /**
      * The current domain.
@@ -293,7 +293,7 @@ class MultipleDomain
     public function addHrefLangHeader()
     {
         $uri = $_SERVER['REQUEST_URI'];
-        $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http' : 'https';
+        $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
         $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
 
         foreach ($this->domains as $key => $values) {
@@ -378,7 +378,7 @@ class MultipleDomain
      */
     private function outputHrefLangHeader($url, $lang = 'x-default')
     {
-        printf('<link rel="alternate" hreflang="%s" href="%s"/>', $url, $lang);
+        printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
     }
 }
 
