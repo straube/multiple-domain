@@ -17,7 +17,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 /**
  * Mutiple Domain WordPress plugin.
  *
- * @author  Gustavo Straube <gustavo@straube.co>
+ * @author  Gustavo Straube <https://github.com/straube>
+ * @author  Vivek Athalye <https://github.com/vnathalye>
+ * @author  Clay Allsopp <https://github.com/clayallsopp>
+ * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @version 0.7
  * @package multiple-domain
  */
@@ -114,7 +117,7 @@ class MultipleDomain
         add_action('init', [ $this, 'redirect' ]);
         add_action('admin_init', [ $this, 'settings' ]);
         add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
-        add_action('wp_head', [ $this, 'hrefLang' ]);
+        add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
@@ -301,6 +304,36 @@ class MultipleDomain
     }
 
     /**
+     * Add `hreflang` links to head for SEO purpose.
+     *
+     * @return void
+     * @author Alexander Nosov <https://github.com/cyberaleks>
+     * @since  0.4
+     */
+    public function addHrefLangHeader()
+    {
+        $uri = $_SERVER['REQUEST_URI'];
+        $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
+        $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
+
+        foreach ($this->domains as $key => $values) {
+            if (!is_array($values) || empty($values['lang'])) {
+                continue;
+            }
+
+            $url = $key . $values['base'] . $uri;
+
+            /*
+             * Prepend the current protocol if none is set.
+             */
+            if (!preg_match('/https?:\/\//', $values['base'])) {
+                $url = $protocol . $url;
+            }
+            $this->outputHrefLangHeader($url, $values['lang']);
+        }
+    }
+
+    /**
      * Parses the given URL to return only its domain.
      *
      * The server port may be included in the returning value.
@@ -357,35 +390,17 @@ class MultipleDomain
     }
 
     /**
-     * Add hrefLang links to the head for SEO purposes.
+     * Prints a `hreflang` link tag.
      *
+     * @param  string $url The URL to be set into `href` attribute.
+     * @param  string $lang The language code to be set into `hreflang`
+     *              attribute. Defaults to `'x-default'`.
      * @return void
-     * @since  0.4
+     * @since  0.5
      */
-    public function hrefLang()
+    private function outputHrefLangHeader($url, $lang = 'x-default')
     {
-        $uri = $_SERVER['REQUEST_URI'];
-        echo $this->getHreflangTag($this->originalDomain . $uri);
-
-        foreach ($this->domains as $key => $values) {
-            if (empty($values['base']) || empty($values['lang'])) {
-                continue;
-            }
-            echo $this->getHrefLangTag($key . $values['base'] . $uri, $values['lang']);
-        }
-    }
-
-    /**
-     * Get the hrefLang `<link>` tag for the given URL and lang.
-     *
-     * @param  string $href The base URL for the lang.
-     * @param  string $lang The language code.
-     * @return string The link tag.
-     * @since  0.7
-     */
-    private function getHrefLangTag($href, $lang = 'x-default')
-    {
-        return sprintf('<link rel="alternate" hreflang="%s" href="%s" />', $lang, $href);
+        printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
     }
 }
 
