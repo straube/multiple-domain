@@ -1,5 +1,5 @@
 === Multiple Domain ===
-Contributors: cyberaleks, gustavostraube
+Contributors: GustavoStraube, cyberaleks
 Tags: multiple, domains, redirect
 Requires at least: 4.0
 Tested up to: 4.9.6

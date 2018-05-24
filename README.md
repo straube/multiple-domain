@@ -90,7 +90,7 @@ This is the first release. It supports setting domains and an optional base URL 
 
 ## Meta
 
-Contributors: cyberaleks, gustavostraube  
+Contributors: GustavoStraube, cyberaleks  
 Tags: multiple, domains, redirect  
 Requires at least: 4.0  
 Tested up to: 4.9.6  
