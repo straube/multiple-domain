@@ -12,6 +12,9 @@ fly. This way, the user navigation will be end-to-end under the same domain.
 You can also set an optional base URL. If you want only a set of URL's available under a given domain, you can use this 
 restriction.
 
+Additionally, a language can be set for each domain. The language will be used to add `<link>` tags with `hreflang` 
+attribute to document head. This is for SEO purposes.
+
 Check the plugin page at WordPress.org: https://wordpress.org/plugins/multiple-domain/
 
 ## Installation
@@ -20,8 +23,8 @@ Follow the steps below to install the plugin:
 
 1. Upload the plugin files to the `/wp-content/plugins/multiple-domain` directory, or install the plugin through the 
     WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Use the Settings -> General screen to configure your additional domains
+2. Activate the plugin through the 'Plugins' screen in WordPress.
+3. Use the Settings -> General screen to configure your additional domains.
 
 ## Frequently Asked Questions
 
@@ -48,11 +51,15 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 ## Changelog
 
-### 0.6 
-* Fix: #11 Redirect to original domain if SSL / https 
+### 0.7
+* Code review/refactoring.
+* Added activation hook to fix empty settings bug.
 
-### 0.5 
-* Added http/https for alternate link
+### 0.6
+* Fix: #11 Redirect to original domain if SSL/https.
+
+### 0.5
+* Added http/https for alternate link.
 
 ### 0.4
 
@@ -60,8 +67,8 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 * Added Reflang links to head for SEO purpose.
 e.g. 
 ```html
- <link rel="alternate" hreflang="x-default" href="https://example.com/">
- <link rel="alternate" hreflang="de-DE" href="https://de.example.com/">
+<link rel="alternate" hreflang="x-default" href="https://example.com/">
+<link rel="alternate" hreflang="de-DE" href="https://de.example.com/">
 ```
 
 ### 0.3
@@ -83,10 +90,10 @@ This is the first release. It supports setting domains and an optional base URL 
 
 ## Meta
 
-Contributors: gustavostraube  
+Contributors: cyberaleks, gustavostraube  
 Tags: multiple, domains, redirect  
 Requires at least: 4.0  
-Tested up to: 4.5.3  
+Tested up to: 4.9.6  
 Stable tag: trunk  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  

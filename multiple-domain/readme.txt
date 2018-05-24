@@ -2,7 +2,7 @@
 Contributors: cyberaleks, gustavostraube
 Tags: multiple, domains, redirect
 Requires at least: 4.0
-Tested up to: 4.5.3
+Tested up to: 4.9.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,14 +24,17 @@ fly. This way, the user navigation will be end-to-end under the same domain.
 You can also set an optional base URL. If you want only a set of URL's available under a given domain, you can use this 
 restriction.
 
+Additionally, a language can be set for each domain. The language will be used to add `<link>` tags with `hreflang` 
+attribute to document head. This is for SEO purposes.
+
 == Installation ==
 
 Follow the steps below to install the plugin:
 
 1. Upload the plugin files to the `/wp-content/plugins/multiple-domain` directory, or install the plugin through the 
     WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Use the Settings -> General screen to configure your additional domains
+2. Activate the plugin through the 'Plugins' screen in WordPress.
+3. Use the Settings -> General screen to configure your additional domains.
 
 == Frequently Asked Questions ==
 
@@ -60,18 +63,21 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 == Changelog ==
 
+= 0.7 =
+* Code review/refactoring.
+* Added activation hook to fix empty settings bug.
+
 = 0.6 =
-* Fix: #11 Redirect to original domain if SSL / https 
+* Fix: #11 Redirect to original domain if SSL/https.
 
 = 0.5 =
-* Added http/https for alternate link
+* Added http/https for alternate link.
 
 = 0.4 =
 * Fixed resolving host name to boolean.
-* Added Reflang links to head for SEO purpose.
-* e.g. 
-* &lt;link rel="alternate" hreflang="x-default" href="https://example.com/"&gt;
-* &lt;link rel="alternate" hreflang="de-DE" href="https://de.example.com/"&gt;
+* Added Reflang links to head for SEO purpose. E.g.  
+    `<link rel="alternate" hreflang="x-default" href="https://example.com/">`  
+    `<link rel="alternate" hreflang="de-DE" href="https://de.example.com/">`
 
 = 0.3 =
 * Fixed bug when removing the port from current domain.

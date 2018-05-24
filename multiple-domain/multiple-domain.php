@@ -3,12 +3,12 @@
 /*
 Plugin Name: Multiple Domain
 Plugin URI:  https://github.com/straube/multiple-domain
-Description: This plugin allows you to have multiple domains in a single 
-             WordPress installation and enables custom redirects for each 
+Description: This plugin allows you to have multiple domains in a single
+             WordPress installation and enables custom redirects for each
              domain.
-Version:     0.6
-Author:      Gustavo Straube
-Author URI:  https://github.com/straube
+Version:     0.7
+Author:      Gustavo Straube (straube.co)
+Author URI:  http://straube.co
 License:     GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -17,10 +17,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 /**
  * Mutiple Domain WordPress plugin.
  *
- * @author  Gustavo Straube <https://github.com/straube>
- * @author  Vivek Athalye <https://github.com/vnathalye>
- * @author  Clay Allsopp <https://github.com/clayallsopp>
- * @author  Alexander Nosov <https://github.com/cyberaleks>
+ * @author  Gustavo Straube <gustavo@straube.co>
+ * @version 0.7
  * @package multiple-domain
  */
 class MultipleDomain
@@ -32,12 +30,12 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.6';
+    const VERSION = '0.7';
 
     /**
      * The current domain.
      *
-     * This property's value also may include the host port when it's 
+     * This property's value also may include the host port when it's
      * different than 80 (default HTTP port) or 443 (default HTTPS port).
      *
      * @var   string
@@ -56,8 +54,8 @@ class MultipleDomain
     /**
      * The list of available domains.
      *
-     * In standard situtations, this array will hold all available domains as 
-     * its keys. The optional base URL will be the value for a given domain 
+     * In standard situtations, this array will hold all available domains as
+     * its keys. The optional base URL will be the value for a given domain
      * (key) when set, otherwise the value will be `NULL`.
      *
      * @var string
@@ -65,7 +63,7 @@ class MultipleDomain
     private $domains = [];
 
     /**
-     * Sets the current domain and multiple domain options based on server info 
+     * Sets the current domain and multiple domain options based on server info
      * and plugins settings.
      *
      */
@@ -74,7 +72,7 @@ class MultipleDomain
         $ignoreDefaultPort = true;
         $headerHost = filter_input(INPUT_SERVER, 'HTTP_X_HOST', FILTER_DEFAULT, [
             'options' => [
-                'default'=> filter_input(INPUT_SERVER, 'HTTP_HOST'),
+                'default' => filter_input(INPUT_SERVER, 'HTTP_HOST'),
             ],
         ]);
         if (!empty($headerHost)) {
@@ -96,6 +94,17 @@ class MultipleDomain
     }
 
     /**
+     * Plugin activation tasks.
+     *
+     * @return void
+     * @since  0.7
+     */
+    public static function activate()
+    {
+        add_option('multiple-domain-domains', []);
+    }
+
+    /**
      * Adds actions and filters required by the plugin.
      *
      * @return void
@@ -105,19 +114,19 @@ class MultipleDomain
         add_action('init', [ $this, 'redirect' ]);
         add_action('admin_init', [ $this, 'settings' ]);
         add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
-        add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
+        add_action('wp_head', [ $this, 'hrefLang' ]);
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
-        add_filter('plugins_url', [ $this, 'replaceDomain' ]); //\//\//\// added by Vivek Athalye (@vnathalye)
-        add_filter('wp_get_attachment_url', [ $this, 'replaceDomain' ]); //\//\//\// added by Vivek Athalye (@vnathalye)
-        add_filter('upload_dir', [ $this, 'process_upload_dir' ]); //\//\//\// added by Vivek Athalye (@vnathalye)
+        add_filter('plugins_url', [ $this, 'replaceDomain' ]);
+        add_filter('wp_get_attachment_url', [ $this, 'replaceDomain' ]);
+        add_filter('upload_dir', [ $this, 'fixUploadDir' ]);
     }
 
     /**
      * Return the current domain.
      *
-     * Since this value is checked against plugin settings, it may not reflect 
+     * Since this value is checked against plugin settings, it may not reflect
      * the actual current domain in `HTTP_HOST` element from `$_SERVER`.
      *
      * @return string|null The domain.
@@ -140,20 +149,19 @@ class MultipleDomain
     }
 
     /**
-     * When the current domains has a base URL restriction, redirects the user 
+     * When the current domains has a base URL restriction, redirects the user
      * if the current request URI doesn't match it.
      *
      * @return void
      */
     public function redirect()
     {
-
         /*
          * Allow developers to create their own logic for redirection.
          */
         do_action('multiple_domain_redirect', $this->domain);
-        $base = !empty($this->domains[$this->domain])? $this->domains[$this->domain]: "";
-        $base = is_array($base)? $base['base'] : $base;
+        $base = !empty($this->domains[$this->domain]) ? $this->domains[$this->domain] : '';
+        $base = is_array($base) ? $base['base'] : $base;
         if (!empty($base) && !empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
             wp_redirect(home_url($base));
             exit;
@@ -175,11 +183,11 @@ class MultipleDomain
     /**
      * Sanitizes the settings.
      *
-     * It takes the value sent by the user in the settings form and parses it 
+     * It takes the value sent by the user in the settings form and parses it
      * to store in the correct format.
      *
      * @param  array $value The user defined option value.
-     * @return array        The sanitized option value.
+     * @return array The sanitized option value.
      */
     public function sanitizeSettings($value)
     {
@@ -190,7 +198,11 @@ class MultipleDomain
                     continue;
                 }
                 $base = !empty($row['base']) ? $row['base'] : null;
-                $domains[$row['host']] = ['base' => $base, 'lang' => $row['lang']];
+                $lang = !empty($row['lang']) ? $row['lang'] : null;
+                $domains[$row['host']] = [
+                    'base' => $base,
+                    'lang' => $lang,
+                ];
             }
         }
         return $domains;
@@ -214,19 +226,27 @@ class MultipleDomain
     public function settingsFields()
     {
         $fields = '';
-        $i = 0;
+        $counter = 0;
         foreach ($this->domains as $domain => $values) {
-            $base = is_array($values)?$values['base']: $values;
-            $lang = is_array($values)?$values['lang']: null;
-            $fields .= $this->getDomainFields($i++, $domain, $base, $lang);
+            /*
+             * Backward compatibility with earlier versions.
+             */
+            if (is_string($values)) {
+                $base = $value;
+                $lang = null;
+            } else {
+                $base = !empty($values['base']) ? $values['base'] : null;
+                $lang = !empty($values['lang']) ? $values['lang'] : null;
+            }
+            $fields .= $this->getDomainFields($counter++, $domain, $base, $lang);
         }
         if (empty($fields)) {
             $fields = $this->getDomainFields(0);
         }
         $fieldsToAdd = $this->getDomainFields('COUNT');
         echo $fields .
-            '<p><button type="button" class="button multiple-domain-add">Add domain</button></p>' .
-            '<p class="description">' . __('A domain may contain the port number when that\'s not the default HTTP (80) or HTTPS (443) port. If a base URL restriction is set for a domain, all requests that don\'t start with the base URL will be redirected to the base URL. <b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, when requesting <code>example.com/other/path</code> it will be redirected to <code>example.com/base/path</code>.', 'multiple-domain') . '</p>' .
+            '<p><button type="button" class="button multiple-domain-add">' . __('Add domain', 'multiple-domain') . '</button></p>' .
+            '<p class="description">' . __('A domain may contain the port number when that\'s not the default HTTP (80) or HTTPS (443) port. If a base URL restriction is set for a domain, all requests that don\'t start with the base URL will be redirected to the base URL. <b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, when requesting <code>example.com/other/path</code> it will be redirected to <code>example.com/base/path</code>. Additionaly, it\'s possible to set a language for each domain, which will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</code> attribute to the document head.', 'multiple-domain') . '</p>' .
             '<script type="text/javascript">var multipleDomainFields = ' . json_encode($fieldsToAdd) . ';</script>';
     }
 
@@ -248,12 +268,12 @@ class MultipleDomain
     /**
      * Replaces the domain.
      *
-     * The domain in the given URL is replaced by the current domain. If the 
-     * URL contains `/wp-admin/` it'll be ignored when replacing the domain and 
+     * The domain in the given URL is replaced by the current domain. If the
+     * URL contains `/wp-admin/` it'll be ignored when replacing the domain and
      * returned as is.
      *
      * @param  string $url The URL to update.
-     * @return string      The domain replaced URL.
+     * @return string The domain replaced URL.
      */
     public function replaceDomain($url)
     {
@@ -265,18 +285,15 @@ class MultipleDomain
     }
 
     /**
-     * Replaces the domain in `upload_dir` filter used by `wp_upload_dir()`.
+     * Replaces the domain in upload_dir filter used by `wp_upload_dir()`.
      *
-     * The domain in the given `url` and `baseurl` is replaced by the current
-     * domain.
+     * The domain in the given `url` and `baseurl` is replaced by the current domain.
      *
-     * @param  array $uploads The array of `url`, `baseurl` and other
-     *                        properties.
-     * @return array          The domain replaced URLs in the given array.
-     * @author Vivek Athalye <https://github.com/vnathalye>
+     * @param  array $uploads The array of `url`, `baseurl` and other properties.
+     * @return array The domain replaced URLs in the given array.
      * @since  0.4
      */
-    public function process_upload_dir($uploads)
+    public function fixUploadDir($uploads)
     {
         $uploads['url'] = $this->replaceDomain($uploads['url']);
         $uploads['baseurl'] = $this->replaceDomain($uploads['baseurl']);
@@ -284,44 +301,16 @@ class MultipleDomain
     }
 
     /**
-     * Add `hreflang` links to head for SEO purpose.
-     *
-     * @return void
-     * @author Alexander Nosov <https://github.com/cyberaleks>
-     * @since  0.4
-     */
-    public function addHrefLangHeader()
-    {
-        $uri = $_SERVER['REQUEST_URI'];
-        $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
-        $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
-
-        foreach ($this->domains as $key => $values) {
-            if (is_array($values) && !empty($values['lang'])) {
-                $url = $key . $values['base'] . $uri;
-                /*
-                 * Prepend the current protocol if none is set.
-                 */
-                if (!preg_match('/https?:\/\//', $values['base'])) {
-                    $url = $protocol . $url;
-                }
-                $this->outputHrefLangHeader($url, $values['lang']);
-            }
-        }
-    }
-
-    /**
      * Parses the given URL to return only its domain.
      *
      * The server port may be included in the returning value.
      *
-     * @param  string  $url               The URL to parse.
-     * @param  boolean $ignoreDefaultPort If `true` is passed to this value, a
-     *                                    default HTTP or HTTPS port will be
-     *                                    ignored even if it's present in the
-     *                                    URL.
-     * @return string                     The domain.
-     * @since  0.2
+     * @param string $url The URL to parse.
+     * @param bool $ignoreDefaultPort If `true` is passed to this value, a
+     *              default HTTP or HTTPS port will be ignored even if it's
+     *              present in the URL.
+     * @return string The domain.
+     * @since 0.2
      */
     private function getDomainFromUrl($url, $ignoreDefaultPort = false)
     {
@@ -337,8 +326,8 @@ class MultipleDomain
      * Checks if the given port is a default HTTP (80) or HTTPS (443) port.
      *
      * @param  int $port The port to check.
-     * @return boolean   Indicates if the port is a default one.
-     * @since 0.2
+     * @return bool Indicates if the port is a default one.
+     * @since  0.2
      */
     private function isDefaultPort($port)
     {
@@ -349,10 +338,10 @@ class MultipleDomain
     /**
      * Returns the fields for a domain setting.
      *
-     * @param  int    $count The field count. It's used within the field name,
-     *                       since it's an array.
-     * @param  string $host  The host field value.
-     * @param  string $base  The base URL field value.
+     * @param  int $count The field count. It's used within the field name,
+     *              since it's an array.
+     * @param  string $host The host field value.
+     * @param  string $base The base URL field value.
      * @return string
      * @since  0.3
      */
@@ -368,19 +357,43 @@ class MultipleDomain
     }
 
     /**
-     * Prints a `hreflang` link tag.
+     * Add hrefLang links to the head for SEO purposes.
      *
-     * @param  string $url  The URL to be set into `href` attribute.
-     * @param  string $lang The language code to be set into `hreflang`
-     *                      attribute. Defaults to `'x-default'`.
      * @return void
-     * @since  0.5
+     * @since  0.4
      */
-    private function outputHrefLangHeader($url, $lang = 'x-default')
+    public function hrefLang()
     {
-        printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
+        $uri = $_SERVER['REQUEST_URI'];
+        echo $this->getHreflangTag($this->originalDomain . $uri);
+
+        foreach ($this->domains as $key => $values) {
+            if (empty($values['base']) || empty($values['lang'])) {
+                continue;
+            }
+            echo $this->getHrefLangTag($key . $values['base'] . $uri, $values['lang']);
+        }
+    }
+
+    /**
+     * Get the hrefLang `<link>` tag for the given URL and lang.
+     *
+     * @param  string $href The base URL for the lang.
+     * @param  string $lang The language code.
+     * @return string The link tag.
+     * @since  0.7
+     */
+    private function getHrefLangTag($href, $lang = 'x-default')
+    {
+        return sprintf('<link rel="alternate" hreflang="%s" href="%s" />', $lang, $href);
     }
 }
+
+
+/**
+ * Register the activation method.
+ */
+register_activation_hook(__FILE__, [ MultipleDomain::class, 'activate' ]);
 
 
 /*
@@ -395,12 +408,12 @@ $originalDomain = $multipleDomain->getOriginalDomain();
 /**
  * The current domain.
  *
- * Since this value is checked against plugin settings, it may not reflect the 
- * actual domain in `HTTP_HOST` element from `$_SERVER`. It also may include 
- * the host port when it's different than 80 (default HTTP port) or 443 
+ * Since this value is checked against plugin settings, it may not reflect the
+ * actual domain in `HTTP_HOST` element from `$_SERVER`. It also may include
+ * the host port when it's different than 80 (default HTTP port) or 443
  * (default HTTPS port).
  *
- * @var string
+ * @var   string
  * @since 0.2
  */
 define('MULTPLE_DOMAIN_DOMAIN', $domain);
@@ -409,7 +422,7 @@ define('MULTPLE_DOMAIN_DOMAIN', $domain);
 /**
  * The original domain set in WordPress installation.
  *
- * @var string
+ * @var   string
  * @since 0.3
  */
 define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
