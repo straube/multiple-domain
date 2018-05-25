@@ -30,7 +30,7 @@ Follow the steps below to install the plugin:
 
 **Does this plugin set extra domains within my host?**
 
-No. You have to set additional domains, DNS, and everything else to use this domain.
+No. You have to set additional domains, DNS, and everything else to use this plugin.
 
 **Can I have a different theme/content/plugins for each domain?**
 
@@ -52,13 +52,16 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 ## Changelog
 
 ### 0.7
+
 * Code review/refactoring.
 * Added activation hook to fix empty settings bug.
 
 ### 0.6
+
 * Fix: #11 Redirect to original domain if SSL/https.
 
 ### 0.5
+
 * Added http/https for alternate link.
 
 ### 0.4

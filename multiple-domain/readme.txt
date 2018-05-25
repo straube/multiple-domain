@@ -40,7 +40,7 @@ Follow the steps below to install the plugin:
 
 = Does this plugin set extra domains within my host? =
 
-No. You have to set additional domains, DNS, and everything else to use this domain.
+No. You have to set additional domains, DNS, and everything else to use this plugin.
 
 = Can I have a different theme/content/plugins for each domain? =
 
