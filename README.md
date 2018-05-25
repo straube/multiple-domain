@@ -51,6 +51,10 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 ## Changelog
 
+### 0.7.1
+
+* Make the plugin compatible with PHP 5.4 again.
+
 ### 0.7
 
 * Code review/refactoring.
