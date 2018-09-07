@@ -285,11 +285,6 @@ class MultipleDomain
     {
         $ignoreDefaultPort = true;
         $headerHost = $_SERVER['HTTP_X_HOST'] ?? $_SERVER['HTTP_HOST'];
-        $headerHost = filter_input(INPUT_SERVER, 'HTTP_X_HOST', FILTER_DEFAULT, [
-            'options' => [
-                'default' => filter_input(INPUT_SERVER, 'HTTP_HOST'),
-            ],
-        ]);
         if (!empty($headerHost)) {
             $domain = $headerHost;
             $matches = [];
