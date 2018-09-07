@@ -30,6 +30,7 @@ $multipleDomain = new MultipleDomain();
 $multipleDomain->setup();
 $domain = $multipleDomain->getDomain();
 $originalDomain = $multipleDomain->getOriginalDomain();
+$domainLang = $multipleDomain->getDomainLang();
 
 
 /**
@@ -53,3 +54,17 @@ define('MULTPLE_DOMAIN_DOMAIN', $domain);
  * @since 0.3
  */
 define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
+
+
+/**
+ * The current domain language.
+ *
+ * This value is the language associated with the current domain in the plugin
+ * settings. No check is made to verifiy if it reflects the actual user
+ * language or locale. Also, notice this constant may be `null` when no
+ * language is set in the plugin config.
+ *
+ * @var   string
+ * @since 0.8
+ */
+define('MULTPLE_DOMAIN_DOMAIN_LANG', $domainLang);

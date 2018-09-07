@@ -100,6 +100,31 @@ class MultipleDomain
     }
 
     /**
+     * Get the language associated to the given domain.
+     *
+     * If no domain is passed to the function, it'll return the language for
+     * the current domain.
+     *
+     * Notice this function may return `null` when no language is set in the
+     * plugin config.
+     *
+     * @param  string|null $domain
+     * @return string|null
+     * @since  0.8
+     */
+    public function getDomainLang($domain = null)
+    {
+        if (empty($domain)) {
+            $domain = $this->domain;
+        }
+        $lang = null;
+        if (!empty($this->domains[$domain]['lang'])) {
+            $lang = $this->domains[$domain]['lang'];
+        }
+        return $lang;
+    }
+
+    /**
      * When the current domains has a base URL restriction, redirects the user
      * if the current request URI doesn't match it.
      *
