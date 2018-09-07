@@ -1,0 +1,21 @@
+{
+    "name": "straube/multiple-domain",
+    "description": "WordPress plugin that allows you to have multiple domains in a single WordPress installation",
+    "type": "project",
+    "require-dev": {
+        "phpunit/phpunit": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "multiple-domain/"
+        }
+    },
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Gustavo Straube",
+            "email": "gustavo@straube.co"
+        }
+    ],
+    "require": {}
+}
