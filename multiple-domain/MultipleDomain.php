@@ -126,9 +126,18 @@ class MultipleDomain
      */
     public function settings()
     {
-        add_settings_section('multiple-domain', __('Multiple Domain', 'multiple-domain'), [ $this, 'settingsHeading' ], 'general');
-        add_settings_field('multiple-domain-domains', __('Domains', 'multiple-domain'), [ $this, 'settingsFields' ], 'general', 'multiple-domain');
-        register_setting('general', 'multiple-domain-domains', [ $this, 'sanitizeSettings' ]);
+        add_settings_section('multiple-domain', __('Multiple Domain', 'multiple-domain'), [
+            $this,
+            'settingsHeading',
+        ], 'general');
+        add_settings_field('multiple-domain-domains', __('Domains', 'multiple-domain'), [
+            $this,
+            'settingsFields',
+        ], 'general', 'multiple-domain');
+        register_setting('general', 'multiple-domain-domains', [
+            $this,
+            'sanitizeSettings',
+        ]);
     }
 
     /**
@@ -166,7 +175,8 @@ class MultipleDomain
      */
     public function settingsHeading()
     {
-        echo '<p>' . __('You can use multiple domains in your WordPress defining them below. It\'s possible to limit the access for each domain to a base URL.', 'multiple-domain') . '</p>';
+        echo '<p>' . __('You can use multiple domains in your WordPress defining them below. '
+            . 'It\'s possible to limit the access for each domain to a base URL.', 'multiple-domain') . '</p>';
     }
 
     /**
@@ -195,10 +205,19 @@ class MultipleDomain
             $fields = $this->getDomainFields(0);
         }
         $fieldsToAdd = $this->getDomainFields('COUNT');
-        echo $fields .
-            '<p><button type="button" class="button multiple-domain-add">' . __('Add domain', 'multiple-domain') . '</button></p>' .
-            '<p class="description">' . __('A domain may contain the port number when that\'s not the default HTTP (80) or HTTPS (443) port. If a base URL restriction is set for a domain, all requests that don\'t start with the base URL will be redirected to the base URL. <b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, when requesting <code>example.com/other/path</code> it will be redirected to <code>example.com/base/path</code>. Additionaly, it\'s possible to set a language for each domain, which will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</code> attribute to the document head.', 'multiple-domain') . '</p>' .
-            '<script type="text/javascript">var multipleDomainFields = ' . json_encode($fieldsToAdd) . ';</script>';
+        echo $fields
+            . '<p><button type="button" class="button multiple-domain-add">'
+            . __('Add domain', 'multiple-domain') . '</button></p>'
+            . '<p class="description">'
+            . __('A domain may contain the port number when that\'s not the default HTTP (80) or HTTPS (443) port. '
+            . 'If a base URL restriction is set for a domain, all requests that don\'t start with the base URL '
+            . 'will be redirected to the base URL. '
+            . '<b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, '
+            . 'when requesting <code>example.com/other/path</code> it will be redirected to '
+            . '<code>example.com/base/path</code>. Additionaly, it\'s possible to set a language for each domain, '
+            . 'which will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</code> '
+            . 'attribute to the document head.', 'multiple-domain') . '</p>'
+            . '<script type="text/javascript">var multipleDomainFields = ' . json_encode($fieldsToAdd) . ';</script>';
     }
 
     /**
@@ -213,7 +232,8 @@ class MultipleDomain
         if ($hook !== 'options-general.php') {
             return;
         }
-        wp_enqueue_script('multiple-domain-settings', plugins_url('settings.js', __FILE__), [ 'jquery' ], self::VERSION, true);
+        $settingsPath = plugins_url('settings.js', __FILE__);
+        wp_enqueue_script('multiple-domain-settings', $settingsPath, [ 'jquery' ], self::VERSION, true);
     }
 
     /**
@@ -390,12 +410,19 @@ class MultipleDomain
      */
     private function getDomainFields($count, $host = null, $base = null, $lang = null)
     {
-        $fields = '<p class="multiple-domain-domain">' .
-            '<input type="text" name="multiple-domain-domains[' . $count . '][host]" value="' . ($host ?: '') . '" class="regular-text code" placeholder="example.com" title="Domain"> ' .
-            '<input type="text" name="multiple-domain-domains[' . $count . '][base]" value="' . ($base ?: '') . '" class="regular-text code" placeholder="/base/path" title="Base path restriction"> ' .
-            '<input type="text" name="multiple-domain-domains[' . $count . '][lang]" value="' . ($lang ?: '') . '" class="regular-text code" placeholder="en-US" title="Language"> ' .
-            '<button type="button" class="button multiple-domain-remove"><span class="required">Remove</span></button>' .
-            '</p>';
+        $fields = '<p class="multiple-domain-domain">'
+            . '<input type="text" name="multiple-domain-domains[' . $count . '][host]" value="' . ($host ?: '') . '" '
+            . 'class="regular-text code" placeholder="example.com" title="'
+            . __('Domain', 'multiple-domain') . '"> '
+            . '<input type="text" name="multiple-domain-domains[' . $count . '][base]" value="' . ($base ?: '') . '" '
+            . 'class="regular-text code" placeholder="/base/path" title="'
+            . __('Base path restriction', 'multiple-domain') . '"> '
+            . '<input type="text" name="multiple-domain-domains[' . $count . '][lang]" value="' . ($lang ?: '') . '" '
+            . 'class="regular-text code" placeholder="en-US" title="'
+            . __('Language', 'multiple-domain') . '"> '
+            . '<button type="button" class="button multiple-domain-remove"><span class="required">'
+            . __('Remove', 'multiple-domain') . '</span></button>'
+            . '</p>';
         return $fields;
     }
 
