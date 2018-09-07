@@ -284,7 +284,7 @@ class MultipleDomain
     private function initAttributes()
     {
         $ignoreDefaultPort = true;
-        $headerHost = $_SERVER['HTTP_X_HOST'] ?? $_SERVER['HTTP_HOST'];
+        $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : $_SERVER['HTTP_HOST'];
         if (!empty($headerHost)) {
             $domain = $headerHost;
             $matches = [];
