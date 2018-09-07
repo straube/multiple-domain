@@ -243,7 +243,7 @@ class MultipleDomain
      * URL contains `/wp-admin/` it'll be ignored when replacing the domain and
      * returned as is.
      *
-     * @param  string $url The URL to update.
+     * @param  string $url The URL to fix.
      * @return string The domain replaced URL.
      */
     public function replaceDomain($url)
@@ -269,6 +269,25 @@ class MultipleDomain
         $uploads['url'] = $this->replaceDomain($uploads['url']);
         $uploads['baseurl'] = $this->replaceDomain($uploads['baseurl']);
         return $uploads;
+    }
+
+    /**
+     * Replaces the domain in post content.
+     *
+     * All occurrences of the original domain will be replaced by the current
+     * domain.
+     *
+     * @param  string $content The content to fix.
+     * @return string The domain replaced content.
+     * @since  0.8
+     */
+    public function fixContentUrls($content)
+    {
+        if (array_key_exists($this->domain, $this->domains)) {
+            $regex = '/(https?:\/\/)' . preg_quote($this->originalDomain) . '/i';
+            $content = preg_replace($regex, '$1' . $this->domain, $content);
+        }
+        return $content;
     }
 
     /**
@@ -361,6 +380,7 @@ class MultipleDomain
         add_filter('plugins_url', [ $this, 'replaceDomain' ]);
         add_filter('wp_get_attachment_url', [ $this, 'replaceDomain' ]);
         add_filter('upload_dir', [ $this, 'fixUploadDir' ]);
+        add_filter('the_content', [ $this, 'fixContentUrls' ], 20);
     }
 
     /**
