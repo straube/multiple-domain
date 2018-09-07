@@ -316,6 +316,24 @@ class MultipleDomain
     }
 
     /**
+     * Add all plugin domains to allowed origins.
+     *
+     * This filter is used to avoid CORS issues.
+     *
+     * @param  array $origins
+     * @return array
+     * @since  0.8
+     */
+    public function addAllowedOrigins($origins)
+    {
+        foreach (array_keys($this->domains) as $domain) {
+            $origins[] = 'https://' . $domain;
+            $origins[] = 'http://' . $domain;
+        }
+        return array_values(array_unique($origins));
+    }
+
+    /**
      * Add `hreflang` links to head for SEO purpose.
      *
      * @return void
@@ -328,12 +346,12 @@ class MultipleDomain
         $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
         $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
 
-        foreach ($this->domains as $key => $values) {
+        foreach ($this->domains as $domain => $values) {
             if (!is_array($values) || empty($values['lang'])) {
                 continue;
             }
 
-            $url = $key . $values['base'] . $uri;
+            $url = $domain . $values['base'] . $uri;
 
             /*
              * Prepend the current protocol if none is set.
@@ -406,6 +424,7 @@ class MultipleDomain
         add_filter('wp_get_attachment_url', [ $this, 'replaceDomain' ]);
         add_filter('upload_dir', [ $this, 'fixUploadDir' ]);
         add_filter('the_content', [ $this, 'fixContentUrls' ], 20);
+        add_filter('allowed_http_origins', [ $this, 'addAllowedOrigins' ]);
     }
 
     /**
