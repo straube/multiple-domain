@@ -59,9 +59,23 @@ port).
 Yes. You can use the `multiple_domain_redirect` action to do that. Please check 
 https://github.com/straube/multiple-domain/issues/2 for an example on how to do that.
 
+= Can I get the language associated with the current domain? =
+
+Yes. You can use the `MULTPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep 
+in mind the value in this constant doesn't necessarily reflect the actual user language or locale. This is just the 
+language set in the plugin config. Also notice the language may be `null`.
+
 == Screenshots ==
 
 == Changelog ==
+
+= 0.8.0 =
+
+* Moved `MultipleDomain` class to its own file.
+* Fix: #14 Remove `filter_input` from plugin.
+* Attempt to fix #22.
+* Added `MULTPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. Fixes #20.
+* Fix: #21 No 'Access-Control-Allow-Origin' header is present on the requested resource
 
 = 0.7.1 =
 * Make the plugin compatible with PHP 5.4 again.
