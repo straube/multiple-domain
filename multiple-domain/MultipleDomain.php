@@ -281,8 +281,18 @@ class MultipleDomain
         }
     }
 
+    /**
+     * Initialize the class attributes.
+     *
+     * @return void
+     * @since  0.8
+     */
     private function initAttributes()
     {
+        /*
+         * TODO: Make this an option. Maybe?
+         * See https://github.com/straube/multiple-domain/issues/15
+         */
         $ignoreDefaultPort = true;
         $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : $_SERVER['HTTP_HOST'];
         if (!empty($headerHost)) {
@@ -303,6 +313,12 @@ class MultipleDomain
         }
     }
 
+    /**
+     * Hook plugin actions to WordPress.
+     *
+     * @return void
+     * @since  0.8
+     */
     private function hookActions()
     {
         add_action('init', [ $this, 'redirect' ]);
@@ -311,6 +327,12 @@ class MultipleDomain
         add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
     }
 
+    /**
+     * Hook plugin filters to WordPress.
+     *
+     * @return void
+     * @since  0.8
+     */
     private function hookFilters()
     {
         add_filter('content_url', [ $this, 'replaceDomain' ]);
