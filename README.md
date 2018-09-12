@@ -1,5 +1,7 @@
 # Multiple Domain
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=27LGBVM5Q4Q4G&lc=BR&item_name=Multiple%20Domain%20WP%20Plugin&amount=10%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_paynowCC_LG%2egif%3aNonHosted)
+
 Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support 
 more than one theme or advanced customizations for each domain. It's only intended to enable constant navigation under 
 many domains. For a more complex setup, there is 
