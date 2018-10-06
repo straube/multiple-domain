@@ -376,7 +376,7 @@ class MultipleDomain
          * See https://github.com/straube/multiple-domain/issues/15
          */
         $ignoreDefaultPort = true;
-        $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : $_SERVER['HTTP_HOST'];
+        $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : ( !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' );
         if (!empty($headerHost)) {
             $domain = $headerHost;
             $matches = [];
