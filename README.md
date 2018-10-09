@@ -59,13 +59,17 @@ language set in the plugin config. Also notice the language may be `null`.
 
 ## Changelog
 
+### 0.8.1
+
+* Fix: #23 Undefined index when using wp-cli.
+
 ### 0.8.0
 
 * Moved `MultipleDomain` class to its own file.
 * Fix: #14 Remove `filter_input` from plugin.
 * Attempt to fix #22.
 * Added `MULTPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. Fixes #20.
-* Fix: #21 No 'Access-Control-Allow-Origin' header is present on the requested resource
+* Fix: #21 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 ### 0.7.1
 
@@ -113,7 +117,7 @@ This is the first release. It supports setting domains and an optional base URL 
 
 ## Meta
 
-Contributors: GustavoStraube, cyberaleks  
+Contributors: GustavoStraube, cyberaleks, jffaria  
 Tags: multiple, domains, redirect  
 Requires at least: 4.0  
 Tested up to: 4.9.6  

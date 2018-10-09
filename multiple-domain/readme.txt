@@ -1,5 +1,5 @@
 === Multiple Domain ===
-Contributors: GustavoStraube, cyberaleks
+Contributors: GustavoStraube, cyberaleks, jffaria
 Tags: multiple, domains, redirect
 Requires at least: 4.0
 Tested up to: 4.9.6
@@ -68,6 +68,10 @@ language set in the plugin config. Also notice the language may be `null`.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.8.1 =
+
+* Fix: #23 Undefined index when using wp-cli.
 
 = 0.8.0 =
 
