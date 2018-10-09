@@ -7,7 +7,8 @@
  * @author  Vivek Athalye <https://github.com/vnathalye>
  * @author  Clay Allsopp <https://github.com/clayallsopp>
  * @author  Alexander Nosov <https://github.com/cyberaleks>
- * @version 0.7
+ * @author  João Faria <https://github.com/jffaria>
+ * @version 0.8.1
  * @package multiple-domain
  */
 class MultipleDomain
@@ -19,7 +20,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.8.0';
+    const VERSION = '0.8.1';
 
     /**
      * The current domain.
