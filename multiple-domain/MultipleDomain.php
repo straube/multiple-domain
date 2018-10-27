@@ -210,6 +210,7 @@ class MultipleDomain
      *
      * @param  mixed $value The value to cast.
      * @return bool A bolean representing the passed value.
+     * @since  1.0.0
      */
     public function castToBool($value)
     {
