@@ -344,7 +344,7 @@ class MultipleDomain
     public function addHrefLangHeader()
     {
         $uri = $_SERVER['REQUEST_URI'];
-        $protocol = !isset($_SERVER['HTTPS']) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
+        $protocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http://' : 'https://';
         $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
 
         foreach ($this->domains as $domain => $values) {
