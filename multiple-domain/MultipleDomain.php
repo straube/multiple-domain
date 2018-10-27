@@ -61,6 +61,7 @@ class MultipleDomain
     public static function activate()
     {
         add_option('multiple-domain-domains', []);
+        add_option('multiple-domain-ignore-default-ports', true);
     }
 
     /**
@@ -372,11 +373,7 @@ class MultipleDomain
      */
     private function initAttributes()
     {
-        /*
-         * TODO: Make this an option. Maybe?
-         * See https://github.com/straube/multiple-domain/issues/15
-         */
-        $ignoreDefaultPort = true;
+        $ignoreDefaultPort = $this->shouldIgnoreDefaultPorts();
         $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : ( !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' );
         if (!empty($headerHost)) {
             $domain = $headerHost;
@@ -394,6 +391,20 @@ class MultipleDomain
         if (!array_key_exists($this->domain, $this->domains)) {
             $this->domain = $this->originalDomain;
         }
+    }
+
+    /**
+     * Indicate whether the default ports should be ingored.
+     *
+     * This check is used when redirecting from a domain to another, for
+     * example.
+     *
+     * @return bool
+     * @since  1.0.0
+     */
+    private function shouldIgnoreDefaultPorts()
+    {
+        return (bool) get_option('multiple-domain-ignore-default-port');
     }
 
     /**
