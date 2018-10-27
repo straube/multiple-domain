@@ -517,7 +517,8 @@ class MultipleDomain
      *              since it's an array.
      * @param  string $host The host field value.
      * @param  string $base The base URL field value.
-     * @return string
+     * @param  string $lang The language field value.
+     * @return string The rendered group of fields.
      * @since  0.3
      */
     private function getDomainFields($count, $host = null, $base = null, $lang = null)
@@ -529,13 +530,58 @@ class MultipleDomain
             . '<input type="text" name="multiple-domain-domains[' . $count . '][base]" value="' . ($base ?: '') . '" '
             . 'class="regular-text code" placeholder="/base/path" title="'
             . __('Base path restriction', 'multiple-domain') . '"> '
-            . '<input type="text" name="multiple-domain-domains[' . $count . '][lang]" value="' . ($lang ?: '') . '" '
-            . 'class="regular-text code" placeholder="en-US" title="'
-            . __('Language', 'multiple-domain') . '"> '
+            . $this->getLangField($count, $lang) . ' '
             . '<button type="button" class="button multiple-domain-remove"><span class="required">'
             . __('Remove', 'multiple-domain') . '</span></button>'
             . '</p>';
         return $fields;
+    }
+
+    /**
+     * Gets the language field for domain settings.
+     *
+     * @param  int $count The field count. It's used within the field name,
+     *              since it's an array.
+     * @param  string $lang The selected language.
+     * @return string The rendered field.
+     * @since  1.0.0
+     */
+    private function getLangField($count, $lang = null)
+    {
+        /*
+         * Backward compability with a locale defined in previous versions.
+         *
+         * The HTML `lang` attribute uses a dash (`en-US`) to separate language
+         * and region, but WP languages have an underscore (`en_US`).
+         */
+        if (!empty($lang)) {
+            $lang = str_replace('-', '_', $lang);
+        }
+
+        require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+        $translations = wp_get_available_translations();
+        if (defined('ARRAY_FILTER_USE_KEY')) {
+            $translations = array_filter($translations, [ $this, 'isNotWordpressVariation' ], ARRAY_FILTER_USE_KEY);
+        }
+
+        return wp_dropdown_languages([
+            'name' => 'multiple-domain-domains[' . $count . '][lang]',
+            'selected' => $lang,
+            'echo' => false,
+            'translations' => $translations,
+        ]);
+    }
+
+    /**
+     * Checks whether the given language is not just an WordPress variation
+     * (formal or informal).
+     *
+     * @param  string $language The language to check.
+     * @return bool The verification result.
+     */
+    private function isNotWordpressVariation($language)
+    {
+        return strpos($language, 'formal') === false;
     }
 
     /**
@@ -549,6 +595,7 @@ class MultipleDomain
      */
     private function outputHrefLangHeader($url, $lang = 'x-default')
     {
+        $lang = str_replace('_', '-', $lang);
         printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
     }
 }
