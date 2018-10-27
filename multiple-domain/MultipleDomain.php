@@ -61,6 +61,7 @@ class MultipleDomain
     public static function activate()
     {
         add_option('multiple-domain-domains', []);
+        add_option('multiple-domain-ignore-default-ports', true);
     }
 
     /**
@@ -137,6 +138,7 @@ class MultipleDomain
          * Allow developers to create their own logic for redirection.
          */
         do_action('multiple_domain_redirect', $this->domain);
+
         $base = !empty($this->domains[$this->domain]) ? $this->domains[$this->domain] : '';
         $base = is_array($base) ? $base['base'] : $base;
         if (!empty($base) && !empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
@@ -158,16 +160,25 @@ class MultipleDomain
         ], 'general');
         add_settings_field('multiple-domain-domains', __('Domains', 'multiple-domain'), [
             $this,
-            'settingsFields',
+            'settingsFieldsForDomains',
         ], 'general', 'multiple-domain');
+        add_settings_field('multiple-domain-options', __('Options', 'multiple-domain'), [
+            $this,
+            'settingsFieldsForOptions',
+        ], 'general', 'multiple-domain');
+
         register_setting('general', 'multiple-domain-domains', [
             $this,
-            'sanitizeSettings',
+            'sanitizeDomainsSettings',
+        ]);
+        register_setting('general', 'multiple-domain-ignore-default-ports', [
+            $this,
+            'castToBool',
         ]);
     }
 
     /**
-     * Sanitizes the settings.
+     * Sanitizes the domains settings.
      *
      * It takes the value sent by the user in the settings form and parses it
      * to store in the correct format.
@@ -175,7 +186,7 @@ class MultipleDomain
      * @param  array $value The user defined option value.
      * @return array The sanitized option value.
      */
-    public function sanitizeSettings($value)
+    public function sanitizeDomainsSettings($value)
     {
         $domains = [];
         if (is_array($value)) {
@@ -195,6 +206,18 @@ class MultipleDomain
     }
 
     /**
+     * Casts the given value to boolean.
+     *
+     * @param  mixed $value The value to cast.
+     * @return bool A bolean representing the passed value.
+     * @since  1.0.0
+     */
+    public function castToBool($value)
+    {
+        return (bool) $value;
+    }
+
+    /**
      * Renders the settings heading.
      *
      * @return void
@@ -206,11 +229,11 @@ class MultipleDomain
     }
 
     /**
-     * Renders the settings field.
+     * Renders the fields for setting domains.
      *
      * @return void
      */
-    public function settingsFields()
+    public function settingsFieldsForDomains()
     {
         $fields = '';
         $counter = 0;
@@ -235,15 +258,29 @@ class MultipleDomain
             . '<p><button type="button" class="button multiple-domain-add">'
             . __('Add domain', 'multiple-domain') . '</button></p>'
             . '<p class="description">'
-            . __('A domain may contain the port number when that\'s not the default HTTP (80) or HTTPS (443) port. '
-            . 'If a base URL restriction is set for a domain, all requests that don\'t start with the base URL '
-            . 'will be redirected to the base URL. '
+            . __('A domain may contain the port number. If a base URL restriction is set for a domain, '
+            . 'all requests that don\'t start with the base URL will be redirected to the base URL. '
             . '<b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, '
             . 'when requesting <code>example.com/other/path</code> it will be redirected to '
             . '<code>example.com/base/path</code>. Additionaly, it\'s possible to set a language for each domain, '
             . 'which will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</code> '
             . 'attribute to the document head.', 'multiple-domain') . '</p>'
             . '<script type="text/javascript">var multipleDomainFields = ' . json_encode($fieldsToAdd) . ';</script>';
+    }
+
+    /**
+     * Renders the fields for plugin options.
+     *
+     * @return void
+     * @since  1.0.0
+     */
+    public function settingsFieldsForOptions()
+    {
+        $checked = $this->shouldIgnoreDefaultPorts() ? 'checked' : '';
+        echo '<label><input type="checkbox" name="multiple-domain-ignore-default-ports" value="1" ' . $checked . '> '
+            . __('Ignore default ports', 'multiple-domain') . '</label>'
+            . '<p class="description">' . __('When enabled, removes the port from URL when redirecting and '
+            . 'it\'s a default HTTP (<code>80</code>) or HTTPS (<code>443</code>) port.', 'multiple-domain') . '</p>';
     }
 
     /**
@@ -372,11 +409,7 @@ class MultipleDomain
      */
     private function initAttributes()
     {
-        /*
-         * TODO: Make this an option. Maybe?
-         * See https://github.com/straube/multiple-domain/issues/15
-         */
-        $ignoreDefaultPort = true;
+        $ignoreDefaultPort = $this->shouldIgnoreDefaultPorts();
         $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : ( !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' );
         if (!empty($headerHost)) {
             $domain = $headerHost;
@@ -394,6 +427,20 @@ class MultipleDomain
         if (!array_key_exists($this->domain, $this->domains)) {
             $this->domain = $this->originalDomain;
         }
+    }
+
+    /**
+     * Indicate whether the default ports should be ingored.
+     *
+     * This check is used when redirecting from a domain to another, for
+     * example.
+     *
+     * @return bool
+     * @since  1.0.0
+     */
+    private function shouldIgnoreDefaultPorts()
+    {
+        return (bool) get_option('multiple-domain-ignore-default-ports');
     }
 
     /**
