@@ -380,7 +380,14 @@ class MultipleDomain
      */
     public function addHrefLangHeader()
     {
-        $uri = $_SERVER['REQUEST_URI'];
+        /**
+         * The WP class instance.
+         *
+         * @var WP
+         */
+        global $wp;
+
+        $uri = add_query_arg([], $wp->request);
         $protocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http://' : 'https://';
         $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
 
