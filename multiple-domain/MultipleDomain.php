@@ -141,8 +141,13 @@ class MultipleDomain
 
         $base = !empty($this->domains[$this->domain]) ? $this->domains[$this->domain] : '';
         $base = is_array($base) ? $base['base'] : $base;
-        if (!empty($base) && !empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
-            wp_redirect(home_url($base));
+
+        // Store value of 'REQUEST_URI' for further checks.
+        // It's only used for checking.
+        $request_uri = ( ! empty( $_SERVER['REQUEST_URI'] ) ? filter_var( $_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL ) : '' ); // WPCS: input var ok.
+
+        if ( ! empty( $base ) && ! empty( $request_uri ) && strpos( $request_uri, $base ) !== 0 ) {
+            wp_redirect( home_url( $base ) );
             exit;
         }
     }
@@ -224,8 +229,10 @@ class MultipleDomain
      */
     public function settingsHeading()
     {
-        echo '<p>' . __('You can use multiple domains in your WordPress defining them below. '
-            . 'It\'s possible to limit the access for each domain to a base URL.', 'multiple-domain') . '</p>';
+        printf( '<p>%s</p>',
+            esc_html__( 'You can use multiple domains in your WordPress defining them below. 
+            It\'s possible to limit the access for each domain to a base URL.', 'multiple-domain' )
+        );
     }
 
     /**
@@ -254,18 +261,70 @@ class MultipleDomain
             $fields = $this->getDomainFields(0);
         }
         $fieldsToAdd = $this->getDomainFields('COUNT');
-        echo $fields
-            . '<p><button type="button" class="button multiple-domain-add">'
-            . __('Add domain', 'multiple-domain') . '</button></p>'
-            . '<p class="description">'
-            . __('A domain may contain the port number. If a base URL restriction is set for a domain, '
-            . 'all requests that don\'t start with the base URL will be redirected to the base URL. '
-            . '<b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, '
-            . 'when requesting <code>example.com/other/path</code> it will be redirected to '
-            . '<code>example.com/base/path</code>. Additionaly, it\'s possible to set a language for each domain, '
-            . 'which will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</code> '
-            . 'attribute to the document head.', 'multiple-domain') . '</p>'
-            . '<script type="text/javascript">var multipleDomainFields = ' . json_encode($fieldsToAdd) . ';</script>';
+
+        // Array to whitelist html elements to be allowed in output.
+        $allowed_html = array(
+            'p'        => array(
+                'class' => array(),
+            ),
+            'input'    => array(
+                'type'        => 'text',
+                'name'        => array(),
+                'value'       => array(),
+                'class'       => array(),
+                'placeholder' => array(),
+                'title'       => array(),
+            ),
+            'button'   => array(
+                'type'  => 'button',
+                'class' => array(),
+            ),
+            'span'     => array(
+                'class' => array(),
+            ),
+            'select'   => array(
+                'name' => array(),
+                'id'   => array(),
+            ),
+            'optgroup' => array(
+                'label' => array(),
+            ),
+            'option'   => array(
+                'value'          => array(),
+                'lang'           => array(),
+                'data-installed' => array(),
+                'selected'       => array()
+            )
+        );
+
+        echo wp_kses( $fields, $allowed_html );
+        echo '<p><button type="button" class="button multiple-domain-add">';
+        esc_html_e('Add domain', 'multiple-domain');
+        echo '</button></p>';
+        echo '<p class="description">';
+        esc_html_e( 'A domain may contain the port number. If a base URL restriction is set for a domain,
+            all requests that don\'t start with the base URL will be redirected to the base URL. ', 'multiple-domain' );
+        printf(
+            '<b>%1$s</b>: %2$s <code>%3$s</code> %4$s <code>%5$s</code>,',
+            esc_html__( 'Example', 'multiple-domain' ),
+            esc_html__( 'the domain and base URL are', 'multiple-domain' ),
+            esc_html( 'example.com' ),
+            esc_html__( 'and', 'multiple-domain' ),
+            esc_html( '/base/path' )
+            );
+        printf(
+            ' %1$s <code>%2$s</code> %3$s <code>%2$s</code>.',
+            esc_html__( 'when requesting', 'multiple-domain' ),
+            esc_html( 'example.com/other/path' ),
+            esc_html__( 'it will be redirected to', 'multiple-domain' )
+        );
+        printf(
+            ' %1$s <code>&lt;link&gt;</code> %2$s <code>hreflang</code> %3$s',
+            esc_html__( 'Additionaly, it\'s possible to set a language for each domain, which will be used to add', 'multiple-domain' ),
+            esc_html__( 'tags with a', 'multiple-domain' ),
+            esc_html__(  'attribute to the document head.', 'multiple-domain' )
+            );
+        echo '</p><script type="text/javascript">var multipleDomainFields = ' . wp_json_encode( $fieldsToAdd ) . ';</script>';
     }
 
     /**
@@ -276,11 +335,17 @@ class MultipleDomain
      */
     public function settingsFieldsForOptions()
     {
-        $checked = $this->shouldIgnoreDefaultPorts() ? 'checked' : '';
-        echo '<label><input type="checkbox" name="multiple-domain-ignore-default-ports" value="1" ' . $checked . '> '
-            . __('Ignore default ports', 'multiple-domain') . '</label>'
-            . '<p class="description">' . __('When enabled, removes the port from URL when redirecting and '
-            . 'it\'s a default HTTP (<code>80</code>) or HTTPS (<code>443</code>) port.', 'multiple-domain') . '</p>';
+
+        echo '<label><input type="checkbox" name="multiple-domain-ignore-default-ports" value="1" ' . checked( $this->shouldIgnoreDefaultPorts(), true, false ) . '> ';
+        esc_html_e('Ignore default ports', 'multiple-domain');
+        echo '</label><p class="description">';
+        printf( '%1$s (<code>80</code>) %2$s (<code>443</code>) %3$s',
+            esc_html__( 'When enabled, removes the port from URL when redirecting and '
+                        . 'it\'s a default HTTP', 'multiple-domain' ),
+        esc_html__( 'or HTTPS', 'multiple-domain' ),
+        esc_html__( 'port.', 'multiple-domain')
+        );
+        echo '</p>';
     }
 
     /**
@@ -387,8 +452,10 @@ class MultipleDomain
          */
         global $wp;
 
-        $uri = add_query_arg([], $wp->request);
-        $protocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http://' : 'https://';
+        $uri            = add_query_arg([], $wp->request);
+        $protocol_value = ( ! empty( $_SERVER['HTTPS'] ) ? filter_var( $_SERVER['HTTPS'], FILTER_SANITIZE_STRING ) : '' ); // WPCS: input var ok.
+        $protocol       = ( empty( $protocol_value ) || 'off' === $protocol_value ? 'http://' : 'https://' );
+
         $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
 
         foreach ($this->domains as $domain => $values) {
@@ -417,7 +484,9 @@ class MultipleDomain
     private function initAttributes()
     {
         $ignoreDefaultPort = $this->shouldIgnoreDefaultPorts();
-        $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : ( !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' );
+        $http_host         =  ( ! empty( $_SERVER['HTTP_HOST'] ) ? filter_var( $_SERVER['HTTP_HOST'], FILTER_SANITIZE_URL ) : '' ); // WPCS: input var ok.
+        $headerHost        = ( ! empty( $_SERVER['HTTP_X_HOST'] ) ? filter_var( $_SERVER['HTTP_X_HOST'], FILTER_SANITIZE_URL ) : $http_host ); // WPCS: input var ok.
+
         if (!empty($headerHost)) {
             $domain = $headerHost;
             $matches = [];
@@ -496,8 +565,9 @@ class MultipleDomain
      */
     private function getDomainFromUrl($url, $ignoreDefaultPort = false)
     {
-        $parts = parse_url($url);
+        $parts  = wp_parse_url($url);
         $domain = $parts['host'];
+
         if (!empty($parts['port']) && !($ignoreDefaultPort && $this->isDefaultPort($parts['port']))) {
             $domain .= ':' . $parts['port'];
         }
@@ -531,10 +601,10 @@ class MultipleDomain
     private function getDomainFields($count, $host = null, $base = null, $lang = null)
     {
         $fields = '<p class="multiple-domain-domain">'
-            . '<input type="text" name="multiple-domain-domains[' . $count . '][host]" value="' . ($host ?: '') . '" '
+            . '<input type="text" name="multiple-domain-domains[' . esc_attr( $count ) . '][host]" value="' . ( $host ? esc_attr( $host ) : '') . '" '
             . 'class="regular-text code" placeholder="example.com" title="'
             . __('Domain', 'multiple-domain') . '"> '
-            . '<input type="text" name="multiple-domain-domains[' . $count . '][base]" value="' . ($base ?: '') . '" '
+            . '<input type="text" name="multiple-domain-domains[' . esc_attr( $count ) . '][base]" value="' . ( $base ? esc_attr( $base ) : '') . '" '
             . 'class="regular-text code" placeholder="/base/path" title="'
             . __('Base path restriction', 'multiple-domain') . '"> '
             . $this->getLangField($count, $lang) . ' '
@@ -603,6 +673,6 @@ class MultipleDomain
     private function outputHrefLangHeader($url, $lang = 'x-default')
     {
         $lang = str_replace('_', '-', $lang);
-        printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
+        printf('<link rel="alternate" href="%s" hreflang="%s"/>', esc_url( $url ), esc_attr( $lang ) );
     }
 }

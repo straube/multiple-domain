@@ -28,9 +28,11 @@ register_activation_hook(__FILE__, [ 'MultipleDomain', 'activate' ]);
  */
 $multipleDomain = new MultipleDomain();
 $multipleDomain->setup();
-$domain = $multipleDomain->getDomain();
+
+// Changed variable name form `$domain` to `$md_domain` to fix `Overriding WordPress globals is prohibited` error.
+$md_domain      = $multipleDomain->getDomain();
 $originalDomain = $multipleDomain->getOriginalDomain();
-$domainLang = $multipleDomain->getDomainLang();
+$domainLang     = $multipleDomain->getDomainLang();
 
 
 /**
@@ -44,7 +46,7 @@ $domainLang = $multipleDomain->getDomainLang();
  * @var   string
  * @since 0.2
  */
-define('MULTPLE_DOMAIN_DOMAIN', $domain);
+define('MULTPLE_DOMAIN_DOMAIN', $md_domain);
 
 
 /**
