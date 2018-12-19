@@ -1,7 +1,5 @@
 # Multiple Domain
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=27LGBVM5Q4Q4G&lc=BR&item_name=Multiple%20Domain%20WP%20Plugin&amount=10%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_paynowCC_LG%2egif%3aNonHosted)
-
 Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support 
 more than one theme or advanced customizations for each domain. It's only intended to enable constant navigation under 
 many domains. For a more complex setup, there is 
@@ -128,3 +126,30 @@ Tested up to: 5.0.1
 Stable tag: trunk  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
+
+## Contributing
+
+Feel free to open a pull request to address any of the issues reported by the plugin users. In case you have questions 
+on how to fix or the best approach, start a discussion on the appropriate thread.
+
+If you want to add a new feature, please open an issue explaining the feature and how it would help the users before 
+start writing your code.
+
+Separate each new feature or improvement into a separate branch in your forked repository.
+
+### Guidelines
+
+To make sure every contribution follows the same code style, please follow these rules:
+
+* Write PSR-2 compliant code
+* Use UNIX line returns
+* Remove trailing white space
+* Use 4 spaces instead of tabs
+
+Also notice that even if Wordpress has its own code styling guidelines, this plugin doesn't follow it in favor of a 
+global standard (PSR-2).
+
+### Donations
+
+If you find this plugin helpful, you can support the work involved buying me a coffee, beer or a Playstation 4 game. 
+You can send donations over PayPal to gustavo.straube@gmail.com.
