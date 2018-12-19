@@ -2,7 +2,7 @@
 Contributors: GustavoStraube, cyberaleks, jffaria
 Tags: multiple, domains, redirect
 Requires at least: 4.0
-Tested up to: 4.9.6
+Tested up to: 5.0.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,6 +68,10 @@ language set in the plugin config. Also notice the language may be `null`.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.8.2 =
+
+* Fix: #32 Image URLs not being re-written properly via Tor.
 
 = 0.8.1 =
 

@@ -8,7 +8,7 @@
  * @author  Clay Allsopp <https://github.com/clayallsopp>
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
- * @version 0.8.1
+ * @version 0.8.2
  * @package multiple-domain
  */
 class MultipleDomain
@@ -20,7 +20,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.8.1';
+    const VERSION = '0.8.2';
 
     /**
      * The current domain.
@@ -348,7 +348,7 @@ class MultipleDomain
     {
         if (array_key_exists($this->domain, $this->domains)) {
             $regex = '/(https?:\/\/)' . preg_quote($this->originalDomain) . '/i';
-            $content = preg_replace($regex, '$1' . $this->domain, $content);
+            $content = preg_replace($regex, '${1}' . $this->domain, $content);
         }
         return $content;
     }
