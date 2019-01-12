@@ -69,6 +69,10 @@ language set in the plugin config. Also notice the language may be `null`.
 
 == Changelog ==
 
+= 0.8.3 =
+
+* Fix: #34 hreflang tag error
+
 = 0.8.2 =
 
 * Fix: #32 Image URLs not being re-written properly via Tor.
