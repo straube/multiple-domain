@@ -224,7 +224,7 @@ class MultipleDomain
      */
     public function settingsHeading()
     {
-        echo '<p>' . __('You can use multiple domains in your WordPress defining them below. '
+        echo '<p id="multiple-domain">' . __('You can use multiple domains in your WordPress defining them below. '
             . 'It\'s possible to limit the access for each domain to a base URL.', 'multiple-domain') . '</p>';
     }
 
@@ -295,7 +295,7 @@ class MultipleDomain
         if ($hook !== 'options-general.php') {
             return;
         }
-        $settingsPath = plugins_url('settings.js', __FILE__);
+        $settingsPath = plugins_url('settings.js', MULTPLE_DOMAIN_PLUGIN);
         wp_enqueue_script('multiple-domain-settings', $settingsPath, [ 'jquery' ], self::VERSION, true);
     }
 
@@ -369,6 +369,21 @@ class MultipleDomain
             $origins[] = 'http://' . $domain;
         }
         return array_values(array_unique($origins));
+    }
+
+    /**
+     * Add the "Settings" link to the plugin row in the plugins page.
+     *
+     * @param  array $links
+     * @return array
+     * @since  1.0.0
+     */
+    public function actionLinks($links)
+    {
+        $url = admin_url('options-general.php#multiple-domain');
+        $link = '<a href="' . $url . '">' . __('Settings', 'multiple-domain') . '</a>';
+        array_unshift($links, $link);
+        return $links;
     }
 
     /**
@@ -480,6 +495,7 @@ class MultipleDomain
         add_filter('upload_dir', [ $this, 'fixUploadDir' ]);
         add_filter('the_content', [ $this, 'fixContentUrls' ], 20);
         add_filter('allowed_http_origins', [ $this, 'addAllowedOrigins' ]);
+        add_filter('plugin_action_links_' . plugin_basename(MULTPLE_DOMAIN_PLUGIN), [ $this, 'actionLinks' ]);
     }
 
     /**

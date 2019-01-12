@@ -18,9 +18,21 @@ require 'MultipleDomain.php';
 
 
 /**
+ * The plugin file name.
+ *
+ * This is used mainly to set hooks and other features that requires the base
+ * plugin file name to work properly.
+ *
+ * @var   string
+ * @since 1.0.0
+ */
+define('MULTPLE_DOMAIN_PLUGIN', __FILE__);
+
+
+/**
  * Register the activation method.
  */
-register_activation_hook(__FILE__, [ 'MultipleDomain', 'activate' ]);
+register_activation_hook(MULTPLE_DOMAIN_PLUGIN, [ 'MultipleDomain', 'activate' ]);
 
 
 /*
