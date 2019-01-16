@@ -513,14 +513,21 @@ class MultipleDomain
      */
     private function hookFilters()
     {
+
+        // Generic domain replacement
         add_filter('content_url', [ $this, 'replaceDomain' ]);
         add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
         add_filter('option_home', [ $this, 'replaceDomain' ]);
         add_filter('plugins_url', [ $this, 'replaceDomain' ]);
         add_filter('wp_get_attachment_url', [ $this, 'replaceDomain' ]);
+        add_filter('get_the_guid', [ $this, 'replaceDomain' ]);
+
+        // Specific domain replacement filters
         add_filter('upload_dir', [ $this, 'fixUploadDir' ]);
         add_filter('the_content', [ $this, 'fixContentUrls' ], 20);
         add_filter('allowed_http_origins', [ $this, 'addAllowedOrigins' ]);
+
+        // Other filters
         add_filter('plugin_action_links_' . plugin_basename(MULTPLE_DOMAIN_PLUGIN), [ $this, 'actionLinks' ]);
     }
 
