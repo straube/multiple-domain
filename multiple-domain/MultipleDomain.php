@@ -334,6 +334,9 @@ class MultipleDomain
      */
     public function replaceDomain($url)
     {
+        if (is_admin()) {
+            return $url;
+        }
         if (array_key_exists($this->domain, $this->domains) && !preg_match('/\/wp-admin\/?/', $url)) {
             $domain = $this->getDomainFromUrl($url);
             $url = str_replace($domain, $this->domain, $url);
