@@ -38,8 +38,7 @@ register_activation_hook(MULTPLE_DOMAIN_PLUGIN, [ 'MultipleDomain', 'activate' ]
 /*
  * Bootstrap...
  */
-$multipleDomain = new MultipleDomain();
-$multipleDomain->setup();
+$multipleDomain = MultipleDomain::instance();
 $domain = $multipleDomain->getDomain();
 $originalDomain = $multipleDomain->getOriginalDomain();
 $domainLang = $multipleDomain->getDomainLang();

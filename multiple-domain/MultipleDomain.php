@@ -23,6 +23,14 @@ class MultipleDomain
     const VERSION = '0.8.3';
 
     /**
+     * The plugin instance.
+     *
+     * @var   \MultipleDomain
+     * @since 0.8.4
+     */
+    private static $instance;
+
+    /**
      * The current domain.
      *
      * This property's value also may include the host port when it's
@@ -65,11 +73,26 @@ class MultipleDomain
     }
 
     /**
+     * Get the single plugin instance.
+     *
+     * @return \MultipleDomain
+     * @since  0.8.4
+     */
+    public static function instance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Create a new instance.
+     *
      * Adds actions and filters required by the plugin.
      *
-     * @return void
      */
-    public function setup()
+    private function __construct()
     {
         $this->initAttributes();
         $this->hookActions();
