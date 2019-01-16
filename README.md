@@ -57,6 +57,12 @@ language set in the plugin config. Also notice the language may be `null`.
 
 ## Changelog
 
+### 0.8.4
+
+* Fix: #36 Wrong host in URLs returned by the JSON API
+* Using singleton pattern for main plugin class.
+* Avoiding URL changes in the admin panel.
+
 ### 0.8.3
 
 * Fix: #34 hreflang tag error
