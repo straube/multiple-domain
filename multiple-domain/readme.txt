@@ -69,6 +69,10 @@ language set in the plugin config. Also notice the language may be `null`.
 
 == Changelog ==
 
+= 0.8.5 =
+
+* Fixed an issue introduced in 0.8.4 that breaks the admin URLs.
+
 = 0.8.4 =
 
 * Fix: #36 Wrong host in URLs returned by the JSON API

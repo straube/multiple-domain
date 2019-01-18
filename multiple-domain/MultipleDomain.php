@@ -8,7 +8,7 @@
  * @author  Clay Allsopp <https://github.com/clayallsopp>
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
- * @version 0.8.4
+ * @version 0.8.5
  * @package multiple-domain
  */
 class MultipleDomain
@@ -20,7 +20,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.8.4';
+    const VERSION = '0.8.5';
 
     /**
      * The plugin instance.
@@ -334,9 +334,10 @@ class MultipleDomain
      */
     public function replaceDomain($url)
     {
-        if (is_admin()) {
+        if (!$this->shouldReplaceDomain()) {
             return $url;
         }
+
         if (array_key_exists($this->domain, $this->domains) && !preg_match('/\/wp-admin\/?/', $url)) {
             $domain = $this->getDomainFromUrl($url);
             $url = str_replace($domain, $this->domain, $url);
@@ -653,5 +654,29 @@ class MultipleDomain
     {
         $lang = str_replace('_', '-', $lang);
         printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
+    }
+
+    /**
+     * Checks whether a domain replacement should be made.
+     *
+     * @return bool
+     * @since  0.8.5
+     */
+    private function shouldReplaceDomain()
+    {
+        if (is_admin()) {
+            return false;
+        }
+
+        /*
+         * `is_admin` returns `false` for `wp-login.php` page. We need to do a
+         * manual check, then.
+         */
+        $path = str_replace([ '\\', '/' ], DIRECTORY_SEPARATOR, ABSPATH);
+        $includedFiles = get_included_files();
+        $isLogin = in_array($path . 'wp-login.php', $includedFiles)
+            || in_array($path . 'wp-register.php', $includedFiles);
+
+        return !$isLogin;
     }
 }
