@@ -284,7 +284,7 @@ class MultipleDomain
             . '<p class="description">'
             . __('A domain may contain the port number. If a base URL restriction is set for a domain, '
             . 'all requests that don\'t start with the base URL will be redirected to the base URL. '
-            . '<b>Example</b>: the domain and base URL are <code>example.com</code> and </code>/base/path</code>, '
+            . '<b>Example</b>: the domain and base URL are <code>example.com</code> and <code>/base/path</code>, '
             . 'when requesting <code>example.com/other/path</code> it will be redirected to '
             . '<code>example.com/base/path</code>. Additionaly, it\'s possible to set a language for each domain, '
             . 'which will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</code> '
@@ -463,6 +463,17 @@ class MultipleDomain
     }
 
     /**
+     * Load text domain when plugin is loaded.
+     *
+     * @return void
+     * @since  1.0.0
+     */
+    public function loaded()
+    {
+        load_plugin_textdomain('multiple-domain', false, dirname(plugin_basename(MULTPLE_DOMAIN_PLUGIN)) . '/languages/');
+    }
+
+    /**
      * Initialize the class attributes.
      *
      * @return void
@@ -516,6 +527,7 @@ class MultipleDomain
         add_action('admin_init', [ $this, 'settings' ]);
         add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
         add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
+        add_action('plugins_loaded', [ $this, 'loaded' ]);
     }
 
     /**
@@ -641,7 +653,7 @@ class MultipleDomain
         $locales = $this->getLocales();
 
         $field = '<select name="multiple-domain-domains[' . $count . '][lang]">'
-            . '<option value="">None</option>'
+            . '<option value="">' . __('None', 'multiple-domain') . '</option>'
             . '<option value="" disabled="disabled">--</option>';
         foreach ($locales as $code => $name) {
             $field .= '<option value="' . $code . '">' . $name . '</option>';

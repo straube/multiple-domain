@@ -1,0 +1,88 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Multiple Domain\n"
+"POT-Creation-Date: 2019-01-18 15:34-0200\n"
+"PO-Revision-Date: 2019-01-18 16:22-0200\n"
+"Last-Translator: \n"
+"Language-Team: Straube <https://straube.co>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: MultipleDomain.php:181
+msgid "Multiple Domain"
+msgstr "Multiple Domain"
+
+#: MultipleDomain.php:185
+msgid "Domains"
+msgstr "Domains"
+
+#: MultipleDomain.php:189
+msgid "Options"
+msgstr "Options"
+
+#: MultipleDomain.php:251
+msgid ""
+"You can use multiple domains in your WordPress defining them below. It's "
+"possible to limit the access for each domain to a base URL."
+msgstr ""
+"You can use multiple domains in your WordPress defining them below. It’s "
+"possible to limit the access for each domain to a base URL."
+
+#: MultipleDomain.php:283
+msgid "Add domain"
+msgstr "Add domain"
+
+#: MultipleDomain.php:285
+msgid ""
+"A domain may contain the port number. If a base URL restriction is set for a "
+"domain, all requests that don't start with the base URL will be redirected "
+"to the base URL. <b>Example</b>: the domain and base URL are <code>example."
+"com</code> and <code>/base/path</code>, when requesting <code>example.com/"
+"other/path</code> it will be redirected to <code>example.com/base/path</"
+"code>. Additionaly, it's possible to set a language for each domain, which "
+"will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</"
+"code> attribute to the document head."
+msgstr ""
+"A domain may contain the port number. If a base URL restriction is set for a "
+"domain, all requests that don’t start with the base URL will be redirected "
+"to the base URL. <b>Example</b>: the domain and base URL are <code>example."
+"com</code> and <code>/base/path</code>, when requesting <code>example.com/"
+"other/path</code> it will be redirected to <code>example.com/base/path</"
+"code>. Additionaly, it’s possible to set a language for each domain, which "
+"will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</"
+"code> attribute to the document head."
+
+#: MultipleDomain.php:305
+msgid "Ignore default ports"
+msgstr "Ignore default ports"
+
+#: MultipleDomain.php:306
+msgid ""
+"When enabled, removes the port from URL when redirecting and it's a default "
+"HTTP (<code>80</code>) or HTTPS (<code>443</code>) port."
+msgstr ""
+"When enabled, removes the port from URL when redirecting and it’s a default "
+"HTTP (<code>80</code>) or HTTPS (<code>443</code>) port."
+
+#: MultipleDomain.php:412
+msgid "Settings"
+msgstr "Settings"
+
+#: MultipleDomain.php:609
+msgid "Domain"
+msgstr "Domain"
+
+#: MultipleDomain.php:612
+msgid "Base path restriction"
+msgstr "Base path restriction"
+
+#: MultipleDomain.php:615
+msgid "Remove"
+msgstr "Remove"
