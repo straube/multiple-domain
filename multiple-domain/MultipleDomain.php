@@ -97,6 +97,7 @@ class MultipleDomain
         $this->initAttributes();
         $this->hookActions();
         $this->hookFilters();
+        $this->hookShortcodes();
     }
 
     /**
@@ -451,6 +452,17 @@ class MultipleDomain
     }
 
     /**
+     * This shortcode simply returns the current domain.
+     *
+     * @return string The current domain.
+     * @since  0.8.5
+     */
+    public function shortcode()
+    {
+        return $this->domain;
+    }
+
+    /**
      * Initialize the class attributes.
      *
      * @return void
@@ -530,6 +542,17 @@ class MultipleDomain
 
         // Other filters
         add_filter('plugin_action_links_' . plugin_basename(MULTPLE_DOMAIN_PLUGIN), [ $this, 'actionLinks' ]);
+    }
+
+    /**
+     * Hook plugin shortcodes to WordPress.
+     *
+     * @return void
+     * @since  0.8.5
+     */
+    private function hookShortcodes()
+    {
+        add_shortcode('multiple_domain', [ $this, 'shortcode' ]);
     }
 
     /**
