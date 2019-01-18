@@ -660,6 +660,7 @@ class MultipleDomain
      * A cached version will be returned if available.
      *
      * @return array The locales list.
+     * @since  0.8.5
      */
     private function getLocales()
     {
@@ -680,6 +681,7 @@ class MultipleDomain
      * their names.
      *
      * @return array The locales list.
+     * @since  0.8.5
      */
     private function getLocalesFromFile()
     {
