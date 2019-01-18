@@ -615,30 +615,61 @@ class MultipleDomain
             $lang = str_replace('-', '_', $lang);
         }
 
-        require_once ABSPATH . 'wp-admin/includes/translation-install.php';
-        $translations = wp_get_available_translations();
-        if (defined('ARRAY_FILTER_USE_KEY')) {
-            $translations = array_filter($translations, [ $this, 'isNotWordpressVariation' ], ARRAY_FILTER_USE_KEY);
-        }
+        $locales = $this->getLocales();
 
-        return wp_dropdown_languages([
-            'name' => 'multiple-domain-domains[' . $count . '][lang]',
-            'selected' => $lang,
-            'echo' => false,
-            'translations' => $translations,
-        ]);
+        $field = '<select name="multiple-domain-domains[' . $count . '][lang]">'
+            . '<option value="">None</option>'
+            . '<option value="" disabled="disabled">--</option>';
+        foreach ($locales as $code => $name) {
+            $field .= '<option value="' . $code . '">' . $name . '</option>';
+        }
+        $field .= '</select>';
+
+        return $field;
     }
 
     /**
-     * Checks whether the given language is not just an WordPress variation
-     * (formal or informal).
+     * Get the list of locales.
      *
-     * @param  string $language The language to check.
-     * @return bool The verification result.
+     * The keys of the returned array are locale codes and the values are
+     * their names.
+     *
+     * A cached version will be returned if available.
+     *
+     * @return array The locales list.
      */
-    private function isNotWordpressVariation($language)
+    private function getLocales()
     {
-        return strpos($language, 'formal') === false;
+        $locales = wp_cache_get('locales', 'multiple-domain');
+
+        if (empty($locales)) {
+            $locales = $this->getLocalesFromFile();
+            wp_cache_set('locales', $locales, 'multiple-domain');
+        }
+
+        return $locales;
+    }
+
+    /**
+     * Get the list of locales from the source file.
+     *
+     * The keys of the returned array are locale codes and the values are
+     * their names.
+     *
+     * @return array The locales list.
+     */
+    private function getLocalesFromFile()
+    {
+        $locales = [];
+
+        $handle = fopen(dirname(MULTPLE_DOMAIN_PLUGIN) . '/locales.csv', 'r');
+        while (($row = fgetcsv($handle)) !== false) {
+            $locales[$row[0]] = $row[1];
+        }
+        fclose($handle);
+        asort($locales);
+
+        return $locales;
     }
 
     /**
