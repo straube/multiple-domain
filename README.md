@@ -55,11 +55,19 @@ Yes. You can use the `MULTPLE_DOMAIN_DOMAIN_LANG` constant to get the language a
 in mind the value in this constant doesn't necessarily reflect the actual user language or locale. This is just the 
 language set in the plugin config. Also notice the language may be `null`.
 
+**Can I show the current domain in the content of posts or pages?**
+
+Yes. There is a shortcode available for that. Just add `[multiple_domain]` to the post/page and it'll be replaced by 
+the current domain when viewing the content. You can write things like "Welcome to [multiple_domain]!", which would be 
+rendered as "Welcome to mydomain.com!".
+
 ## Changelog
 
 ### 0.8.5
 
 * Fixed an issue introduced in 0.8.4 that breaks the admin URLs.
+* Fix #38: Missing locales on language list
+* Add `[multiple_domain]` shortcode to show the current language.
 
 ### 0.8.4
 
