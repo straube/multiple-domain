@@ -63,6 +63,10 @@ rendered as "Welcome to mydomain.com!".
 
 ## Changelog
 
+### 0.8.6
+
+* Fix #39: Rolling back changes introduced in 0.8.4 and 0.8.5 regarding to avoid URL changes in the WP admin.
+
 ### 0.8.5
 
 * Fixed an issue introduced in 0.8.4 that breaks the admin URLs.
