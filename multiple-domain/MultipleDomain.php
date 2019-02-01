@@ -8,7 +8,7 @@
  * @author  Clay Allsopp <https://github.com/clayallsopp>
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
- * @version 0.8.5
+ * @version 0.8.6
  * @package multiple-domain
  */
 class MultipleDomain
