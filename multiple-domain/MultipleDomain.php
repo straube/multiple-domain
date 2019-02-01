@@ -20,7 +20,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.8.5';
+    const VERSION = '0.8.6';
 
     /**
      * The plugin instance.
@@ -652,7 +652,8 @@ class MultipleDomain
             . '<option value="">' . __('None', 'multiple-domain') . '</option>'
             . '<option value="" disabled="disabled">--</option>';
         foreach ($locales as $code => $name) {
-            $field .= '<option value="' . $code . '">' . $name . '</option>';
+            $selected = $lang === $code ? 'selected' : '';
+            $field .= '<option value="' . esc_attr($code) . '" ' . $selected . '>' . $name . '</option>';
         }
         $field .= '</select>';
 
