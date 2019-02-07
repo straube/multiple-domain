@@ -70,6 +70,31 @@ class MultipleDomain
     {
         add_option('multiple-domain-domains', []);
         add_option('multiple-domain-ignore-default-ports', true);
+
+        self::loadFirst();
+    }
+
+    /**
+     * Make this plugin load first to make sure all other plugins use the right
+     * domain replacements.
+     *
+     * @return void
+     * @since  0.8.7
+     */
+    public static function loadFirst()
+    {
+        $path = str_replace(WP_PLUGIN_DIR . '/', '', MULTPLE_DOMAIN_PLUGIN);
+        $plugins = get_option('active_plugins');
+
+        if (empty($plugins)) {
+            return;
+        }
+
+        if (($key = array_search($path, $plugins))) {
+            array_splice($plugins, $key, 1);
+            array_unshift($plugins, $path);
+            update_option('active_plugins', $plugins);
+        }
     }
 
     /**
@@ -524,6 +549,7 @@ class MultipleDomain
         add_action('admin_enqueue_scripts', [ $this, 'scripts' ]);
         add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
         add_action('plugins_loaded', [ $this, 'loaded' ]);
+        add_action('activated_plugin', [ self::class, 'loadFirst' ]);
     }
 
     /**

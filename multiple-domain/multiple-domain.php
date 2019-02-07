@@ -34,7 +34,7 @@ define('MULTPLE_DOMAIN_PLUGIN', __FILE__);
 /**
  * Register the activation method.
  */
-register_activation_hook(MULTPLE_DOMAIN_PLUGIN, [ 'MultipleDomain', 'activate' ]);
+register_activation_hook(MULTPLE_DOMAIN_PLUGIN, [ MultipleDomain::class, 'activate' ]);
 
 
 /*
