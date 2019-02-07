@@ -502,24 +502,62 @@ class MultipleDomain
      */
     private function initAttributes()
     {
-        $ignoreDefaultPort = $this->shouldIgnoreDefaultPorts();
-        $headerHost = !empty($_SERVER['HTTP_X_HOST']) ? $_SERVER['HTTP_X_HOST'] : ( !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' );
-        if (!empty($headerHost)) {
-            $domain = $headerHost;
-            $matches = [];
-            if (preg_match('/^(.*):(\d+)$/', $domain, $matches) && $this->isDefaultPort($matches[2])) {
-                $domain = $matches[1];
-            }
-            $this->domain = $domain;
-        }
+        $this->domain = $this->getDomainFromRequest();
         $this->domains = get_option('multiple-domain-domains');
         if (!is_array($this->domains)) {
             $this->domains = [];
         }
+        $ignoreDefaultPort = $this->shouldIgnoreDefaultPorts();
         $this->originalDomain = $this->getDomainFromUrl(get_option('home'), $ignoreDefaultPort);
         if (!array_key_exists($this->domain, $this->domains)) {
             $this->domain = $this->originalDomain;
         }
+    }
+
+    /**
+     * Get the current domain parsing request headers.
+     *
+     * @return string|null
+     * @since  0.8.7
+     */
+    private function getDomainFromRequest()
+    {
+        $domain = $this->getHostHeader();
+
+        if (empty($domain)) {
+            return null;
+        }
+
+        $matches = [];
+        if (preg_match('/^(.*):(\d+)$/', $domain, $matches) && $this->isDefaultPort($matches[2])) {
+            $domain = $matches[1];
+        }
+        return $domain;
+    }
+
+    /**
+     * Get the `Host` HTTP header value.
+     *
+     * To make it compatible with proxies, this function first tries to get the
+     * value from `X-Host` header and, then, falls back to the regular `Host`
+     * header.
+     *
+     * It returns `null` in case both headers are empty.
+     *
+     * @return string|null
+     * @since  0.8.7
+     */
+    private function getHostHeader()
+    {
+        if (!empty($_SERVER['HTTP_X_HOST'])) {
+            return $_SERVER['HTTP_X_HOST'];
+        }
+
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            return $_SERVER['HTTP_HOST'];
+        }
+
+        return null;
     }
 
     /**
