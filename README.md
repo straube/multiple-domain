@@ -1,18 +1,18 @@
 # Multiple Domain
 
-Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support 
+Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support
 more than one theme or advanced customizations for each domain. It's only intended to enable constant navigation under 
-many domains. For a more complex setup, there is 
+many domains. For a more complex setup, there is
 [WordPress Multisite (MU)](https://codex.wordpress.org/Create_A_Network).
 
-When there is more than one domain set in your host, all links and resources will point to the default domain. This is 
-the default WordPress behavior. With Multiple Domain installed and properly configured, it'll update all link on the 
+When there is more than one domain set in your host, all links and resources will point to the default domain. This is
+the default WordPress behavior. With Multiple Domain installed and properly configured, it'll update all link on the
 fly. This way, the user navigation will be end-to-end under the same domain.
 
-You can also set an optional base URL. If you want only a set of URL's available under a given domain, you can use this 
+You can also set an optional base URL. If you want only a set of URL's available under a given domain, you can use this
 restriction.
 
-Additionally, a language can be set for each domain. The language will be used to add `<link>` tags with `hreflang` 
+Additionally, a language can be set for each domain. The language will be used to add `<link>` tags with `hreflang`
 attribute to document head. This is for SEO purposes.
 
 Check the plugin page at WordPress.org: https://wordpress.org/plugins/multiple-domain/
@@ -21,7 +21,7 @@ Check the plugin page at WordPress.org: https://wordpress.org/plugins/multiple-d
 
 Follow the steps below to install the plugin:
 
-1. Upload the plugin files to the `/wp-content/plugins/multiple-domain` directory, or install the plugin through the 
+1. Upload the plugin files to the `/wp-content/plugins/multiple-domain` directory, or install the plugin through the
     WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Use the Settings -> General screen to configure your additional domains.
@@ -34,34 +34,40 @@ No. You have to set additional domains, DNS, and everything else to use this plu
 
 **Can I have a different theme/content/plugins for each domain?**
 
-Nope. If you want a complex set up like this, you may be interested in WordPress Multisite. It's delivered with every 
+Nope. If you want a complex set up like this, you may be interested in WordPress Multisite. It's delivered with every
 WordPress installation since 3.0, you can find more info here: https://codex.wordpress.org/Create_A_Network.
 
 **There is a way to add domain based logic to my themes?**
 
-Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` and `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constants to get the current 
-and original domains. Just notice that since the value of the first one is checked against plugin settings, it may not 
-reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or user's browser. They also may include the host port 
+Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` and `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constants to get the current
+and original domains. Just notice that since the value of the first one is checked against plugin settings, it may not
+reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or user's browser. They also may include the host port
 when it's different than 80 (default HTTP port) or 443 (default HTTPS port).
 
 **Can I create a custom access restriction logic for each domain?**
 
-Yes. You can use the `multiple_domain_redirect` action to do that. Please check 
+Yes. You can use the `multiple_domain_redirect` action to do that. Please check
 https://github.com/straube/multiple-domain/issues/2 for an example on how to do that.
 
 **Can I get the language associated with the current domain?**
 
-Yes. You can use the `MULTPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep 
-in mind the value in this constant doesn't necessarily reflect the actual user language or locale. This is just the 
+Yes. You can use the `MULTPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep
+in mind the value in this constant doesn't necessarily reflect the actual user language or locale. This is just the
 language set in the plugin config. Also notice the language may be `null`.
 
 **Can I show the current domain in the content of posts or pages?**
 
-Yes. There is a shortcode available for that. Just add `[multiple_domain]` to the post/page and it'll be replaced by 
-the current domain when viewing the content. You can write things like "Welcome to [multiple_domain]!", which would be 
+Yes. There is a shortcode available for that. Just add `[multiple_domain]` to the post/page and it'll be replaced by
+the current domain when viewing the content. You can write things like "Welcome to [multiple_domain]!", which would be
 rendered as "Welcome to mydomain.com!".
 
 ## Changelog
+
+### 0.8.7
+
+* Loading Multiple Domain before other plugins to fix issue with paths.
+* Fix #38: Missing locales on language list (this issue was reopened and now it's fixed)
+* Refactored `initAttributes` method.
 
 ### 0.8.6
 
@@ -120,7 +126,7 @@ rendered as "Welcome to mydomain.com!".
 
 * Fixed resolving host name to boolean.
 * Added Reflang links to head for SEO purpose.
-e.g. 
+e.g.
 ```html
 <link rel="alternate" hreflang="x-default" href="https://example.com/">
 <link rel="alternate" hreflang="de-DE" href="https://de.example.com/">
@@ -148,17 +154,17 @@ This is the first release. It supports setting domains and an optional base URL 
 Contributors: GustavoStraube, cyberaleks, jffaria  
 Tags: multiple, domains, redirect  
 Requires at least: 4.0  
-Tested up to: 5.0.1  
+Tested up to: 5.0.3  
 Stable tag: trunk  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
 ## Contributing
 
-Feel free to open a pull request to address any of the issues reported by the plugin users. In case you have questions 
+Feel free to open a pull request to address any of the issues reported by the plugin users. In case you have questions
 on how to fix or the best approach, start a discussion on the appropriate thread.
 
-If you want to add a new feature, please open an issue explaining the feature and how it would help the users before 
+If you want to add a new feature, please open an issue explaining the feature and how it would help the users before
 start writing your code.
 
 Separate each new feature or improvement into a separate branch in your forked repository.
@@ -172,10 +178,10 @@ To make sure every contribution follows the same code style, please follow these
 * Remove trailing white space
 * Use 4 spaces instead of tabs
 
-Also notice that even if Wordpress has its own code styling guidelines, this plugin doesn't follow it in favor of a 
+Also notice that even if Wordpress has its own code styling guidelines, this plugin doesn't follow it in favor of a
 global standard (PSR-2).
 
 ### Donations
 
-If you find this plugin helpful, you can support the work involved buying me a coffee, beer or a Playstation 4 game. 
+If you find this plugin helpful, you can support the work involved buying me a coffee, beer or a Playstation 4 game.
 You can send donations over PayPal to gustavo.straube@gmail.com.

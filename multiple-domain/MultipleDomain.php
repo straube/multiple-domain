@@ -8,7 +8,7 @@
  * @author  Clay Allsopp <https://github.com/clayallsopp>
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
- * @version 0.8.6
+ * @version 0.8.7
  * @package multiple-domain
  */
 class MultipleDomain
@@ -20,7 +20,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.8.6';
+    const VERSION = '0.8.7';
 
     /**
      * The plugin instance.
