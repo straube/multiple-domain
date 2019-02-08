@@ -421,6 +421,19 @@ class MultipleDomain
     }
 
     /**
+     * Add the current domain to the body class in a sanitized version.
+     *
+     * @param array Initial list of body class names.
+     * @return array New list of body class names.
+     * @since  [tbd]
+     */
+    public function addDomainBodyClass($classes)
+    {
+        $classes[] = "multiple-domain-" . preg_replace("/[^a-z0-9]+/", "-", $this->domain);
+        return $classes;
+    }
+
+    /**
      * Add the "Settings" link to the plugin row in the plugins page.
      *
      * @param  array $links

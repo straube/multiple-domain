@@ -47,6 +47,12 @@ $domainLang = $multipleDomain->getDomainLang();
 
 
 /**
+ * Register body class filter for CSS domain.
+ */
+add_filter('body_class', [ $multipleDomain, 'addDomainBodyClass' ]);
+
+
+/**
  * The current domain.
  *
  * Since this value is checked against plugin settings, it may not reflect the
