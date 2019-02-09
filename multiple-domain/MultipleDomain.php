@@ -625,6 +625,9 @@ class MultipleDomain
         add_filter('the_content', [ $this, 'fixContentUrls' ], 20);
         add_filter('allowed_http_origins', [ $this, 'addAllowedOrigins' ]);
 
+        // Add body class based on domain
+        add_filter('body_class', [ $this, 'addDomainBodyClass' ]);
+
         // Other filters
         add_filter('plugin_action_links_' . plugin_basename(MULTPLE_DOMAIN_PLUGIN), [ $this, 'actionLinks' ]);
     }
