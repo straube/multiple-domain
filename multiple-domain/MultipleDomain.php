@@ -291,7 +291,7 @@ class MultipleDomain
              * Backward compatibility with earlier versions.
              */
             if (is_string($values)) {
-                $base = $value;
+                $base = $values;
                 $lang = null;
             } else {
                 $base = !empty($values['base']) ? $values['base'] : null;
