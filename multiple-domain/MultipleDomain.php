@@ -429,7 +429,7 @@ class MultipleDomain
      */
     public function addDomainBodyClass($classes)
     {
-        $classes[] = "multiple-domain-" . preg_replace("/[^a-z0-9]+/", "-", $this->domain);
+        $classes[] = 'multiple-domain-' . preg_replace('/[^a-z0-9]+/i', '-', $this->domain);
         return $classes;
     }
 
