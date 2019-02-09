@@ -421,6 +421,19 @@ class MultipleDomain
     }
 
     /**
+     * Add the current domain to the body class in a sanitized version.
+     *
+     * @param array Initial list of body class names.
+     * @return array New list of body class names.
+     * @since  [tbd]
+     */
+    public function addDomainBodyClass($classes)
+    {
+        $classes[] = "multiple-domain-" . preg_replace("/[^a-z0-9]+/", "-", $this->domain);
+        return $classes;
+    }
+
+    /**
      * Add the "Settings" link to the plugin row in the plugins page.
      *
      * @param  array $links
@@ -611,6 +624,9 @@ class MultipleDomain
         add_filter('upload_dir', [ $this, 'fixUploadDir' ]);
         add_filter('the_content', [ $this, 'fixContentUrls' ], 20);
         add_filter('allowed_http_origins', [ $this, 'addAllowedOrigins' ]);
+
+        // Add body class based on domain
+        add_filter('body_class', [ $this, 'addDomainBodyClass' ]);
 
         // Other filters
         add_filter('plugin_action_links_' . plugin_basename(MULTPLE_DOMAIN_PLUGIN), [ $this, 'actionLinks' ]);
