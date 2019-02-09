@@ -8,7 +8,8 @@
  * @author  Clay Allsopp <https://github.com/clayallsopp>
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
- * @version 0.8.7
+ * @author  Raphael Stäbler <https://github.com/blazer82>
+ * @version 0.9.0
  * @package multiple-domain
  */
 class MultipleDomain
@@ -20,7 +21,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.8.7';
+    const VERSION = '0.9.0';
 
     /**
      * The plugin instance.
@@ -423,9 +424,9 @@ class MultipleDomain
     /**
      * Add the current domain to the body class in a sanitized version.
      *
-     * @param array Initial list of body class names.
+     * @param  array Initial list of body class names.
      * @return array New list of body class names.
-     * @since  [tbd]
+     * @since  0.9.0
      */
     public function addDomainBodyClass($classes)
     {

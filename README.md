@@ -1,7 +1,7 @@
 # Multiple Domain
 
 Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support
-more than one theme or advanced customizations for each domain. It's only intended to enable constant navigation under 
+more than one theme or advanced customizations for each domain. It's only intended to enable constant navigation under
 many domains. For a more complex setup, there is
 [WordPress Multisite (MU)](https://codex.wordpress.org/Create_A_Network).
 
@@ -62,6 +62,11 @@ the current domain when viewing the content. You can write things like "Welcome 
 rendered as "Welcome to mydomain.com!".
 
 ## Changelog
+
+### 0.9.0
+
+* Fixed bug in backward compatibility logic.
+* Added a class to `<body>` tag containing the domain name (e.g. `multipled-domain-name-tld`) to allow front-end customizations.
 
 ### 0.8.7
 

@@ -75,6 +75,11 @@ rendered as "Welcome to mydomain.com!".
 
 == Changelog ==
 
+= 0.9.0 =
+
+* Fixed bug in backward compatibility logic.
+* Added a class to `<body>` tag containing the domain name (e.g. `multipled-domain-name-tld`) to allow front-end customizations.
+
 = 0.8.7 =
 
 * Loading Multiple Domain before other plugins to fix issue with paths.
