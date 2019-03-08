@@ -160,8 +160,8 @@ class MultipleDomain
      * Notice this function may return `null` when no language is set in the
      * plugin config.
      *
-     * @param  string|null $domain
-     * @return string|null
+     * @param  string|null $domain The domain.
+     * @return string|null The language code.
      * @since  0.8
      */
     public function getDomainLang($domain = null)
@@ -408,8 +408,8 @@ class MultipleDomain
      *
      * This filter is used to avoid CORS issues.
      *
-     * @param  array $origins
-     * @return array
+     * @param  array $origins The default list of allowed origins.
+     * @return array The updated list of allowed origins.
      * @since  0.8
      */
     public function addAllowedOrigins($origins)
@@ -424,7 +424,7 @@ class MultipleDomain
     /**
      * Add the current domain to the body class in a sanitized version.
      *
-     * @param  array Initial list of body class names.
+     * @param  array $classes The initial list of body class names.
      * @return array New list of body class names.
      * @since  0.9.0
      */
@@ -437,8 +437,8 @@ class MultipleDomain
     /**
      * Add the "Settings" link to the plugin row in the plugins page.
      *
-     * @param  array $links
-     * @return array
+     * @param  array $links The default list of links.
+     * @return array The updated list of links.
      * @since  1.0.0
      */
     public function actionLinks($links)
@@ -529,9 +529,9 @@ class MultipleDomain
     }
 
     /**
-     * Get the current domain parsing request headers.
+     * Get the current domain through parsing request headers.
      *
-     * @return string|null
+     * @return string|null The current domain.
      * @since  0.8.7
      */
     private function getDomainFromRequest()
@@ -558,7 +558,7 @@ class MultipleDomain
      *
      * It returns `null` in case both headers are empty.
      *
-     * @return string|null
+     * @return string|null The HTTP Host header value.
      * @since  0.8.7
      */
     private function getHostHeader()
@@ -580,7 +580,7 @@ class MultipleDomain
      * This check is used when redirecting from a domain to another, for
      * example.
      *
-     * @return bool
+     * @return bool A boolean indicating if the default port should be ignored.
      * @since  1.0.0
      */
     private function shouldIgnoreDefaultPorts()
