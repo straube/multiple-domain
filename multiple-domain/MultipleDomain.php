@@ -274,8 +274,7 @@ class MultipleDomain
      */
     public function settingsHeading()
     {
-        echo '<p id="multiple-domain">' . __('You can use multiple domains in your WordPress defining them below. '
-            . 'It\'s possible to limit the access for each domain to a base URL.', 'multiple-domain') . '</p>';
+        echo $this->loadView('heading');
     }
 
     /**
@@ -304,18 +303,7 @@ class MultipleDomain
             $fields = $this->getDomainFields(0);
         }
         $fieldsToAdd = $this->getDomainFields('COUNT');
-        echo $fields
-            . '<p><button type="button" class="button multiple-domain-add">'
-            . __('Add domain', 'multiple-domain') . '</button></p>'
-            . '<p class="description">'
-            . __('A domain may contain the port number. If a base URL restriction is set for a domain, '
-            . 'all requests that don\'t start with the base URL will be redirected to the base URL. '
-            . '<b>Example</b>: the domain and base URL are <code>example.com</code> and <code>/base/path</code>, '
-            . 'when requesting <code>example.com/other/path</code> it will be redirected to '
-            . '<code>example.com/base/path</code>. Additionaly, it\'s possible to set a language for each domain, '
-            . 'which will be used to add <code>&lt;link&gt;</code> tags with a <code>hreflang</code> '
-            . 'attribute to the document head.', 'multiple-domain') . '</p>'
-            . '<script type="text/javascript">var multipleDomainFields = ' . json_encode($fieldsToAdd) . ';</script>';
+        echo $this->loadView('domains', compact('fields', 'fieldsToAdd'));
     }
 
     /**
@@ -326,11 +314,8 @@ class MultipleDomain
      */
     public function settingsFieldsForOptions()
     {
-        $checked = $this->shouldIgnoreDefaultPorts() ? 'checked' : '';
-        echo '<label><input type="checkbox" name="multiple-domain-ignore-default-ports" value="1" ' . $checked . '> '
-            . __('Ignore default ports', 'multiple-domain') . '</label>'
-            . '<p class="description">' . __('When enabled, removes the port from URL when redirecting and '
-            . 'it\'s a default HTTP (<code>80</code>) or HTTPS (<code>443</code>) port.', 'multiple-domain') . '</p>';
+        $ignoreDefaultPorts = $this->shouldIgnoreDefaultPorts();
+        echo $this->loadView('options', compact('ignoreDefaultPorts'));
     }
 
     /**
@@ -692,18 +677,8 @@ class MultipleDomain
      */
     private function getDomainFields($count, $host = null, $base = null, $lang = null)
     {
-        $fields = '<p class="multiple-domain-domain">'
-            . '<input type="text" name="multiple-domain-domains[' . $count . '][host]" value="' . ($host ?: '') . '" '
-            . 'class="regular-text code" placeholder="example.com" title="'
-            . __('Domain', 'multiple-domain') . '"> '
-            . '<input type="text" name="multiple-domain-domains[' . $count . '][base]" value="' . ($base ?: '') . '" '
-            . 'class="regular-text code" placeholder="/base/path" title="'
-            . __('Base path restriction', 'multiple-domain') . '"> '
-            . $this->getLangField($count, $lang) . ' '
-            . '<button type="button" class="button multiple-domain-remove"><span class="required">'
-            . __('Remove', 'multiple-domain') . '</span></button>'
-            . '</p>';
-        return $fields;
+        $langField = $this->getLangField($count, $lang);
+        return $this->loadView('fields', compact('count', 'host', 'base', 'langField'));
     }
 
     /**
@@ -729,16 +704,7 @@ class MultipleDomain
 
         $locales = $this->getLocales();
 
-        $field = '<select name="multiple-domain-domains[' . $count . '][lang]">'
-            . '<option value="">' . __('None', 'multiple-domain') . '</option>'
-            . '<option value="" disabled="disabled">--</option>';
-        foreach ($locales as $code => $name) {
-            $selected = $lang === $code ? 'selected' : '';
-            $field .= '<option value="' . esc_attr($code) . '" ' . $selected . '>' . $name . '</option>';
-        }
-        $field .= '</select>';
-
-        return $field;
+        return $this->loadView('lang', compact('count', 'lang', 'locales'));
     }
 
     /**
@@ -800,5 +766,29 @@ class MultipleDomain
     {
         $lang = str_replace('_', '-', $lang);
         printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
+    }
+
+    /**
+     * Load a view and return its contents.
+     *
+     * @param  string $name The view name.
+     * @param  array|null $data The data to pass to the view. Each key will be
+     *              extracted as a variable into the view file.
+     * @return string The view contents.
+     * @since  0.10.0
+     */
+    private function loadView($name, $data = null)
+    {
+        $path = sprintf('%s/views/%s.php', dirname(MULTPLE_DOMAIN_PLUGIN), $name);
+        if (!is_file($path)) {
+            return false;
+        }
+
+        ob_start();
+        if (is_array($data)) {
+            extract($data);
+        }
+        include $path;
+        return ob_get_clean();
     }
 }
