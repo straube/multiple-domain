@@ -177,6 +177,30 @@ class MultipleDomain
     }
 
     /**
+     * Get the protocol option for the given domain.
+     *
+     * If no domain is passed to the function, it'll return the option for the
+     * current domain.
+     *
+     * The possible returned values are `http`, `https`, or `auto`.
+     *
+     * @param  string|null $domain The domain.
+     * @return string The protocol option.
+     * @since  0.10.0
+     */
+    public function getDomainProtocol($domain = null)
+    {
+        if (empty($domain)) {
+            $domain = $this->domain;
+        }
+        $protocol = null;
+        if (!empty($this->domains[$domain]['protocol'])) {
+            $protocol = $this->domains[$domain]['protocol'];
+        }
+        return in_array($protocol, [ 'http', 'https' ]) ? $protocol : 'auto';
+    }
+
+    /**
      * When the current domains has a base URL restriction, redirects the user
      * if the current request URI doesn't match it.
      *
@@ -246,9 +270,11 @@ class MultipleDomain
                 }
                 $base = !empty($row['base']) ? $row['base'] : null;
                 $lang = !empty($row['lang']) ? $row['lang'] : null;
+                $proto = !empty($row['protocol']) ? $row['protocol'] : 'auto';
                 $domains[$row['host']] = [
                     'base' => $base,
                     'lang' => $lang,
+                    'protocol' => $proto,
                 ];
             }
         }
@@ -287,17 +313,21 @@ class MultipleDomain
         $fields = '';
         $counter = 0;
         foreach ($this->domains as $domain => $values) {
+            $base = null;
+            $lang = null;
+            $protocol = null;
+
             /*
              * Backward compatibility with earlier versions.
              */
             if (is_string($values)) {
                 $base = $values;
-                $lang = null;
             } else {
                 $base = !empty($values['base']) ? $values['base'] : null;
                 $lang = !empty($values['lang']) ? $values['lang'] : null;
+                $protocol = !empty($values['protocol']) ? $values['protocol'] : null;
             }
-            $fields .= $this->getDomainFields($counter++, $domain, $base, $lang);
+            $fields .= $this->getDomainFields($counter++, $domain, $base, $lang, $protocol);
         }
         if (empty($fields)) {
             $fields = $this->getDomainFields(0);
@@ -335,7 +365,7 @@ class MultipleDomain
     }
 
     /**
-     * Replaces the domain.
+     * Replaces the domain in the given URL.
      *
      * The domain in the given URL is replaced by the current domain. If the
      * URL contains `/wp-admin/` it'll be ignored when replacing the domain and
@@ -343,12 +373,13 @@ class MultipleDomain
      *
      * @param  string $url The URL to fix.
      * @return string The domain replaced URL.
+     * @since  0.10.0
      */
-    public function replaceDomain($url)
+    public function fixUrl($url)
     {
-        if (array_key_exists($this->domain, $this->domains) && !preg_match('/\/wp-admin\/?/', $url)) {
+        if (!preg_match('/\/wp-admin\/?/', $url)) {
             $domain = $this->getDomainFromUrl($url);
-            $url = str_replace($domain, $this->domain, $url);
+            $url = $this->replaceDomain($domain, $url);
         }
         return $url;
     }
@@ -364,8 +395,8 @@ class MultipleDomain
      */
     public function fixUploadDir($uploads)
     {
-        $uploads['url'] = $this->replaceDomain($uploads['url']);
-        $uploads['baseurl'] = $this->replaceDomain($uploads['baseurl']);
+        $uploads['url'] = $this->fixUrl($uploads['url']);
+        $uploads['baseurl'] = $this->fixUrl($uploads['baseurl']);
         return $uploads;
     }
 
@@ -381,9 +412,8 @@ class MultipleDomain
      */
     public function fixContentUrls($content)
     {
-        if (array_key_exists($this->domain, $this->domains)) {
-            $regex = '/(https?:\/\/)' . preg_quote($this->originalDomain) . '/i';
-            $content = preg_replace($regex, '${1}' . $this->domain, $content);
+        foreach (array_keys($this->domains) as $domain) {
+            $content = $this->replaceDomain($domain, $content);
         }
         return $content;
     }
@@ -599,12 +629,12 @@ class MultipleDomain
     {
 
         // Generic domain replacement
-        add_filter('content_url', [ $this, 'replaceDomain' ]);
-        add_filter('option_siteurl', [ $this, 'replaceDomain' ]);
-        add_filter('option_home', [ $this, 'replaceDomain' ]);
-        add_filter('plugins_url', [ $this, 'replaceDomain' ]);
-        add_filter('wp_get_attachment_url', [ $this, 'replaceDomain' ]);
-        add_filter('get_the_guid', [ $this, 'replaceDomain' ]);
+        add_filter('content_url', [ $this, 'fixUrl' ]);
+        add_filter('option_siteurl', [ $this, 'fixUrl' ]);
+        add_filter('option_home', [ $this, 'fixUrl' ]);
+        add_filter('plugins_url', [ $this, 'fixUrl' ]);
+        add_filter('wp_get_attachment_url', [ $this, 'fixUrl' ]);
+        add_filter('get_the_guid', [ $this, 'fixUrl' ]);
 
         // Specific domain replacement filters
         add_filter('upload_dir', [ $this, 'fixUploadDir' ]);
@@ -627,6 +657,28 @@ class MultipleDomain
     private function hookShortcodes()
     {
         add_shortcode('multiple_domain', [ $this, 'shortcode' ]);
+    }
+
+    /**
+     * Replaces the domain.
+     *
+     * The domain in the given URL is replaced by the current domain. If the
+     * URL contains `/wp-admin/` it'll be ignored when replacing the domain and
+     * returned as is.
+     *
+     * @param  string $domain The domain to replace.
+     * @param  string $content The content that will have the domain replaced.
+     * @return string The domain replaced content.
+     */
+    private function replaceDomain($domain, $content)
+    {
+        if (array_key_exists($domain, $this->domains)) {
+            $regex = '/(https?):\/\/' . preg_quote($domain) . '/i';
+            $protocol = $this->getDomainProtocol($this->domain);
+            $replace = ($protocol === 'auto' ? '${1}' : $protocol) . '://' . $this->domain;
+            $content = preg_replace($regex, $replace, $content);
+        }
+        return $content;
     }
 
     /**
@@ -672,13 +724,14 @@ class MultipleDomain
      * @param  string $host The host field value.
      * @param  string $base The base URL field value.
      * @param  string $lang The language field value.
+     * @param  string $protocol The protocol handling option.
      * @return string The rendered group of fields.
      * @since  0.3
      */
-    private function getDomainFields($count, $host = null, $base = null, $lang = null)
+    private function getDomainFields($count, $host = null, $base = null, $lang = null, $protocol = null)
     {
         $langField = $this->getLangField($count, $lang);
-        return $this->loadView('fields', compact('count', 'host', 'base', 'langField'));
+        return $this->loadView('fields', compact('count', 'host', 'base', 'protocol', 'langField'));
     }
 
     /**
