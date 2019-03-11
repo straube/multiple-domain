@@ -71,9 +71,20 @@ Yes. There is a shortcode available for that. Just add `[multiple_domain]` to th
 the current domain when viewing the content. You can write things like "Welcome to [multiple_domain]!", which would be
 rendered as "Welcome to mydomain.com!".
 
+= What domains should I add to the plugin setup? =
+
+Any domain you're site is served from must be added to the plugin configuration. Even `www` variations and the original
+domain where your WordPress was installed in must be added. You'll probably see some unexpected output when accessing
+the site from a non-mapped domain.
+
 == Screenshots ==
 
 == Changelog ==
+
+= 0.10.2 =
+
+* Fix minor notice message when loading the non-mapped original domain.
+* Added FAQ about plugin settings and domains.
 
 = 0.10.1 =
 
