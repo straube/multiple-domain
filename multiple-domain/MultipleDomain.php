@@ -531,13 +531,19 @@ class MultipleDomain
      */
     private function initAttributes()
     {
+        $ignoreDefaultPort = $this->shouldIgnoreDefaultPorts();
+        $this->originalDomain = $this->getDomainFromUrl(get_option('home'), $ignoreDefaultPort);
+
         $this->domain = $this->getDomainFromRequest();
-        $this->domains = get_option('multiple-domain-domains');
+        $this->domains = array_merge([
+            // Defaults to always include the original domain.
+            $this->originalDomain => [
+                'protocol' => 'auto',
+            ],
+        ], get_option('multiple-domain-domains'));
         if (!is_array($this->domains)) {
             $this->domains = [];
         }
-        $ignoreDefaultPort = $this->shouldIgnoreDefaultPorts();
-        $this->originalDomain = $this->getDomainFromUrl(get_option('home'), $ignoreDefaultPort);
         if (!array_key_exists($this->domain, $this->domains)) {
             $this->domain = $this->originalDomain;
         }
