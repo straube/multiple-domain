@@ -63,6 +63,10 @@ rendered as "Welcome to mydomain.com!".
 
 ## Changelog
 
+### 0.10.1
+
+* Fix bug introduced in 0.10.0 with setups where the original domain is not present in the plugin settings.
+
 ### 0.10.0
 
 * Fix #31: Don't add SSL when accessing via a Tor domain name

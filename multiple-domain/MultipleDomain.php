@@ -9,7 +9,7 @@
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
  * @author  Raphael Stäbler <https://github.com/blazer82>
- * @version 0.10.0
+ * @version 0.10.1
  * @package multiple-domain
  */
 class MultipleDomain
@@ -21,7 +21,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.10.0';
+    const VERSION = '0.10.1';
 
     /**
      * The plugin instance.
