@@ -538,6 +538,8 @@ class MultipleDomain
         $this->domains = array_merge([
             // Defaults to always include the original domain.
             $this->originalDomain => [
+                'base' => null,
+                'lang' => null,
                 'protocol' => 'auto',
             ],
         ], get_option('multiple-domain-domains'));
