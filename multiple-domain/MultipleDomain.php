@@ -152,6 +152,31 @@ class MultipleDomain
     }
 
     /**
+     * Get the base path associated to the given domain.
+     *
+     * If no domain is passed to the function, it'll return the base path for
+     * the current domain.
+     *
+     * Notice this function may return `null` when no base path is set in the
+     * plugin config.
+     *
+     * @param  string|null $domain The domain.
+     * @return string|null The base path.
+     * @since  0.10.3
+     */
+    public function getDomainBase($domain = null)
+    {
+        if (empty($domain)) {
+            $domain = $this->domain;
+        }
+        $lang = null;
+        if (!empty($this->domains[$domain]['base'])) {
+            $lang = $this->domains[$domain]['base'];
+        }
+        return $lang;
+    }
+
+    /**
      * Get the language associated to the given domain.
      *
      * If no domain is passed to the function, it'll return the language for
