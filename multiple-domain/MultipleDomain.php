@@ -169,11 +169,11 @@ class MultipleDomain
         if (empty($domain)) {
             $domain = $this->domain;
         }
-        $lang = null;
+        $base = null;
         if (!empty($this->domains[$domain]['base'])) {
-            $lang = $this->domains[$domain]['base'];
+            $base = $this->domains[$domain]['base'];
         }
-        return $lang;
+        return $base;
     }
 
     /**
