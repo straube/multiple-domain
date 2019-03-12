@@ -291,7 +291,7 @@ class MultipleDomain
      *
      * @param  mixed $value The value to cast.
      * @return bool A bolean representing the passed value.
-     * @since  1.0.0
+     * @since  0.8.2
      */
     public function castToBool($value)
     {
@@ -345,7 +345,7 @@ class MultipleDomain
      * Renders the fields for plugin options.
      *
      * @return void
-     * @since  1.0.0
+     * @since  0.8.2
      */
     public function settingsFieldsForOptions()
     {
@@ -459,7 +459,7 @@ class MultipleDomain
      *
      * @param  array $links The default list of links.
      * @return array The updated list of links.
-     * @since  1.0.0
+     * @since  0.8.4
      */
     public function actionLinks($links)
     {
@@ -521,7 +521,7 @@ class MultipleDomain
      * Load text domain when plugin is loaded.
      *
      * @return void
-     * @since  1.0.0
+     * @since  0.8.6
      */
     public function loaded()
     {
@@ -609,7 +609,7 @@ class MultipleDomain
      * example.
      *
      * @return bool A boolean indicating if the default port should be ignored.
-     * @since  1.0.0
+     * @since  0.8.2
      */
     private function shouldIgnoreDefaultPorts()
     {
@@ -780,7 +780,7 @@ class MultipleDomain
      *              since it's an array.
      * @param  string $lang The selected language.
      * @return string The rendered field.
-     * @since  1.0.0
+     * @since  0.8.2
      */
     private function getLangField($count, $lang = null)
     {

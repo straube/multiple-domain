@@ -24,7 +24,7 @@ require 'MultipleDomain.php';
  * plugin file name to work properly.
  *
  * @var   string
- * @since 1.0.0
+ * @since 0.8.3
  */
 define('MULTPLE_DOMAIN_PLUGIN', __FILE__);
 
