@@ -273,10 +273,11 @@ class MultipleDomain
                 if (empty($row['host'])) {
                     continue;
                 }
+                $host = preg_replace('/^https?:\/\//i', '', $row['host']);
                 $base = !empty($row['base']) ? $row['base'] : null;
                 $lang = !empty($row['lang']) ? $row['lang'] : null;
                 $proto = !empty($row['protocol']) ? $row['protocol'] : 'auto';
-                $domains[$row['host']] = [
+                $domains[$host] = [
                     'base' => $base,
                     'lang' => $lang,
                     'protocol' => $proto,
