@@ -69,6 +69,11 @@ the site from a non-mapped domain.
 
 ## Changelog
 
+### 0.10.3
+
+* Added public method to retrieve a given (or current) domain base path: `getDomainBase($domain = null)`.
+* Minor code refactoring.
+
 ### 0.10.2
 
 * Fix minor notice message when loading the non-mapped original domain.
