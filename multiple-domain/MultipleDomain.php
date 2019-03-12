@@ -166,14 +166,7 @@ class MultipleDomain
      */
     public function getDomainBase($domain = null)
     {
-        if (empty($domain)) {
-            $domain = $this->domain;
-        }
-        $base = null;
-        if (!empty($this->domains[$domain]['base'])) {
-            $base = $this->domains[$domain]['base'];
-        }
-        return $base;
+        return $this->getDomainAttribute('base', $domain);
     }
 
     /**
@@ -191,14 +184,7 @@ class MultipleDomain
      */
     public function getDomainLang($domain = null)
     {
-        if (empty($domain)) {
-            $domain = $this->domain;
-        }
-        $lang = null;
-        if (!empty($this->domains[$domain]['lang'])) {
-            $lang = $this->domains[$domain]['lang'];
-        }
-        return $lang;
+        return $this->getDomainAttribute('lang', $domain);
     }
 
     /**
@@ -207,7 +193,7 @@ class MultipleDomain
      * If no domain is passed to the function, it'll return the option for the
      * current domain.
      *
-     * The possible returned values are `http`, `https`, or `auto`.
+     * The possible returned values are `http`, `https`, or `auto` (default).
      *
      * @param  string|null $domain The domain.
      * @return string The protocol option.
@@ -215,13 +201,7 @@ class MultipleDomain
      */
     public function getDomainProtocol($domain = null)
     {
-        if (empty($domain)) {
-            $domain = $this->domain;
-        }
-        $protocol = null;
-        if (!empty($this->domains[$domain]['protocol'])) {
-            $protocol = $this->domains[$domain]['protocol'];
-        }
+        $protocol = $this->getDomainAttribute('protocol', $domain);
         return in_array($protocol, [ 'http', 'https' ]) ? $protocol : 'auto';
     }
 
@@ -634,6 +614,32 @@ class MultipleDomain
     private function shouldIgnoreDefaultPorts()
     {
         return (bool) get_option('multiple-domain-ignore-default-ports');
+    }
+
+    /**
+     * Get an attribute by its name for the given domain.
+     *
+     * If no domain is passed to the function, it'll return the attribute value
+     * for the current domain.
+     *
+     * Notice this function may return `null` when the attribute is not set in
+     * the plugin config or doesn't exist.
+     *
+     * @param  string $name The attribute name.
+     * @param  string|null $domain The domain.
+     * @return string The attribute value.
+     * @since  0.10.0
+     */
+    private function getDomainAttribute($name, $domain = null)
+    {
+        if (empty($domain)) {
+            $domain = $this->domain;
+        }
+        $attribute = null;
+        if (!empty($this->domains[$domain][$name])) {
+            $attribute = $this->domains[$domain][$name];
+        }
+        return $attribute;
     }
 
     /**
