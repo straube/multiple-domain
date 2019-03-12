@@ -487,23 +487,24 @@ class MultipleDomain
         global $wp;
 
         $uri = '/' . ltrim(add_query_arg([], $wp->request), '/');
-        $protocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http://' : 'https://';
-        $this->outputHrefLangHeader($protocol . $this->originalDomain . $uri);
+        $currentProtocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http' : 'https';
 
-        foreach ($this->domains as $domain => $values) {
-            if (!is_array($values) || empty($values['lang'])) {
-                continue;
+        foreach (array_keys($this->domains) as $domain) {
+            $protocol = $this->getDomainProtocol($domain);
+            if ($protocol === 'auto') {
+                $protocol = $currentProtocol;
+            }
+            $protocol .= '://';
+
+            $lang = $this->getDomainLang($domain);
+
+            if (!empty($lang)) {
+                $this->outputHrefLangHeader($protocol . $domain . $uri, $lang);
             }
 
-            $url = $domain . $values['base'] . $uri;
-
-            /*
-             * Prepend the current protocol if none is set.
-             */
-            if (!preg_match('/https?:\/\//', $values['base'])) {
-                $url = $protocol . $url;
+            if ($domain === $this->originalDomain) {
+                $this->outputHrefLangHeader($protocol . $domain . $uri);
             }
-            $this->outputHrefLangHeader($url, $values['lang']);
         }
     }
 
