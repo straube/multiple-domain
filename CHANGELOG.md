@@ -10,6 +10,10 @@ Since `0.7.1` this project adheres to
 
 * Add [CHANGELOG.md] file. (#44)
 
+### Changed
+
+* Moved WordPress admin features to a separate class.
+
 ## [0.10.3] - 2019-03-12
 
 ### Added

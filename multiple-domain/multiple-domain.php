@@ -4,7 +4,7 @@
 Plugin Name: Multiple Domain
 Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single WordPress installation and enables custom redirects for each domain.
-Version:     0.10.3
+Version:     0.11.0
 Author:      Gustavo Straube (straube.co)
 Author URI:  http://straube.co
 License:     GPLv2 or later
@@ -14,7 +14,11 @@ Domain Path: /languages
 */
 
 
+/*
+ * Loading classes.
+ */
 require 'MultipleDomain.php';
+require 'MultipleDomainSettings.php';
 
 
 /**
@@ -29,7 +33,7 @@ require 'MultipleDomain.php';
 define('MULTPLE_DOMAIN_PLUGIN', __FILE__);
 
 
-/**
+/*
  * Register the activation method.
  */
 register_activation_hook(MULTPLE_DOMAIN_PLUGIN, [ MultipleDomain::class, 'activate' ]);
