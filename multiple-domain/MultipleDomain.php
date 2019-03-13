@@ -197,6 +197,7 @@ class MultipleDomain
         add_action('wp_head', [ $this, 'addCanonicalTag' ]);
         add_action('plugins_loaded', [ $this, 'loaded' ]);
         add_action('activated_plugin', [ self::class, 'loadFirst' ]);
+        add_action('wpseo_register_extra_replacements', [ $this, 'registerYoastVars' ]);
     }
 
     /**
@@ -553,6 +554,23 @@ class MultipleDomain
     public function loaded()
     {
         load_plugin_textdomain('multiple-domain', false, dirname(plugin_basename(MULTPLE_DOMAIN_PLUGIN)) . '/languages/');
+    }
+
+    /**
+     * Register vars to be used as text replacements in Yoast tags.
+     *
+     * @return void
+     * @since  0.11.0
+     */
+    public function registerYoastVars()
+    {
+        $domain = $this->domain;
+        wpseo_register_var_replacement(
+            '%%multiple_domain%%',
+            function () use ($domain) { return $domain; },
+            'advanced',
+            __('The current domain from Multiple Domain', 'multiple-domain')
+        );
     }
 
     /**

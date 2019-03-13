@@ -9,10 +9,13 @@ Since `0.7.1` this project adheres to
 ### Added
 
 * Add [CHANGELOG.md] file. (#44)
+* Added option to enable canonical tags. (#42)
+* Added `%%multiple_domain%%` advanced variable for Yoast.
 
 ### Changed
 
 * Moved WordPress admin features to a separate class.
+* Renamed hreflang related methods.
 
 ## [0.10.3] - 2019-03-12
 
