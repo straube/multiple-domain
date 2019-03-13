@@ -138,7 +138,7 @@ Since `0.7.1` this project adheres to
 
 * Make the plugin compatible with PHP 5.4 again.
 
-## [0.7] - 2018-05-25
+## [0.7] - 2018-05-24
 
 Notice that version `0.6` wasn't tagged as a release, then `0.7` also includes its changes.
 
@@ -151,13 +151,13 @@ Notice that version `0.6` wasn't tagged as a release, then `0.7` also includes i
 * Added activation hook to fix empty settings bug.
 * Redirect to original domain if SSL/https (#11).
 
-## [0.5] - 2018-05-25
+## [0.5] - 2018-01-04
 
 ### Added
 
 * `http`/`https` for alternate link.
 
-## [0.4] - 2018-05-25
+## [0.4] - 2017-11-28
 
 ### Added
 
@@ -172,7 +172,7 @@ e.g.
 
 * Fixed resolving host name to boolean.
 
-## [0.3] - 2018-05-25
+## [0.3] - 2016-08-21
 
 ### Added
 
@@ -206,24 +206,24 @@ e.g.
 * Option base path for each domain.
 
 
-[Unreleased]: https://github.com/straube/multiple-domain/compare/v0.10.3..HEAD
-[0.10.3]: https://github.com/straube/multiple-domain/compare/v0.10.2..v0.10.3
-[0.10.2]: https://github.com/straube/multiple-domain/compare/v0.10.1..v0.10.2
-[0.10.1]: https://github.com/straube/multiple-domain/compare/v0.10.0..v0.10.1
-[0.10.0]: https://github.com/straube/multiple-domain/compare/v0.9.0..v0.10.0
-[0.9.0]: https://github.com/straube/multiple-domain/compare/v0.8.7..v0.9.0
-[0.8.7]: https://github.com/straube/multiple-domain/compare/v0.8.6..v0.8.7
-[0.8.6]: https://github.com/straube/multiple-domain/compare/v0.8.5..v0.8.6
-[0.8.5]: https://github.com/straube/multiple-domain/compare/v0.8.4..v0.8.5
-[0.8.4]: https://github.com/straube/multiple-domain/compare/v0.8.3..v0.8.4
-[0.8.3]: https://github.com/straube/multiple-domain/compare/v0.8.2..v0.8.3
-[0.8.2]: https://github.com/straube/multiple-domain/compare/v0.8.1..v0.8.2
-[0.8.1]: https://github.com/straube/multiple-domain/compare/v0.8.0..v0.8.1
-[0.8.0]: https://github.com/straube/multiple-domain/compare/v0.7.1..v0.8.0
-[0.7.1]: https://github.com/straube/multiple-domain/compare/v0.7..v0.7.1
-[0.7]: https://github.com/straube/multiple-domain/compare/v0.5..v0.7
-[0.5]: https://github.com/straube/multiple-domain/compare/v0.4..v0.5
-[0.4]: https://github.com/straube/multiple-domain/compare/v0.3..v0.4
-[0.3]: https://github.com/straube/multiple-domain/compare/v0.2..v0.3
-[0.2]: https://github.com/straube/multiple-domain/compare/v0.1..v0.2
+[Unreleased]: https://github.com/straube/multiple-domain/compare/v0.10.3...HEAD
+[0.10.3]: https://github.com/straube/multiple-domain/compare/v0.10.2...v0.10.3
+[0.10.2]: https://github.com/straube/multiple-domain/compare/v0.10.1...v0.10.2
+[0.10.1]: https://github.com/straube/multiple-domain/compare/v0.10.0...v0.10.1
+[0.10.0]: https://github.com/straube/multiple-domain/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/straube/multiple-domain/compare/v0.8.7...v0.9.0
+[0.8.7]: https://github.com/straube/multiple-domain/compare/v0.8.6...v0.8.7
+[0.8.6]: https://github.com/straube/multiple-domain/compare/v0.8.5...v0.8.6
+[0.8.5]: https://github.com/straube/multiple-domain/compare/v0.8.4...v0.8.5
+[0.8.4]: https://github.com/straube/multiple-domain/compare/v0.8.3...v0.8.4
+[0.8.3]: https://github.com/straube/multiple-domain/compare/v0.8.2...v0.8.3
+[0.8.2]: https://github.com/straube/multiple-domain/compare/v0.8.1...v0.8.2
+[0.8.1]: https://github.com/straube/multiple-domain/compare/v0.8.0...v0.8.1
+[0.8.0]: https://github.com/straube/multiple-domain/compare/v0.7.1...v0.8.0
+[0.7.1]: https://github.com/straube/multiple-domain/compare/v0.7...v0.7.1
+[0.7]: https://github.com/straube/multiple-domain/compare/v0.5...v0.7
+[0.5]: https://github.com/straube/multiple-domain/compare/v0.4...v0.5
+[0.4]: https://github.com/straube/multiple-domain/compare/v0.3...v0.4
+[0.3]: https://github.com/straube/multiple-domain/compare/v0.2...v0.3
+[0.2]: https://github.com/straube/multiple-domain/compare/v0.1...v0.2
 [0.1]: https://github.com/straube/multiple-domain/releases/tag/v0.1
