@@ -474,11 +474,11 @@ class MultipleDomain
             $lang = $this->getDomainLang($domain);
 
             if (!empty($lang)) {
-                $this->outputHrefLangHeader($protocol . $domain . $uri, $lang);
+                $this->outputHrefLangTag($protocol . $domain . $uri, $lang);
             }
 
             if ($domain === $this->originalDomain) {
-                $this->outputHrefLangHeader($protocol . $domain . $uri);
+                $this->outputHrefLangTag($protocol . $domain . $uri);
             }
         }
     }
@@ -643,7 +643,7 @@ class MultipleDomain
      * @return void
      * @since  0.5
      */
-    private function outputHrefLangHeader($url, $lang = 'x-default')
+    private function outputHrefLangTag($url, $lang = 'x-default')
     {
         $lang = str_replace('_', '-', $lang);
         printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
