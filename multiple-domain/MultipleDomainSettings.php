@@ -92,6 +92,10 @@ class MultipleDomainSettings
             $this,
             'castToBool',
         ]);
+        register_setting('general', 'multiple-domain-add-canonical', [
+            $this,
+            'castToBool',
+        ]);
     }
 
     /**
@@ -187,7 +191,8 @@ class MultipleDomainSettings
     public function settingsFieldsForOptions()
     {
         $ignoreDefaultPorts = $this->core->shouldIgnoreDefaultPorts();
-        echo $this->loadView('options', compact('ignoreDefaultPorts'));
+        $addCanonical = $this->core->shouldAddCanonical();
+        echo $this->loadView('options', compact('ignoreDefaultPorts', 'addCanonical'));
     }
 
     /**

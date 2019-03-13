@@ -34,17 +34,6 @@ class MultipleDomain
     private static $instance;
 
     /**
-     * Indicate whether the default ports should be ingored.
-     *
-     * This check is used when redirecting from a domain to another, for
-     * example.
-     *
-     * @var    bool
-     * @since  0.11.0
-     */
-    private $ignoreDefaultPorts = false;
-
-    /**
      * The current domain.
      *
      * This property's value also may include the host port when it's
@@ -75,6 +64,25 @@ class MultipleDomain
     private $domains = [];
 
     /**
+     * Indicate whether the default ports should be ingored.
+     *
+     * This check is used when redirecting from a domain to another, for
+     * example.
+     *
+     * @var    bool
+     * @since  0.11.0
+     */
+    private $ignoreDefaultPorts = false;
+
+    /**
+     * Indicate whether canonical link should be added to pages.
+     *
+     * @var    bool
+     * @since  0.11.0
+     */
+    private $addCanonical = false;
+
+    /**
      * Plugin activation tasks.
      *
      * @return void
@@ -84,6 +92,7 @@ class MultipleDomain
     {
         add_option('multiple-domain-domains', []);
         add_option('multiple-domain-ignore-default-ports', true);
+        add_option('multiple-domain-add-canonical', false);
 
         self::loadFirst();
     }
@@ -171,6 +180,8 @@ class MultipleDomain
         if (!array_key_exists($this->domain, $this->domains)) {
             $this->domain = $this->originalDomain;
         }
+
+        $this->addCanonical = (bool) get_option('multiple-domain-add-canonical');
     }
 
     /**
@@ -183,6 +194,7 @@ class MultipleDomain
     {
         add_action('init', [ $this, 'redirect' ]);
         add_action('wp_head', [ $this, 'addHrefLangTags' ]);
+        add_action('wp_head', [ $this, 'addCanonicalTag' ]);
         add_action('plugins_loaded', [ $this, 'loaded' ]);
         add_action('activated_plugin', [ self::class, 'loadFirst' ]);
     }
@@ -229,20 +241,6 @@ class MultipleDomain
     //
 
     /**
-     * Indicate whether the default ports should be ingored.
-     *
-     * This check is used when redirecting from a domain to another, for
-     * example.
-     *
-     * @return bool A boolean indicating if the default port should be ignored.
-     * @since  0.8.2
-     */
-    public function shouldIgnoreDefaultPorts()
-    {
-        return $this->ignoreDefaultPorts;
-    }
-
-    /**
      * Return the current domain.
      *
      * Since this value is checked against plugin settings, it may not reflect
@@ -283,6 +281,31 @@ class MultipleDomain
     public function getDomains()
     {
         return $this->domains;
+    }
+
+    /**
+     * Indicate whether the default ports should be ingored.
+     *
+     * This check is used when redirecting from a domain to another, for
+     * example.
+     *
+     * @return bool A boolean indicating if the default port should be ignored.
+     * @since  0.8.2
+     */
+    public function shouldIgnoreDefaultPorts()
+    {
+        return $this->ignoreDefaultPorts;
+    }
+
+    /**
+     * Indicate whether the canonical tags should be added to page.
+     *
+     * @return bool A boolean indicating if the default port should be ignored.
+     * @since  0.11.0
+     */
+    public function shouldAddCanonical()
+    {
+        return $this->addCanonical;
     }
 
     /**
@@ -484,6 +507,33 @@ class MultipleDomain
     }
 
     /**
+     * Add `canonical` links to head for SEO purpose.
+     *
+     * @return void
+     * @since  0.11.0
+     */
+    public function addCanonicalTag()
+    {
+        /**
+         * The WP class instance.
+         *
+         * @var WP
+         */
+        global $wp;
+
+        $uri = '/' . ltrim(add_query_arg([], $wp->request), '/');
+        $currentProtocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http' : 'https';
+
+        $protocol = $this->getDomainProtocol($this->originalDomain);
+        if ($protocol === 'auto') {
+            $protocol = $currentProtocol;
+        }
+        $protocol .= '://';
+
+        $this->outputCanonicalTag($protocol . $this->originalDomain . $uri);
+    }
+
+    /**
      * This shortcode simply returns the current domain.
      *
      * @return string The current domain.
@@ -646,6 +696,18 @@ class MultipleDomain
     private function outputHrefLangTag($url, $lang = 'x-default')
     {
         $lang = str_replace('_', '-', $lang);
-        printf('<link rel="alternate" href="%s" hreflang="%s"/>', $url, $lang);
+        printf('<link rel="alternate" href="%s" hreflang="%s" />', $url, $lang);
+    }
+
+    /**
+     * Prints a `canonical` link tag.
+     *
+     * @param  string $url The canonical URL to be set into `href` attribute.
+     * @return void
+     * @since  0.11.0
+     */
+    private function outputCanonicalTag($url)
+    {
+        printf('<link rel="canonical" href="%s" />', $url);
     }
 }
