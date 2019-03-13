@@ -17,6 +17,10 @@ Since `0.7.1` this project adheres to
 * Moved WordPress admin features to a separate class.
 * Renamed hreflang related methods.
 
+### Fixed
+
+* Fixed issue with domain replacement.
+
 ## [0.10.3] - 2019-03-12
 
 ### Added
