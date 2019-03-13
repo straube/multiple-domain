@@ -182,7 +182,7 @@ class MultipleDomain
     private function hookActions()
     {
         add_action('init', [ $this, 'redirect' ]);
-        add_action('wp_head', [ $this, 'addHrefLangHeader' ]);
+        add_action('wp_head', [ $this, 'addHrefLangTags' ]);
         add_action('plugins_loaded', [ $this, 'loaded' ]);
         add_action('activated_plugin', [ self::class, 'loadFirst' ]);
     }
@@ -452,7 +452,7 @@ class MultipleDomain
      * @author Alexander Nosov <https://github.com/cyberaleks>
      * @since  0.4
      */
-    public function addHrefLangHeader()
+    public function addHrefLangTags()
     {
         /**
          * The WP class instance.
