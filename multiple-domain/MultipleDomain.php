@@ -494,7 +494,7 @@ class MultipleDomain
         global $wp;
 
         $uri = '/' . ltrim(add_query_arg([], $wp->request), '/');
-        $currentProtocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http' : 'https';
+        $currentProtocol = $this->getCurrentProtocol();
 
         foreach (array_keys($this->domains) as $domain) {
             $protocol = $this->getDomainProtocol($domain);
@@ -531,7 +531,7 @@ class MultipleDomain
         global $wp;
 
         $uri = '/' . ltrim(add_query_arg([], $wp->request), '/');
-        $currentProtocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http' : 'https';
+        $currentProtocol = $this->getCurrentProtocol();
 
         $protocol = $this->getDomainProtocol($this->originalDomain);
         if ($protocol === 'auto') {
@@ -625,6 +625,18 @@ class MultipleDomain
         }
 
         return null;
+    }
+
+    /**
+     * Get the current URL protocol based on server settings.
+     *
+     * The possible returned values are `http` and `https`.
+     *
+     * @return string The protocol.
+     */
+    private function getCurrentProtocol()
+    {
+        return empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off' ? 'http' : 'https';
     }
 
     /**
