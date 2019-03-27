@@ -561,7 +561,8 @@ class MultipleDomain
      */
     public function loaded()
     {
-        load_plugin_textdomain('multiple-domain', false, dirname(plugin_basename(MULTPLE_DOMAIN_PLUGIN)) . '/languages/');
+        $path = dirname(plugin_basename(MULTPLE_DOMAIN_PLUGIN)) . '/languages/';
+        load_plugin_textdomain('multiple-domain', false, $path);
     }
 
     /**
