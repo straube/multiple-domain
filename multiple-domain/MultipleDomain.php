@@ -3,7 +3,7 @@
 /**
  * Mutiple Domain WordPress plugin.
  *
- * Core class.
+ * Core features.
  *
  * @author  Gustavo Straube <https://github.com/straube>
  * @author  Vivek Athalye <https://github.com/vnathalye>
@@ -37,7 +37,8 @@ class MultipleDomain
      * The current domain.
      *
      * This property's value also may include the host port when it's
-     * different than 80 (default HTTP port) or 443 (default HTTPS port).
+     * different than `80` (the default HTTP port) and `443` (the default HTTPS
+     * port).
      *
      * @var   string
      * @since 0.2
@@ -47,6 +48,10 @@ class MultipleDomain
     /**
      * The original domain set in WordPress installation.
      *
+     * This property's value also may include the host port when it's
+     * different than `80` (the default HTTP port) and `443` (the default HTTPS
+     * port).
+     *
      * @var   string
      * @since 0.3
      */
@@ -55,9 +60,12 @@ class MultipleDomain
     /**
      * The list of available domains.
      *
-     * In standard situtations, this array will hold all available domains as
-     * its keys. The optional base URL will be the value for a given domain
-     * (key) when set, otherwise the value will be `NULL`.
+     * This array holds all available domains as its keys. Each item in the
+     * array is also an array containing the following keys:
+     *
+     *  - `base`
+     *  - `lang`
+     *  - `protocol`
      *
      * @var string
      */
@@ -69,21 +77,24 @@ class MultipleDomain
      * This check is used when redirecting from a domain to another, for
      * example.
      *
-     * @var    bool
-     * @since  0.11.0
+     * @var   bool
+     * @since 0.11.0
      */
     private $ignoreDefaultPorts = false;
 
     /**
      * Indicate whether canonical link should be added to pages.
      *
-     * @var    bool
-     * @since  0.11.0
+     * @var   bool
+     * @since 0.11.0
      */
     private $addCanonical = false;
 
     /**
      * Plugin activation tasks.
+     *
+     * The required plugin options are added to WordPress. We also make sure
+     * this plugin is the first loaded here.
      *
      * @return void
      * @since  0.7
@@ -98,14 +109,19 @@ class MultipleDomain
     }
 
     /**
-     * Make this plugin load first to make sure all other plugins use the right
-     * domain replacements.
+     * Update plugin loading order to load this plugin before any other plugin
+     * and make sure all plugins use the right domain replacements.
      *
      * @return void
      * @since  0.8.7
      */
     public static function loadFirst()
     {
+        /*
+         * Relative path to this plugin. The array of active plugins has the
+         * plugin path as its keys. We'll use this path to move Multiple Domain
+         * to the first position in that array.
+         */
         $path = str_replace(WP_PLUGIN_DIR . '/', '', MULTPLE_DOMAIN_PLUGIN);
         $plugins = get_option('active_plugins');
 
@@ -123,7 +139,7 @@ class MultipleDomain
     /**
      * Get the single plugin instance.
      *
-     * @return \MultipleDomain
+     * @return \MultipleDomain The plugin instance.
      * @since  0.8.4
      */
     public static function instance()
@@ -138,7 +154,6 @@ class MultipleDomain
      * Create a new instance.
      *
      * Adds actions and filters required by the plugin.
-     *
      */
     private function __construct()
     {
@@ -245,7 +260,11 @@ class MultipleDomain
      * Return the current domain.
      *
      * Since this value is checked against plugin settings, it may not reflect
-     * the actual current domain in `HTTP_HOST` element from `$_SERVER`.
+     * the actual current domain in `HTTP_HOST` key from global `$_SERVER` var.
+     *
+     * Depending on the plugin settings, the domain also may include the host
+     * port when it's different than `80` (the default HTTP port) and `443` (the
+     * default HTTPS port).
      *
      * @return string|null The domain.
      * @since  0.2
@@ -257,6 +276,14 @@ class MultipleDomain
 
     /**
      * Return original domain set in WordPress installation.
+     *
+     * Notice this method may return an unexpected value when running the site
+     * using the `server` command from wp-cli. That's because wp-cli changes the
+     * value of `site_url` and `home_url` options through a filter.
+     * Unfortunately, it's not possible to change this behaviour.
+     *
+     * The domain also may include the host port when it's different than `80`
+     * (the default HTTP port) and `443` (the default HTTPS port).
      *
      * @return string The domain.
      * @since  0.3
@@ -285,7 +312,7 @@ class MultipleDomain
     }
 
     /**
-     * Indicate whether the default ports should be ingored.
+     * Indicate whether the default ports (`80` or `443`) should be ingored.
      *
      * This check is used when redirecting from a domain to another, for
      * example.
@@ -315,8 +342,8 @@ class MultipleDomain
      * If no domain is passed to the function, it'll return the base path for
      * the current domain.
      *
-     * Notice this function may return `null` when no base path is set in the
-     * plugin config.
+     * Notice this function may return `null` when no base path is set for a
+     * given domain in the plugin config.
      *
      * @param  string|null $domain The domain.
      * @return string|null The base path.
@@ -333,8 +360,8 @@ class MultipleDomain
      * If no domain is passed to the function, it'll return the language for
      * the current domain.
      *
-     * Notice this function may return `null` when no language is set in the
-     * plugin config.
+     * Notice this function may return `null` when no language is set for a
+     * given domain in the plugin config.
      *
      * @param  string|null $domain The domain.
      * @return string|null The language code.
@@ -351,7 +378,9 @@ class MultipleDomain
      * If no domain is passed to the function, it'll return the option for the
      * current domain.
      *
-     * The possible returned values are `http`, `https`, or `auto` (default).
+     * The possible returned values are `http`, `https`, or `auto` (default). If
+     * no protocol is defined for a given domain, the default value will be
+     * returned.
      *
      * @param  string|null $domain The domain.
      * @return string The protocol option.
@@ -364,8 +393,8 @@ class MultipleDomain
     }
 
     /**
-     * When the current domains has a base URL restriction, redirects the user
-     * if the current request URI doesn't match it.
+     * When the current domain has a base URL restriction and the current
+     * request URI doesn't match it, redirects the user.
      *
      * @return void
      */
@@ -395,7 +424,7 @@ class MultipleDomain
     /**
      * Replaces the domain in the given URL.
      *
-     * The domain in the given URL is replaced by the current domain. If the
+     * The domain in the given URL is replaced with the current domain. If the
      * URL contains `/wp-admin/` it'll be ignored when replacing the domain and
      * returned as is.
      *
@@ -413,12 +442,14 @@ class MultipleDomain
     }
 
     /**
-     * Replaces the domain in upload_dir filter used by `wp_upload_dir()`.
+     * Replaces the domain in `upload_dir` filter used by `wp_upload_dir()`.
      *
-     * The domain in the given `url` and `baseurl` is replaced by the current domain.
+     * The domain in the given `url` and `baseurl` is replaced by the current
+     * domain.
      *
-     * @param  array $uploads The array of `url`, `baseurl` and other properties.
-     * @return array The domain replaced URLs in the given array.
+     * @param  array $uploads The array of `url`, `baseurl` and other
+     *         properties.
+     * @return array The domain-replaced values.
      * @since  0.4
      */
     public function fixUploadDir($uploads)
@@ -431,8 +462,8 @@ class MultipleDomain
     /**
      * Replaces the domain in post content.
      *
-     * All occurrences of the original domain will be replaced by the current
-     * domain.
+     * All occurrences of any of the  available domains (i.e. all domains set in
+     * the plugin config) will be replaced with the current domain.
      *
      * @param  string $content The content to fix.
      * @return string The domain replaced content.
@@ -447,9 +478,9 @@ class MultipleDomain
     }
 
     /**
-     * Add all plugin domains to allowed origins.
+     * Add all available domains to allowed origins.
      *
-     * This filter is used to avoid CORS issues.
+     * This filter is used to prevent CORS issues.
      *
      * @param  array $origins The default list of allowed origins.
      * @return array The updated list of allowed origins.
@@ -467,8 +498,12 @@ class MultipleDomain
     /**
      * Add the current domain to the body class in a sanitized version.
      *
+     * If the current domain is `example.com`, the class added to the page body
+     * will be `multiple-domain-example-com`. Notice this filter only has effect
+     * when the `body_class()` function is added to the page's `<body> tag`.
+     *
      * @param  array $classes The initial list of body class names.
-     * @return array New list of body class names.
+     * @return array Updated list of body class names.
      * @since  0.9.0
      */
     public function addDomainBodyClass($classes)
@@ -583,7 +618,7 @@ class MultipleDomain
     }
 
     /**
-     * Get the current domain through parsing request headers.
+     * Get the current domain via request headers parsing.
      *
      * @return string|null The current domain.
      * @since  0.8.7
@@ -612,7 +647,7 @@ class MultipleDomain
      *
      * It returns `null` in case both headers are empty.
      *
-     * @return string|null The HTTP Host header value.
+     * @return string|null The HTTP `Host` header value.
      * @since  0.8.7
      */
     private function getHostHeader()
@@ -669,13 +704,15 @@ class MultipleDomain
     /**
      * Replaces the domain.
      *
-     * The domain in the given URL is replaced by the current domain. If the
-     * URL contains `/wp-admin/` it'll be ignored when replacing the domain and
-     * returned as is.
+     * All occurrences of the given domain will be replaced with the current
+     * domain in the content.
+     *
+     * The protocol may also be replaced following the protocol settings defined
+     * in the plugin config for the current domain.
      *
      * @param  string $domain The domain to replace.
      * @param  string $content The content that will have the domain replaced.
-     * @return string The domain replaced content.
+     * @return string The domain-replaced content.
      */
     private function replaceDomain($domain, $content)
     {
@@ -691,14 +728,15 @@ class MultipleDomain
     /**
      * Parses the given URL to return only its domain.
      *
-     * The server port may be included in the returning value.
+     * The server port may be included in the returning value depending on its
+     * number and plugin settings.
      *
-     * @param string $url The URL to parse.
-     * @param bool $ignoreDefaultPorts If `true` is passed to this value, a
-     *              default HTTP or HTTPS port will be ignored even if it's
-     *              present in the URL.
+     * @param  string $url The URL to parse.
+     * @param  bool $ignoreDefaultPorts If `true` is passed to this value, a
+     *         default HTTP or HTTPS port will be ignored even if it's present
+     *         in the URL.
      * @return string The domain.
-     * @since 0.2
+     * @since  0.2
      */
     private function getDomainFromUrl($url, $ignoreDefaultPorts = false)
     {
@@ -711,7 +749,7 @@ class MultipleDomain
     }
 
     /**
-     * Checks if the given port is a default HTTP (80) or HTTPS (443) port.
+     * Checks if the given port is a default HTTP (`80`) or HTTPS (`443`) port.
      *
      * @param  int $port The port to check.
      * @return bool Indicates if the port is a default one.
@@ -728,7 +766,7 @@ class MultipleDomain
      *
      * @param  string $url The URL to be set into `href` attribute.
      * @param  string $lang The language code to be set into `hreflang`
-     *              attribute. Defaults to `'x-default'`.
+     *         attribute. Defaults to `x-default`.
      * @return void
      * @since  0.5
      */

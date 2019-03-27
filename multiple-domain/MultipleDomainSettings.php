@@ -25,7 +25,7 @@ class MultipleDomainSettings
      *
      * Adds actions and filters required by the plugin for the admin.
      *
-     * @param MultipleDomain $core The core plugin class instance.
+     * @param \MultipleDomain $core The core plugin class instance.
      */
     public function __construct(MultipleDomain $core)
     {
@@ -99,10 +99,10 @@ class MultipleDomainSettings
     }
 
     /**
-     * Sanitizes the domains settings.
+     * Sanitizes the domain settings.
      *
      * It takes the value sent by the user in the settings form and parses it
-     * to store in the correct format.
+     * to store in the internal format used by the plugin.
      *
      * @param  array $value The user defined option value.
      * @return array The sanitized option value.
@@ -234,7 +234,7 @@ class MultipleDomainSettings
      * Returns the fields for a domain setting.
      *
      * @param  int $count The field count. It's used within the field name,
-     *              since it's an array.
+     *         since it's an array.
      * @param  string $host The host field value.
      * @param  string $base The base URL field value.
      * @param  string $lang The language field value.
@@ -251,7 +251,7 @@ class MultipleDomainSettings
      * Gets the language field for domain settings.
      *
      * @param  int $count The field count. It's used within the field name,
-     *              since it's an array.
+     *         since it's an array.
      * @param  string $lang The selected language.
      * @return string The rendered field.
      */
@@ -321,7 +321,7 @@ class MultipleDomainSettings
      *
      * @param  string $name The view name.
      * @param  array|null $data The data to pass to the view. Each key will be
-     *              extracted as a variable into the view file.
+     *         extracted as a variable into the view file.
      * @return string The view contents.
      */
     private function loadView($name, $data = null)
