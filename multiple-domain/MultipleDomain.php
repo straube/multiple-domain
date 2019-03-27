@@ -376,10 +376,18 @@ class MultipleDomain
          */
         do_action('multiple_domain_redirect', $this->domain);
 
-        $base = !empty($this->domains[$this->domain]) ? $this->domains[$this->domain] : '';
-        $base = is_array($base) ? $base['base'] : $base;
-        if (!empty($base) && !empty($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $base) !== 0) {
-            wp_redirect(home_url($base));
+        $base = $this->getDomainBase();
+        $uri = !empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null;
+
+        if (empty($base) || empty($uri)) {
+            return;
+        }
+
+        $base = ltrim($base, '/');
+        $uri = ltrim($uri, '/');
+
+        if (strpos($uri, $base) !== 0) {
+            wp_redirect(home_url('/' . $base));
             exit;
         }
     }
