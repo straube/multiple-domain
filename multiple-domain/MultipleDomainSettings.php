@@ -159,6 +159,7 @@ class MultipleDomainSettings
     {
         $fields = '';
         $counter = 0;
+
         foreach ($this->core->getDomains() as $domain => $values) {
             $base = null;
             $lang = null;
@@ -176,9 +177,14 @@ class MultipleDomainSettings
             }
             $fields .= $this->getDomainFields($counter++, $domain, $base, $lang, $protocol);
         }
-        if (empty($fields)) {
-            $fields = $this->getDomainFields(0);
+
+        /*
+         * Adds a row of empty fields to the settings when no domain is set.
+         */
+        if ($counter === 0) {
+            $fields = $this->getDomainFields($counter);
         }
+
         $fieldsToAdd = $this->getDomainFields('COUNT');
         echo $this->loadView('domains', compact('fields', 'fieldsToAdd'));
     }
