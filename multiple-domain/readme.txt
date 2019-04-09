@@ -2,7 +2,7 @@
 Contributors: GustavoStraube, cyberaleks, jffaria
 Tags: multiple, domains, redirect
 Requires at least: 4.0
-Tested up to: 5.1.0
+Tested up to: 5.1.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -94,6 +94,17 @@ the site from a non-mapped domain.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.11.0 =
+
+* Add CHANGELOG.md file.
+* Added option to enable canonical tags.
+* Added `%%multiple_domain%%` advanced variable for Yoast.
+* Moved WordPress admin features to a separate class.
+* Renamed hreflang related methods.
+* Inline documentation review.
+* Minor refactoring.
+* Fixed issue with domain replacement.
 
 = 0.10.3 =
 
