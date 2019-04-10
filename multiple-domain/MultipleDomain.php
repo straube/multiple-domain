@@ -408,12 +408,12 @@ class MultipleDomain
         $base = $this->getDomainBase();
         $uri = !empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null;
 
-        if (empty($base) || empty($uri)) {
-            return;
-        }
-
         $base = ltrim($base, '/');
         $uri = ltrim($uri, '/');
+
+        if (empty($base)) {
+            return;
+        }
 
         if (strpos($uri, $base) !== 0) {
             wp_redirect(home_url('/' . $base));
