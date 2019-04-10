@@ -95,6 +95,10 @@ the site from a non-mapped domain.
 
 == Changelog ==
 
+= 0.11.1 =
+
+* Fixed URI validation when there is a domain's base restriction.
+
 = 0.11.0 =
 
 * Add CHANGELOG.md file.
