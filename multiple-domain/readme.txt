@@ -91,6 +91,12 @@ Any domain you're site is served from must be added to the plugin configuration.
 domain where your WordPress was installed in must be added. You'll probably see some unexpected output when accessing
 the site from a non-mapped domain.
 
+= Can I disable hreflang tags output even for the original domain? =
+
+Yes. You may notice that even if you don't set a language for any domain, you still get a default `hreflang` tag in
+your page head. To disable this behavior, follow the instructions from
+https://github.com/straube/multiple-domain/issues/51.
+
 == Screenshots ==
 
 == Changelog ==
