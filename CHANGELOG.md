@@ -10,6 +10,10 @@ Since `0.7.1` this project adheres to
 
 * FAQ about removal of `hreflang` tags. (#51)
 
+### Fixed
+
+* Bug in domain replacement when it contains a slash (the regex delimiter).
+
 ## [0.11.1] - 2019-04-10
 
 ### Fixed
