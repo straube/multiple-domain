@@ -1,0 +1,50 @@
+parameters:
+    git_dir: .
+    bin_dir: vendor/bin
+    tasks:
+        phpmd:
+            exclude:
+                - tests/
+            ruleset: ['cleancode', 'codesize', 'controversial', 'naming', 'design', 'unusedcode']
+            triggered_by: ['php']
+        phpcs:
+            standard: PSR2
+            triggered_by: ['php']
+        phpcpd:
+            directory: '.'
+            exclude: ['vendor', 'tests']
+            names_exclude: []
+            fuzzy: false
+            min_lines: 5
+            min_tokens: 70
+            triggered_by: ['php']
+        phplint:
+            exclude: []
+            jobs: ~
+            triggered_by: ['php']
+        phpmnd:
+            directory: .
+            exclude: []
+            exclude_path: ['tests']
+            extensions: []
+            hint: false
+            ignore_numbers: []
+            ignore_strings: []
+            strings: false
+            triggered_by: ['php']
+        phpparser:
+            ignore_patterns: []
+            kind: php7
+            visitors:
+                no_exit_statements: ~
+                forbidden_function_calls:
+                    blacklist:
+                        - 'var_dump'
+                        - 'print_r'
+            triggered_by: [php]
+        phpstan:
+            configuration: ~
+            level: 0
+            force_patterns: []
+            ignore_patterns: ['tests']
+            triggered_by: ['php']
