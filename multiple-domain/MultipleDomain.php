@@ -26,6 +26,20 @@ class MultipleDomain
     const VERSION = '0.11.2';
 
     /**
+     * The number of the default HTTP port.
+     *
+     * @var integer
+     */
+    const PORT_HTTP = 80;
+
+    /**
+     * The number of the default HTTPS port.
+     *
+     * @var integer
+     */
+    const PORT_HTTPS = 443;
+
+    /**
      * The plugin instance.
      *
      * @var   \MultipleDomain
@@ -608,10 +622,9 @@ class MultipleDomain
      */
     public function registerYoastVars()
     {
-        $domain = $this->domain;
         wpseo_register_var_replacement(
             '%%multiple_domain%%',
-            function () use ($domain) { return $domain; },
+            [ $this, 'getDomain' ],
             'advanced',
             __('The current domain from Multiple Domain', 'multiple-domain')
         );
@@ -758,7 +771,7 @@ class MultipleDomain
     private function isDefaultPort($port)
     {
         $port = (int) $port;
-        return $port === 80 || $port === 443;
+        return $port === self::PORT_HTTP || $port === self::PORT_HTTPS;
     }
 
     /**

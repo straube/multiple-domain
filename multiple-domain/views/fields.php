@@ -1,4 +1,11 @@
-<p class="multiple-domain-domain">
+<?php
+
+/**
+ * Making sure the required vars are set.
+ */
+assert(isset($count) && isset($protocol) && isset($host) && isset($base) && isset($langField));
+
+?><p class="multiple-domain-domain">
     <select
         name="multiple-domain-domains[<?php echo $count; ?>][protocol]"
         title="<?php _e('Protocol', 'multiple-domain'); ?>"
