@@ -202,7 +202,7 @@ class MultipleDomain
                 'lang' => null,
                 'protocol' => 'auto',
             ],
-        ], get_option('multiple-domain-domains'));
+        ], (array) get_option('multiple-domain-domains'));
         if (!is_array($this->domains)) {
             $this->domains = [];
         }
