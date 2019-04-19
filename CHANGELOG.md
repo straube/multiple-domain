@@ -8,25 +8,25 @@ Since `0.7.1` this project adheres to
 
 ### Added
 
-* FAQ about removal of `hreflang` tags. (#51)
+* FAQ about removal of `hreflang` tags. ([#51])
 
 ### Fixed
 
 * Bug in domain replacement when it contains a slash (the regex delimiter).
-* Fixed issue in the domain replacement regex. (#55)
+* Fixed issue in the domain replacement regex. ([#55])
 
 ## [0.11.1] - 2019-04-10
 
 ### Fixed
 
-* Improved URI validation when there is a domain's base restriction. (#50)
+* Improved URI validation when there is a domain's base restriction. ([#50])
 
 ## [0.11.0] - 2019-04-09
 
 ### Added
 
-* Add [CHANGELOG.md] file. (#44)
-* Added option to enable canonical tags. (#42)
+* Add [CHANGELOG.md] file. ([#44])
+* Added option to enable canonical tags. ([#42])
 * Added `%%multiple_domain%%` advanced variable for Yoast.
 
 ### Changed
@@ -74,7 +74,7 @@ Since `0.7.1` this project adheres to
 
 ### Fixed
 
-* Don't add SSL when accessing via a Tor domain name. (#31)
+* Don't add SSL when accessing via a Tor domain name. ([#31])
 
 ## [0.9.0] - 2019-02-09
 
@@ -95,13 +95,13 @@ Since `0.7.1` this project adheres to
 
 ### Fixed
 
-* Missing locales on language list (this issue was reopened and now it's fixed) (#38)
+* Missing locales on language list (this issue was reopened and now it's fixed) ([#38])
 
 ## [0.8.6] - 2019-02-01
 
 ### Removed
 
-* Rolling back changes introduced in [0.8.4] and [0.8.5] regarding to avoid URL changes in the WP admin. (#39)
+* Rolling back changes introduced in [0.8.4] and [0.8.5] regarding to avoid URL changes in the WP admin. ([#39])
 
 ## [0.8.5] - 2019-01-18
 
@@ -112,7 +112,7 @@ Since `0.7.1` this project adheres to
 ### Fixed
 
 * Fixed an issue introduced in 0.8.4 that breaks the admin URLs.
-* Missing locales on language list (#38)
+* Missing locales on language list ([#38])
 
 ## [0.8.4] - 2019-01-16
 
@@ -123,31 +123,31 @@ Since `0.7.1` this project adheres to
 
 ### Fixed
 
-* Wrong host in URLs returned by the JSON API. (#36)
+* Wrong host in URLs returned by the JSON API. ([#36])
 
 ## [0.8.3] - 2019-01-12
 
 ### Fixed
 
-* `hreflang` tag error. (#34)
+* `hreflang` tag error. ([#34])
 
 ## [0.8.2] - 2018-12-19
 
 ### Fixed
 
-* Image URLs not being re-written properly via Tor. (#32)
+* Image URLs not being re-written properly via Tor. ([#32])
 
 ## [0.8.1] - 2018-10-09
 
 ### Fixed
 
-* Undefined index when using wp-cli. (#23)
+* Undefined index when using wp-cli. ([#23])
 
 ## [0.8.0] - 2018-09-07
 
 ### Added
 
-* Added `MULTPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. (#20)
+* Added `MULTPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. ([#20])
 
 ### Changed
 
@@ -155,12 +155,12 @@ Since `0.7.1` this project adheres to
 
 ### Fixed
 
-* No 'Access-Control-Allow-Origin' header is present on the requested resource. (#21)
-* Attempt to fix #22. (#22)
+* No 'Access-Control-Allow-Origin' header is present on the requested resource. ([#21])
+* Attempt to fix #22. ([#22])
 
 ### Security
 
-* Remove `filter_input` from plugin. (#14)
+* Remove `filter_input` from plugin. ([#14])
 
 ## [0.7.1] - 2018-05-25
 
@@ -179,7 +179,7 @@ Notice that version `0.6` wasn't tagged as a release, then `0.7` also includes i
 ### Fixed
 
 * Added activation hook to fix empty settings bug.
-* Redirect to original domain if SSL/https (#11).
+* Redirect to original domain if SSL/https ([#11]).
 
 ## [0.5] - 2018-01-04
 
@@ -260,3 +260,21 @@ e.g.
 [0.3]: https://github.com/straube/multiple-domain/compare/v0.2...v0.3
 [0.2]: https://github.com/straube/multiple-domain/compare/v0.1...v0.2
 [0.1]: https://github.com/straube/multiple-domain/releases/tag/v0.1
+
+[#55]: https://github.com/straube/multiple-domain/issues/55
+[#51]: https://github.com/straube/multiple-domain/issues/51
+[#50]: https://github.com/straube/multiple-domain/issues/50
+[#44]: https://github.com/straube/multiple-domain/issues/44
+[#42]: https://github.com/straube/multiple-domain/issues/42
+[#39]: https://github.com/straube/multiple-domain/issues/39
+[#38]: https://github.com/straube/multiple-domain/issues/38
+[#36]: https://github.com/straube/multiple-domain/issues/36
+[#34]: https://github.com/straube/multiple-domain/issues/34
+[#32]: https://github.com/straube/multiple-domain/issues/32
+[#31]: https://github.com/straube/multiple-domain/issues/31
+[#23]: https://github.com/straube/multiple-domain/issues/23
+[#22]: https://github.com/straube/multiple-domain/issues/22
+[#21]: https://github.com/straube/multiple-domain/issues/21
+[#20]: https://github.com/straube/multiple-domain/issues/20
+[#14]: https://github.com/straube/multiple-domain/issues/14
+[#11]: https://github.com/straube/multiple-domain/issues/11
