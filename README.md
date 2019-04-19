@@ -109,6 +109,35 @@ To make sure every contribution follows the same code style, please follow these
 Also notice that even if Wordpress has its own code styling guidelines, this plugin doesn't follow it in favor of a
 global standard (PSR-2).
 
+### Testing
+
+Before running the tests, you may have to prepare the environment. First, install the requirements:
+
+```
+$ composer install
+```
+
+In case you don't have Composer installed, follow the [instructions](https://getcomposer.org/doc/00-intro.md) to
+install it.
+
+Then, install the WordPress test lib and the testing database:
+
+```
+$ bash bin/install-wp-tests.sh multiple_domain_test root '' localhost latest
+```
+
+To run the command above you need PHP, MySQL and SVN installed in your local env. It'll create a MySQL database named
+`multiple_domain_test`.
+
+If you have any trouble or need more details on what are the options, please refer to the official docs on how to
+[initialize the testing environment locally](https://make.wordpress.org/cli/handbook/plugin-unit-tests/#running-tests-locally).
+
+Finally, to run the tests, call the PHPUnit program:
+
+```
+$ vendor/bin/phpunit
+```
+
 ### Donations
 
 If you find this plugin helpful, you can support the work involved buying me a coffee, beer or a Playstation 4 game.

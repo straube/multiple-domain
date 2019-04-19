@@ -1,16 +1,25 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
-class MultipleDomainTest extends TestCase
+class MultipleDomainTest extends WP_UnitTestCase
 {
 
     /**
      * @test
      */
-    public function itIsConstructed()
+    public function itHasTheCurrentDomain()
     {
-        $plugin = new MultipleDomain();
-        $this->assertInstanceOf(MultipleDomain::class, $plugin);
+        $plugin = MultipleDomain::instance();
+        $domain = $plugin->getDomain();
+        $this->assertEquals($domain, 'example.org');
+    }
+
+    /**
+     * @test
+     */
+    public function itHasAllDomains()
+    {
+        $plugin = MultipleDomain::instance();
+        $domains = $plugin->getDomains();
+        $this->assertInternalType('array', $domains);
     }
 }
