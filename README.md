@@ -1,5 +1,7 @@
 # Multiple Domain
 
+[![Build Status](https://travis-ci.com/straube/multiple-domain.svg?branch=master)](https://travis-ci.com/straube/multiple-domain)
+
 Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support
 more than one theme or advanced customizations for each domain. It's only intended to enable constant navigation under
 many domains. For a more complex setup, there is
