@@ -5,10 +5,6 @@
  * @package multiple-domain
  */
 
-define('PROJECT_DIR', dirname(dirname(__FILE__)));
-
-require PROJECT_DIR . '/vendor/autoload.php';
-
 $_testsDir = getenv('WP_TESTS_DIR');
 
 if (!$_testsDir) {
@@ -30,7 +26,7 @@ require_once $_testsDir . '/includes/functions.php';
  */
 function _manually_load_plugin()
 {
-    require PROJECT_DIR . '/multiple-domain/multiple-domain.php';
+    require dirname(dirname(__FILE__)) . '/multiple-domain/multiple-domain.php';
 }
 
 tests_add_filter('muplugins_loaded', '_manually_load_plugin');
