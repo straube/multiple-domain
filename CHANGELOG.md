@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Since `0.7.1` this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.11.2] - 2019-04-19
 
 ### Added
 
@@ -236,7 +236,8 @@ e.g.
 * Option base path for each domain.
 
 
-[Unreleased]: https://github.com/straube/multiple-domain/compare/v0.11.1...HEAD
+[Unreleased]: https://github.com/straube/multiple-domain/compare/v0.11.2...HEAD
+[0.11.2]: https://github.com/straube/multiple-domain/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/straube/multiple-domain/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/straube/multiple-domain/compare/v0.10.3...v0.11.0
 [0.10.3]: https://github.com/straube/multiple-domain/compare/v0.10.2...v0.10.3

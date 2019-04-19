@@ -101,6 +101,12 @@ https://github.com/straube/multiple-domain/issues/51.
 
 == Changelog ==
 
+= 0.11.2 =
+
+* FAQ about removal of `hreflang` tags.
+* Fixed bug in domain replacement when it contains a slash (the regex delimiter).
+* Fixed issue in the domain replacement regex.
+
 = 0.11.1 =
 
 * Fixed URI validation when there is a domain's base restriction.
