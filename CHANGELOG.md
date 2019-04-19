@@ -13,6 +13,7 @@ Since `0.7.1` this project adheres to
 ### Fixed
 
 * Bug in domain replacement when it contains a slash (the regex delimiter).
+* Fixed issue in the domain replacement regex. (#55)
 
 ## [0.11.1] - 2019-04-10
 
