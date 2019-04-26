@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Since `0.7.1` this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+* API to programmatically change the domains list ([#56])
+
 ## [0.11.2] - 2019-04-19
 
 ### Added
@@ -261,6 +267,7 @@ e.g.
 [0.2]: https://github.com/straube/multiple-domain/compare/v0.1...v0.2
 [0.1]: https://github.com/straube/multiple-domain/releases/tag/v0.1
 
+[#56]: https://github.com/straube/multiple-domain/issues/56
 [#55]: https://github.com/straube/multiple-domain/issues/55
 [#51]: https://github.com/straube/multiple-domain/issues/51
 [#50]: https://github.com/straube/multiple-domain/issues/50

@@ -195,17 +195,18 @@ class MultipleDomain
         $this->originalDomain = $this->getDomainFromUrl(get_option('home'), $this->ignoreDefaultPorts);
 
         $this->domain = $this->getDomainFromRequest();
-        $this->domains = array_merge([
-            // Defaults to always include the original domain.
-            $this->originalDomain => [
+
+        $domains = (array) get_option('multiple-domain-domains');
+        $this->resetDomains();
+        foreach ($domains as $domain => $options) {
+            $options = wp_parse_args($options, [
                 'base' => null,
                 'lang' => null,
-                'protocol' => 'auto',
-            ],
-        ], (array) get_option('multiple-domain-domains'));
-        if (!is_array($this->domains)) {
-            $this->domains = [];
+                'protocol' => null,
+            ]);
+            $this->addDomain($domain, $options['base'], $options['lang'], $options['protocol']);
         }
+
         if (!array_key_exists($this->domain, $this->domains)) {
             $this->domain = $this->originalDomain;
         }
@@ -404,6 +405,67 @@ class MultipleDomain
     {
         $protocol = $this->getDomainAttribute('protocol', $domain);
         return in_array($protocol, [ 'http', 'https' ]) ? $protocol : 'auto';
+    }
+
+    /**
+     * Reset the list of domains.
+     *
+     * In case the `$keepOriginal` param is `true`, which is the default, the
+     * list of domains will have only the original domain where WordPress was
+     * installed.
+     *
+     * @param  bool $keepOriginal Indicates whether the original domain should
+     *         be kept.
+     * @return void
+     */
+    public function resetDomains($keepOriginal = true)
+    {
+        if (!$keepOriginal || empty($this->originalDomain)) {
+            $this->domains = [];
+            return;
+        }
+
+        $this->domains = [
+            $this->originalDomain => [
+                'base' => null,
+                'lang' => null,
+                'protocol' => 'auto',
+            ],
+        ];
+    }
+
+    /**
+     * Add a new domain to the list of domains.
+     *
+     * Besides the `$domain` param, all other are optional.
+     *
+     * @param  string $domain The domain.
+     * @param  string $base The base path.
+     * @param  string $lang The language.
+     * @param  string $protocol The protocol option. It can be `http`, `https`
+     *         or `auto`.
+     * @return void
+     */
+    public function addDomain($domain, $base = null, $lang = null, $protocol = 'auto')
+    {
+        $this->domains[$domain] = [
+            'base' => $base,
+            'lang' => $lang,
+            'protocol' => $protocol,
+        ];
+    }
+
+    /**
+     * Store the current list of domains in the WordPress options.
+     *
+     * This is can be used to persist changes made to the list of domains with
+     * `resetDomains` and `addDomain` methods.
+     *
+     * @return void
+     */
+    public function storeDomains()
+    {
+        update_option('multiple-domain-domains', $this->domains);
     }
 
     /**
