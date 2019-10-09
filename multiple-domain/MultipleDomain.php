@@ -634,6 +634,10 @@ class MultipleDomain
      */
     public function addCanonicalTag()
     {
+    	if (!$this->shouldAddCanonical()) {
+    		return;
+	    }
+	    
         /**
          * The WP class instance.
          *
