@@ -75,6 +75,18 @@ Yes. You may notice that even if you don't set a language for any domain, you st
 your page head. To disable this behavior, follow the instructions from
 https://github.com/straube/multiple-domain/issues/51.
 
+**I locked myself out, and what am I doing now?**
+
+Under certain circumstances, in the case of a wrong configuration, you may not be able to log in to the admin area 
+and your page will be redirected. In this case, there are two ways to solve this.
+
+* 1.Delete the plugin directory `wp-content/plugins/multiple-domain`. You should be able to do that from the hosting panel, 
+from an FTP client, or via SSH. The downside of this technique is that it won’t be possible to install the plugin again 
+since the configuration will still be in the database.
+* 2.Reemove the plugin configuration from the database using the following SQL query   
+`DELETE FROM {YOUR-PREFIX}_options WHERE option_name LIKE 'multiple-domain-%'`; (Replace the Prefix from tablename).  
+This can be done from the hosting panel when PHPMyAdmin is available or using a MySQL client.
+
 ## Changelog
 
 Refer to [CHANGELOG.md](CHANGELOG.md) for release notes and changes.
