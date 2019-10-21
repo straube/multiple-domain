@@ -4,11 +4,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Since `0.7.1` this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2019-10-21
 
 ### Added
 
-* API to programmatically change the domains list ([#56])
+* Locked out instructions to readme file. ([#61])
+* API to programmatically change the domains list. ([#56])
+
+### Fixed
+
+* Don't add canonical link if settings are `false`. ([#58])
 
 ## [0.11.2] - 2019-04-19
 
@@ -242,7 +247,8 @@ e.g.
 * Option base path for each domain.
 
 
-[Unreleased]: https://github.com/straube/multiple-domain/compare/v0.11.2...HEAD
+[Unreleased]: https://github.com/straube/multiple-domain/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/straube/multiple-domain/compare/v0.11.2...v1.0.0
 [0.11.2]: https://github.com/straube/multiple-domain/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/straube/multiple-domain/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/straube/multiple-domain/compare/v0.10.3...v0.11.0
@@ -267,6 +273,8 @@ e.g.
 [0.2]: https://github.com/straube/multiple-domain/compare/v0.1...v0.2
 [0.1]: https://github.com/straube/multiple-domain/releases/tag/v0.1
 
+[#61]: https://github.com/straube/multiple-domain/issues/61
+[#58]: https://github.com/straube/multiple-domain/issues/58
 [#56]: https://github.com/straube/multiple-domain/issues/56
 [#55]: https://github.com/straube/multiple-domain/issues/55
 [#51]: https://github.com/straube/multiple-domain/issues/51

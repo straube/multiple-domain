@@ -11,7 +11,7 @@
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
  * @author  Raphael Stäbler <https://github.com/blazer82>
- * @version 0.11.2
+ * @version 1.0.0
  * @package multiple-domain
  */
 class MultipleDomain
@@ -23,7 +23,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '0.11.2';
+    const VERSION = '1.0.0';
 
     /**
      * The number of the default HTTP port.
@@ -417,6 +417,7 @@ class MultipleDomain
      * @param  bool $keepOriginal Indicates whether the original domain should
      *         be kept.
      * @return void
+     * @since  1.0.0
      */
     public function resetDomains($keepOriginal = true)
     {
@@ -445,6 +446,7 @@ class MultipleDomain
      * @param  string $protocol The protocol option. It can be `http`, `https`
      *         or `auto`.
      * @return void
+     * @since  1.0.0
      */
     public function addDomain($domain, $base = null, $lang = null, $protocol = 'auto')
     {
@@ -462,6 +464,7 @@ class MultipleDomain
      * `resetDomains` and `addDomain` methods.
      *
      * @return void
+     * @since  1.0.0
      */
     public function storeDomains()
     {

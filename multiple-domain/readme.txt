@@ -101,6 +101,12 @@ https://github.com/straube/multiple-domain/issues/51.
 
 == Changelog ==
 
+= 1.0.0
+
+* Locked out instructions to readme file.
+* API to programmatically change the domains list.
+* Don't add canonical link if settings are `false`.
+
 = 0.11.2 =
 
 * FAQ about removal of `hreflang` tags.
