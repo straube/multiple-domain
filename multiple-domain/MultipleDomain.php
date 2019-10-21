@@ -11,6 +11,7 @@
  * @author  Alexander Nosov <https://github.com/cyberaleks>
  * @author  João Faria <https://github.com/jffaria>
  * @author  Raphael Stäbler <https://github.com/blazer82>
+ * @author  Tobias Keller <https://github.com/Tobias-Keller>
  * @version 1.0.0
  * @package multiple-domain
  */
