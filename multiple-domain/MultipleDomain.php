@@ -608,7 +608,7 @@ class MultipleDomain
          */
         global $wp;
 
-        $uri = '/' . ltrim(add_query_arg([], $wp->request), '/');
+        $uri = trailingslashit('/' . ltrim(add_query_arg([], $wp->request), '/'));
         $currentProtocol = $this->getCurrentProtocol();
 
         foreach (array_keys($this->domains) as $domain) {
