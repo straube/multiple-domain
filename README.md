@@ -83,7 +83,7 @@ and your page will be redirected. In this case, there are two ways to solve this
 1. Delete the plugin directory `wp-content/plugins/multiple-domain`. You should be able to do that from the hosting
     panel, from an FTP client, or via SSH. The downside of this technique is that it won’t be possible to install the
     plugin again since the configuration will still be in the database.
-2. Remove the plugin configuration from the database using the following SQL query `DELETE FROM {YOUR-PREFIX}_options 
+2. Remove the plugin configuration from the database using the following SQL query `DELETE FROM {YOUR-PREFIX}_options
     WHERE option_name LIKE 'multiple-domain-%'`; (Remember to replace the prefix from your own table name). This can be
     done from the hosting panel when PHPMyAdmin is available or using a MySQL client.
 
@@ -96,7 +96,7 @@ Refer to [CHANGELOG.md](CHANGELOG.md) for release notes and changes.
 Contributors: GustavoStraube, cyberaleks, jffaria  
 Tags: multiple, domains, redirect  
 Requires at least: 4.0  
-Tested up to: 5.1.1  
+Tested up to: 5.2.4  
 Stable tag: trunk  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  

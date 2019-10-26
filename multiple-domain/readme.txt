@@ -2,7 +2,7 @@
 Contributors: GustavoStraube, cyberaleks, jffaria
 Tags: multiple, domains, redirect
 Requires at least: 4.0
-Tested up to: 5.1.1
+Tested up to: 5.2.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -100,6 +100,10 @@ https://github.com/straube/multiple-domain/issues/51.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.1
+
+* Fixed issue with regex used in domain replacement.
 
 = 1.0.0
 
