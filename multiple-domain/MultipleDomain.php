@@ -800,9 +800,9 @@ class MultipleDomain
     private function replaceDomain($domain, $content)
     {
         if (array_key_exists($domain, $this->domains)) {
-            $regex = '/(https?):\/\/' . preg_quote($domain, '/') . '(?![^a-z0-9.\-:])/i';
+            $regex = '/(https?):\/\/' . preg_quote($domain, '/') . '(?![a-z0-9.\-:])/i';
             $protocol = $this->getDomainProtocol($this->domain);
-            $replace = ($protocol === 'auto' ? '${1}' : $protocol) . '://' . $this->domain . '${2}';
+            $replace = ($protocol === 'auto' ? '${1}' : $protocol) . '://' . $this->domain;
             $content = preg_replace($regex, $replace, $content);
         }
         return $content;
