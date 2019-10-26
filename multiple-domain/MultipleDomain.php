@@ -809,6 +809,28 @@ class MultipleDomain
     }
 
     /**
+     * Replaces the domain using less memory.
+     *
+     * This function does the same as `replaceDoamin`, however it uses
+     * `mb_eregi_replace` instead of `preg_replace` for less memory consumption.
+     * On the other hand, it takes more time to execute.
+     *
+     * @param  string $domain The domain to replace.
+     * @param  string $content The content that will have the domain replaced.
+     * @return string The domain-replaced content.
+     */
+    private function replaceDomainUsingLessMemory($domain, $content)
+    {
+        if (array_key_exists($domain, $this->domains)) {
+            $regex = '(https?):\/\/' . preg_quote($domain, '/') . '(?![a-z0-9.\-:])';
+            $protocol = $this->getDomainProtocol($this->domain);
+            $replace = ($protocol === 'auto' ? '\\1' : $protocol) . '://' . $this->domain;
+            $content = preg_replace($regex, $replace, $content);
+        }
+        return $content;
+    }
+
+    /**
      * Parses the given URL to return only its domain.
      *
      * The server port may be included in the returning value depending on its
