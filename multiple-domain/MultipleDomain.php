@@ -137,7 +137,7 @@ class MultipleDomain
          * plugin path as its keys. We'll use this path to move Multiple Domain
          * to the first position in that array.
          */
-        $path = str_replace(WP_PLUGIN_DIR . '/', '', MULTPLE_DOMAIN_PLUGIN);
+        $path = str_replace(WP_PLUGIN_DIR . '/', '', MULTIPLE_DOMAIN_PLUGIN);
         $plugins = get_option('active_plugins');
 
         if (empty($plugins)) {
@@ -680,7 +680,7 @@ class MultipleDomain
      */
     public function loaded()
     {
-        $path = dirname(plugin_basename(MULTPLE_DOMAIN_PLUGIN)) . '/languages/';
+        $path = dirname(plugin_basename(MULTIPLE_DOMAIN_PLUGIN)) . '/languages/';
         load_plugin_textdomain('multiple-domain', false, $path);
     }
 

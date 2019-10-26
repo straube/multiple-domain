@@ -57,7 +57,7 @@ class MultipleDomainSettings
      */
     private function hookFilters()
     {
-        add_filter('plugin_action_links_' . plugin_basename(MULTPLE_DOMAIN_PLUGIN), [ $this, 'actionLinks' ]);
+        add_filter('plugin_action_links_' . plugin_basename(MULTIPLE_DOMAIN_PLUGIN), [ $this, 'actionLinks' ]);
     }
 
     //
@@ -212,7 +212,7 @@ class MultipleDomainSettings
         if ($hook !== 'options-general.php') {
             return;
         }
-        $settingsPath = plugins_url('settings.js', MULTPLE_DOMAIN_PLUGIN);
+        $settingsPath = plugins_url('settings.js', MULTIPLE_DOMAIN_PLUGIN);
         wp_enqueue_script('multiple-domain-settings', $settingsPath, [ 'jquery' ], MultipleDomain::VERSION, true);
     }
 
@@ -306,7 +306,7 @@ class MultipleDomainSettings
     {
         $locales = [];
 
-        $handle = fopen(dirname(MULTPLE_DOMAIN_PLUGIN) . '/locales.csv', 'r');
+        $handle = fopen(dirname(MULTIPLE_DOMAIN_PLUGIN) . '/locales.csv', 'r');
         while (($row = fgetcsv($handle)) !== false) {
             $locales[$row[0]] = $row[1];
         }
@@ -326,7 +326,7 @@ class MultipleDomainSettings
      */
     private function loadView($name, $data = null)
     {
-        $path = sprintf('%s/views/%s.php', dirname(MULTPLE_DOMAIN_PLUGIN), $name);
+        $path = sprintf('%s/views/%s.php', dirname(MULTIPLE_DOMAIN_PLUGIN), $name);
         if (!is_file($path)) {
             return false;
         }

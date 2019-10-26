@@ -41,7 +41,7 @@ WordPress installation since 3.0, you can find more info here: https://codex.wor
 
 **There is a way to add domain based logic to my themes?**
 
-Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` and `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constants to get the current
+Absolutely. You can use the `MULTIPLE_DOMAIN_DOMAIN` and `MULTIPLE_DOMAIN_ORIGINAL_DOMAIN` constants to get the current
 and original domains. Just notice that since the value of the first one is checked against plugin settings, it may not
 reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or user's browser. They also may include the host port
 when it's different than 80 (default HTTP port) or 443 (default HTTPS port).
@@ -53,7 +53,7 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 **Can I get the language associated with the current domain?**
 
-Yes. You can use the `MULTPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep
+Yes. You can use the `MULTIPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep
 in mind the value in this constant doesn't necessarily reflect the actual user language or locale. This is just the
 language set in the plugin config. Also notice the language may be `null`.
 

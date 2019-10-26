@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Since `0.7.1` this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+* Fixed variable names starting with `MULTPLE_`, changed to `MULTIPLE`.
+
 ## [1.0.1] - 2019-10-25
 
 ### Fixed
@@ -164,7 +170,7 @@ Since `0.7.1` this project adheres to
 
 ### Added
 
-* Added `MULTPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. ([#20])
+* Added `MULTIPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. ([#20])
 
 ### Changed
 
@@ -223,7 +229,7 @@ e.g.
 
 ### Added
 
-* `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constant to hold the original WP home domain.
+* `MULTIPLE_DOMAIN_ORIGINAL_DOMAIN` constant to hold the original WP home domain.
 * Allowing developers to create custom URL restriction logic through `multiple_domain_redirect` action.
 
 ### Changed
@@ -238,7 +244,7 @@ e.g.
 
 ### Added
 
-* `MULTPLE_DOMAIN_DOMAIN` constant for theme/plugin customization.
+* `MULTIPLE_DOMAIN_DOMAIN` constant for theme/plugin customization.
 
 ### Changed
 

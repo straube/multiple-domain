@@ -30,13 +30,13 @@ require 'MultipleDomainSettings.php';
  * @var   string
  * @since 0.8.3
  */
-define('MULTPLE_DOMAIN_PLUGIN', __FILE__);
+define('MULTIPLE_DOMAIN_PLUGIN', __FILE__);
 
 
 /*
  * Register the activation method.
  */
-register_activation_hook(MULTPLE_DOMAIN_PLUGIN, [ MultipleDomain::class, 'activate' ]);
+register_activation_hook(MULTIPLE_DOMAIN_PLUGIN, [ MultipleDomain::class, 'activate' ]);
 
 
 /*
@@ -59,7 +59,7 @@ $domainLang = $multipleDomain->getDomainLang();
  * @var   string
  * @since 0.2
  */
-define('MULTPLE_DOMAIN_DOMAIN', $domain);
+define('MULTIPLE_DOMAIN_DOMAIN', $domain);
 
 
 /**
@@ -68,7 +68,7 @@ define('MULTPLE_DOMAIN_DOMAIN', $domain);
  * @var   string
  * @since 0.3
  */
-define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
+define('MULTIPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
 
 
 /**
@@ -82,4 +82,4 @@ define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
  * @var   string
  * @since 0.8
  */
-define('MULTPLE_DOMAIN_DOMAIN_LANG', $domainLang);
+define('MULTIPLE_DOMAIN_DOMAIN_LANG', $domainLang);

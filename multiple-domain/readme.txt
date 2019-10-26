@@ -63,7 +63,7 @@ WordPress installation since 3.0, you can find more info here: [https://codex.wo
 
 = There is a way to add domain based logic to my themes? =
 
-Absolutely. You can use the `MULTPLE_DOMAIN_DOMAIN` constant to get the current domain. Just notice that since this
+Absolutely. You can use the `MULTIPLE_DOMAIN_DOMAIN` constant to get the current domain. Just notice that since this
 value is checked against plugin settings, it may not reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or
 user's browser. It also may include the host port when it's different than 80 (default HTTP port) or 443 (default HTTPS
 port).
@@ -75,7 +75,7 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 
 = Can I get the language associated with the current domain? =
 
-Yes. You can use the `MULTPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep
+Yes. You can use the `MULTIPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep
 in mind the value in this constant doesn't necessarily reflect the actual user language or locale. This is just the
 language set in the plugin config. Also notice the language may be `null`.
 
@@ -195,7 +195,7 @@ https://github.com/straube/multiple-domain/issues/51.
 * Moved `MultipleDomain` class to its own file.
 * Fix: #14 Remove `filter_input` from plugin.
 * Attempt to fix #22.
-* Added `MULTPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. Fixes #20.
+* Added `MULTIPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. Fixes #20.
 * Fix: #21 No 'Access-Control-Allow-Origin' header is present on the requested resource
 
 = 0.7.1 =
@@ -219,13 +219,13 @@ https://github.com/straube/multiple-domain/issues/51.
 
 = 0.3 =
 * Fixed bug when removing the port from current domain.
-* Added `MULTPLE_DOMAIN_ORIGINAL_DOMAIN` constant to hold the original WP home domain.
+* Added `MULTIPLE_DOMAIN_ORIGINAL_DOMAIN` constant to hold the original WP home domain.
 * Allowing developers to create custom URL restriction logic through `multiple_domain_redirect` action.
 * Improved settings interface.
 
 = 0.2 =
 * Improved port verification.
-* Added `MULTPLE_DOMAIN_DOMAIN` constant for theme/plugin customization.
+* Added `MULTIPLE_DOMAIN_DOMAIN` constant for theme/plugin customization.
 * And, last but not least, code refactoring.
 
 = 0.1 =
