@@ -799,6 +799,9 @@ class MultipleDomain
      */
     private function replaceDomain($domain, $content)
     {
+        if (MULTIPLE_DOMAIN_LOW_MEMORY) {
+            return $this->replaceDomainUsingLessMemory($domain, $content);
+        }
         if (array_key_exists($domain, $this->domains)) {
             $regex = '/(https?):\/\/' . preg_quote($domain, '/') . '(?![a-z0-9.\-:])/i';
             $protocol = $this->getDomainProtocol($this->domain);
@@ -825,7 +828,7 @@ class MultipleDomain
             $regex = '(https?):\/\/' . preg_quote($domain, '/') . '(?![a-z0-9.\-:])';
             $protocol = $this->getDomainProtocol($this->domain);
             $replace = ($protocol === 'auto' ? '\\1' : $protocol) . '://' . $this->domain;
-            $content = preg_replace($regex, $replace, $content);
+            $content = mb_eregi_replace($regex, $replace, $content);
         }
         return $content;
     }

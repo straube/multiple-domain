@@ -32,6 +32,20 @@ require 'MultipleDomainSettings.php';
  */
 define('MULTIPLE_DOMAIN_PLUGIN', __FILE__);
 
+if (!defined('MULTIPLE_DOMAIN_LOW_MEMORY')) {
+
+    /**
+     * The low memory option.
+     *
+     * This option may be used where the site is throwing "allowed memory
+     * exhausted" errors. It will reduce the memory usage in domain replacements
+     * with the downside of a higher execution time.
+     *
+     * @var bool
+     */
+    define('MULTIPLE_DOMAIN_LOW_MEMORY', false);
+}
+
 
 /*
  * Register the activation method.

@@ -6,6 +6,10 @@ Since `0.7.1` this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+* Low memory option. ([#45])
+
 ### Fixed
 
 * Fixed variable names starting with `MULTPLE_`, changed to `MULTIPLE`.
@@ -293,6 +297,7 @@ e.g.
 [#55]: https://github.com/straube/multiple-domain/issues/55
 [#51]: https://github.com/straube/multiple-domain/issues/51
 [#50]: https://github.com/straube/multiple-domain/issues/50
+[#45]: https://github.com/straube/multiple-domain/issues/45
 [#44]: https://github.com/straube/multiple-domain/issues/44
 [#42]: https://github.com/straube/multiple-domain/issues/42
 [#39]: https://github.com/straube/multiple-domain/issues/39
