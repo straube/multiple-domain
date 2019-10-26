@@ -12,7 +12,7 @@
  * @author  João Faria <https://github.com/jffaria>
  * @author  Raphael Stäbler <https://github.com/blazer82>
  * @author  Tobias Keller <https://github.com/Tobias-Keller>
- * @version 1.0.0
+ * @version 1.0.1
  * @package multiple-domain
  */
 class MultipleDomain
