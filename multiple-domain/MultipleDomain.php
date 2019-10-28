@@ -12,7 +12,7 @@
  * @author  João Faria <https://github.com/jffaria>
  * @author  Raphael Stäbler <https://github.com/blazer82>
  * @author  Tobias Keller <https://github.com/Tobias-Keller>
- * @version 1.0.1
+ * @version 1.0.2
  * @package multiple-domain
  */
 class MultipleDomain
@@ -24,7 +24,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.2';
 
     /**
      * The number of the default HTTP port.
@@ -821,6 +821,7 @@ class MultipleDomain
      * @param  string $domain The domain to replace.
      * @param  string $content The content that will have the domain replaced.
      * @return string The domain-replaced content.
+     * @since  1.0.2
      */
     private function replaceDomainUsingLessMemory($domain, $content)
     {

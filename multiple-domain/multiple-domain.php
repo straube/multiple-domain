@@ -4,7 +4,7 @@
 Plugin Name: Multiple Domain
 Plugin URI:  https://github.com/straube/multiple-domain
 Description: This plugin allows you to have multiple domains in a single WordPress installation and enables custom redirects for each domain.
-Version:     1.0.1
+Version:     1.0.2
 Author:      Gustavo Straube (straube.co)
 Author URI:  http://straube.co
 License:     GPLv2 or later
@@ -41,7 +41,8 @@ if (!defined('MULTIPLE_DOMAIN_LOW_MEMORY')) {
      * exhausted" errors. It will reduce the memory usage in domain replacements
      * with the downside of a higher execution time.
      *
-     * @var bool
+     * @var   bool
+     * @since 1.0.2
      */
     define('MULTIPLE_DOMAIN_LOW_MEMORY', false);
 }
@@ -71,7 +72,7 @@ $domainLang = $multipleDomain->getDomainLang();
  * (default HTTPS port).
  *
  * @var   string
- * @since 0.2
+ * @since 1.0.2
  */
 define('MULTIPLE_DOMAIN_DOMAIN', $domain);
 
@@ -80,7 +81,7 @@ define('MULTIPLE_DOMAIN_DOMAIN', $domain);
  * The original domain set in WordPress installation.
  *
  * @var   string
- * @since 0.3
+ * @since 1.0.2
  */
 define('MULTIPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
 
@@ -94,7 +95,7 @@ define('MULTIPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
  * language is set in the plugin config.
  *
  * @var   string
- * @since 0.8
+ * @since 1.0.2
  */
 define('MULTIPLE_DOMAIN_DOMAIN_LANG', $domainLang);
 
@@ -104,8 +105,9 @@ define('MULTIPLE_DOMAIN_DOMAIN_LANG', $domainLang);
  *
  * This constant will be removed in a future release.
  *
- * @var string
- * @see MULTIPLE_DOMAIN_DOMAIN
+ * @var   string
+ * @since 0.2
+ * @see   MULTIPLE_DOMAIN_DOMAIN
  * @deprecated
  */
 define('MULTPLE_DOMAIN_DOMAIN', MULTIPLE_DOMAIN_DOMAIN);
@@ -116,8 +118,9 @@ define('MULTPLE_DOMAIN_DOMAIN', MULTIPLE_DOMAIN_DOMAIN);
  *
  * This constant will be removed in a future release.
  *
- * @var string
- * @see MULTIPLE_DOMAIN_ORIGINAL_DOMAIN
+ * @var   string
+ * @since 0.3
+ * @see   MULTIPLE_DOMAIN_ORIGINAL_DOMAIN
  * @deprecated
  */
 define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', MULTIPLE_DOMAIN_ORIGINAL_DOMAIN);
@@ -128,8 +131,9 @@ define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', MULTIPLE_DOMAIN_ORIGINAL_DOMAIN);
  *
  * This constant will be removed in a future release.
  *
- * @var string
- * @see MULTIPLE_DOMAIN_DOMAIN_LANG
+ * @var   string
+ * @since 0.8
+ * @see   MULTIPLE_DOMAIN_DOMAIN_LANG
  * @deprecated
  */
 define('MULTPLE_DOMAIN_DOMAIN_LANG', MULTIPLE_DOMAIN_DOMAIN_LANG);

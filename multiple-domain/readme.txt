@@ -119,11 +119,17 @@ and your page will be redirected. In this case, there are two ways to solve this
 
 == Changelog ==
 
-= 1.0.1
+= 1.0.2 =
+
+* Added low memory option. (Refer to https://github.com/straube/multiple-domain/issues/45 on how to enable it)
+* Constants starting with `MULTPLE_` are now deprecated. They have a matching `MULTIPLE_` prefixed constant.
+* Fixed constants starting with `MULTPLE_`, changed to `MULTIPLE`.
+
+= 1.0.1 =
 
 * Fixed issue with regex used in domain replacement.
 
-= 1.0.0
+= 1.0.0 =
 
 * Locked out instructions to readme file.
 * API to programmatically change the domains list.
