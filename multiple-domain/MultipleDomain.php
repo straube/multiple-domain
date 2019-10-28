@@ -137,7 +137,7 @@ class MultipleDomain
          * plugin path as its keys. We'll use this path to move Multiple Domain
          * to the first position in that array.
          */
-        $path = str_replace(WP_PLUGIN_DIR . '/', '', MULTPLE_DOMAIN_PLUGIN);
+        $path = str_replace(WP_PLUGIN_DIR . '/', '', MULTIPLE_DOMAIN_PLUGIN);
         $plugins = get_option('active_plugins');
 
         if (empty($plugins)) {
@@ -680,7 +680,7 @@ class MultipleDomain
      */
     public function loaded()
     {
-        $path = dirname(plugin_basename(MULTPLE_DOMAIN_PLUGIN)) . '/languages/';
+        $path = dirname(plugin_basename(MULTIPLE_DOMAIN_PLUGIN)) . '/languages/';
         load_plugin_textdomain('multiple-domain', false, $path);
     }
 
@@ -799,11 +799,36 @@ class MultipleDomain
      */
     private function replaceDomain($domain, $content)
     {
+        if (MULTIPLE_DOMAIN_LOW_MEMORY) {
+            return $this->replaceDomainUsingLessMemory($domain, $content);
+        }
         if (array_key_exists($domain, $this->domains)) {
-            $regex = '/(https?):\/\/' . preg_quote($domain, '/') . '(?![^a-z0-9.\-:])/i';
+            $regex = '/(https?):\/\/' . preg_quote($domain, '/') . '(?![a-z0-9.\-:])/i';
             $protocol = $this->getDomainProtocol($this->domain);
-            $replace = ($protocol === 'auto' ? '${1}' : $protocol) . '://' . $this->domain . '${2}';
+            $replace = ($protocol === 'auto' ? '${1}' : $protocol) . '://' . $this->domain;
             $content = preg_replace($regex, $replace, $content);
+        }
+        return $content;
+    }
+
+    /**
+     * Replaces the domain using less memory.
+     *
+     * This function does the same as `replaceDoamin`, however it uses
+     * `mb_eregi_replace` instead of `preg_replace` for less memory consumption.
+     * On the other hand, it takes more time to execute.
+     *
+     * @param  string $domain The domain to replace.
+     * @param  string $content The content that will have the domain replaced.
+     * @return string The domain-replaced content.
+     */
+    private function replaceDomainUsingLessMemory($domain, $content)
+    {
+        if (array_key_exists($domain, $this->domains)) {
+            $regex = '(https?):\/\/' . preg_quote($domain, '/') . '(?![a-z0-9.\-:])';
+            $protocol = $this->getDomainProtocol($this->domain);
+            $replace = ($protocol === 'auto' ? '\\1' : $protocol) . '://' . $this->domain;
+            $content = mb_eregi_replace($regex, $replace, $content);
         }
         return $content;
     }

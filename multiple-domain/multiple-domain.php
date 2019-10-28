@@ -30,13 +30,27 @@ require 'MultipleDomainSettings.php';
  * @var   string
  * @since 0.8.3
  */
-define('MULTPLE_DOMAIN_PLUGIN', __FILE__);
+define('MULTIPLE_DOMAIN_PLUGIN', __FILE__);
+
+if (!defined('MULTIPLE_DOMAIN_LOW_MEMORY')) {
+
+    /**
+     * The low memory option.
+     *
+     * This option may be used where the site is throwing "allowed memory
+     * exhausted" errors. It will reduce the memory usage in domain replacements
+     * with the downside of a higher execution time.
+     *
+     * @var bool
+     */
+    define('MULTIPLE_DOMAIN_LOW_MEMORY', false);
+}
 
 
 /*
  * Register the activation method.
  */
-register_activation_hook(MULTPLE_DOMAIN_PLUGIN, [ MultipleDomain::class, 'activate' ]);
+register_activation_hook(MULTIPLE_DOMAIN_PLUGIN, [ MultipleDomain::class, 'activate' ]);
 
 
 /*
@@ -59,7 +73,7 @@ $domainLang = $multipleDomain->getDomainLang();
  * @var   string
  * @since 0.2
  */
-define('MULTPLE_DOMAIN_DOMAIN', $domain);
+define('MULTIPLE_DOMAIN_DOMAIN', $domain);
 
 
 /**
@@ -68,7 +82,7 @@ define('MULTPLE_DOMAIN_DOMAIN', $domain);
  * @var   string
  * @since 0.3
  */
-define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
+define('MULTIPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
 
 
 /**
@@ -82,4 +96,40 @@ define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
  * @var   string
  * @since 0.8
  */
-define('MULTPLE_DOMAIN_DOMAIN_LANG', $domainLang);
+define('MULTIPLE_DOMAIN_DOMAIN_LANG', $domainLang);
+
+
+/**
+ * Keeping back compability with prior versions.
+ *
+ * This constant will be removed in a future release.
+ *
+ * @var string
+ * @see MULTIPLE_DOMAIN_DOMAIN
+ * @deprecated
+ */
+define('MULTPLE_DOMAIN_DOMAIN', MULTIPLE_DOMAIN_DOMAIN);
+
+
+/**
+ * Keeping back compability with prior versions.
+ *
+ * This constant will be removed in a future release.
+ *
+ * @var string
+ * @see MULTIPLE_DOMAIN_ORIGINAL_DOMAIN
+ * @deprecated
+ */
+define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', MULTIPLE_DOMAIN_ORIGINAL_DOMAIN);
+
+
+/**
+ * Keeping back compability with prior versions.
+ *
+ * This constant will be removed in a future release.
+ *
+ * @var string
+ * @see MULTIPLE_DOMAIN_DOMAIN_LANG
+ * @deprecated
+ */
+define('MULTPLE_DOMAIN_DOMAIN_LANG', MULTIPLE_DOMAIN_DOMAIN_LANG);
