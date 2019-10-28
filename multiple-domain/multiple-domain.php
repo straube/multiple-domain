@@ -97,3 +97,39 @@ define('MULTIPLE_DOMAIN_ORIGINAL_DOMAIN', $originalDomain);
  * @since 0.8
  */
 define('MULTIPLE_DOMAIN_DOMAIN_LANG', $domainLang);
+
+
+/**
+ * Keeping back-compability with older versions.
+ *
+ * This constant will be removed in a future version.
+ *
+ * @var string
+ * @see MULTIPLE_DOMAIN_DOMAIN
+ * @deprecated
+ */
+define('MULTPLE_DOMAIN_DOMAIN', MULTIPLE_DOMAIN_DOMAIN);
+
+
+/**
+ * Keeping back-compability with older versions.
+ *
+ * This constant will be removed in a future version.
+ *
+ * @var string
+ * @see MULTIPLE_DOMAIN_ORIGINAL_DOMAIN
+ * @deprecated
+ */
+define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', MULTIPLE_DOMAIN_ORIGINAL_DOMAIN);
+
+
+/**
+ * Keeping back-compability with older versions.
+ *
+ * This constant will be removed in a future version.
+ *
+ * @var string
+ * @see MULTIPLE_DOMAIN_DOMAIN_LANG
+ * @deprecated
+ */
+define('MULTPLE_DOMAIN_DOMAIN_LANG', MULTIPLE_DOMAIN_DOMAIN_LANG);

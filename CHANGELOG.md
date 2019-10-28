@@ -10,9 +10,13 @@ Since `0.7.1` this project adheres to
 
 * Low memory option. ([#45])
 
+### Deprecated
+
+* Constants starting with `MULTPLE_` are now deprecated. They have a matching `MULTIPLE_` prefixed constant.
+
 ### Fixed
 
-* Fixed variable names starting with `MULTPLE_`, changed to `MULTIPLE`.
+* Fixed constants starting with `MULTPLE_`, changed to `MULTIPLE`.
 
 ## [1.0.1] - 2019-10-25
 
