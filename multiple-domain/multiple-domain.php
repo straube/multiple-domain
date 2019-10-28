@@ -100,9 +100,9 @@ define('MULTIPLE_DOMAIN_DOMAIN_LANG', $domainLang);
 
 
 /**
- * Keeping back-compability with older versions.
+ * Keeping back compability with prior versions.
  *
- * This constant will be removed in a future version.
+ * This constant will be removed in a future release.
  *
  * @var string
  * @see MULTIPLE_DOMAIN_DOMAIN
@@ -112,9 +112,9 @@ define('MULTPLE_DOMAIN_DOMAIN', MULTIPLE_DOMAIN_DOMAIN);
 
 
 /**
- * Keeping back-compability with older versions.
+ * Keeping back compability with prior versions.
  *
- * This constant will be removed in a future version.
+ * This constant will be removed in a future release.
  *
  * @var string
  * @see MULTIPLE_DOMAIN_ORIGINAL_DOMAIN
@@ -124,9 +124,9 @@ define('MULTPLE_DOMAIN_ORIGINAL_DOMAIN', MULTIPLE_DOMAIN_ORIGINAL_DOMAIN);
 
 
 /**
- * Keeping back-compability with older versions.
+ * Keeping back compability with prior versions.
  *
- * This constant will be removed in a future version.
+ * This constant will be removed in a future release.
  *
  * @var string
  * @see MULTIPLE_DOMAIN_DOMAIN_LANG

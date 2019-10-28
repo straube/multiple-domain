@@ -59,14 +59,17 @@ No. You have to set additional domains, DNS, and everything else to use this plu
 = Can I have a different theme/content/plugins for each domain? =
 
 Nope. If you want a complex set up like this, you may be interested in WordPress Multisite. It's delivered with every
-WordPress installation since 3.0, you can find more info here: [https://codex.wordpress.org/Create_A_Network].
+WordPress installation since 3.0, you can find more info here: https://codex.wordpress.org/Create_A_Network.
 
 = There is a way to add domain based logic to my themes? =
 
-Absolutely. You can use the `MULTIPLE_DOMAIN_DOMAIN` constant to get the current domain. Just notice that since this
-value is checked against plugin settings, it may not reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or
-user's browser. It also may include the host port when it's different than 80 (default HTTP port) or 443 (default HTTPS
-port).
+Absolutely. You can use the `MULTIPLE_DOMAIN_DOMAIN` and `MULTIPLE_DOMAIN_ORIGINAL_DOMAIN` constants to get the current
+and original domains. Just notice that since the value of the first one is checked against plugin settings, it may not
+reflect the actual domain in `HTTP_HOST` element from `$_SERVER` or user's browser. They also may include the host port
+when it's different than 80 (default HTTP port) or 443 (default HTTPS port).
+
+**Notice**: in prior versions these constants were wrongly prefixed with `MULTPLE_`, missing the "I". The old constants
+are now deprecated. They still available for backcompat but will be removed in future releases.
 
 = Can I create a custom access restriction logic for each domain? =
 
@@ -78,6 +81,9 @@ https://github.com/straube/multiple-domain/issues/2 for an example on how to do 
 Yes. You can use the `MULTIPLE_DOMAIN_DOMAIN_LANG` constant to get the language associated with the current domain. Keep
 in mind the value in this constant doesn't necessarily reflect the actual user language or locale. This is just the
 language set in the plugin config. Also notice the language may be `null`.
+
+**Notice**: in prior versions these constants were wrongly prefixed with `MULTPLE_`, missing the "I". The old constants
+are now deprecated. They still available for backcompat but will be removed in future releases.
 
 = Can I show the current domain in the content of posts or pages? =
 
@@ -91,11 +97,23 @@ Any domain you're site is served from must be added to the plugin configuration.
 domain where your WordPress was installed in must be added. You'll probably see some unexpected output when accessing
 the site from a non-mapped domain.
 
-= Can I disable hreflang tags output even for the original domain? =
+= Can I disable `hreflang` tags output even for the original domain? =
 
 Yes. You may notice that even if you don't set a language for any domain, you still get a default `hreflang` tag in
 your page head. To disable this behavior, follow the instructions from
 https://github.com/straube/multiple-domain/issues/51.
+
+= I locked myself out, and what am I doing now? =
+
+Under certain circumstances, in the case of a wrong configuration, you may not be able to log in to the admin area
+and your page will be redirected. In this case, there are two ways to solve this.
+
+1. Delete the plugin directory `wp-content/plugins/multiple-domain`. You should be able to do that from the hosting
+    panel, from an FTP client, or via SSH. The downside of this technique is that it won’t be possible to install the
+    plugin again since the configuration will still be in the database.
+2. Remove the plugin configuration from the database using the following SQL query `DELETE FROM {YOUR-PREFIX}_options
+    WHERE option_name LIKE 'multiple-domain-%'`; (Remember to replace the prefix from your own table name). This can be
+    done from the hosting panel when PHPMyAdmin is available or using a MySQL client.
 
 == Screenshots ==
 
