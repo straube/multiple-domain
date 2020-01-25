@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Since `0.7.1` this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2020-01-25
+
+### Security
+
+* Fixed XSS vulnerability in canonical/alternate tags. ([#71])
+
 ## [1.0.2] - 2019-10-28
 
 ### Added
@@ -267,7 +273,8 @@ e.g.
 * Option base path for each domain.
 
 
-[Unreleased]: https://github.com/straube/multiple-domain/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/straube/multiple-domain/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/straube/multiple-domain/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/straube/multiple-domain/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/straube/multiple-domain/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/straube/multiple-domain/compare/v0.11.2...v1.0.0
@@ -295,6 +302,7 @@ e.g.
 [0.2]: https://github.com/straube/multiple-domain/compare/v0.1...v0.2
 [0.1]: https://github.com/straube/multiple-domain/releases/tag/v0.1
 
+[#71]: https://github.com/straube/multiple-domain/issues/71
 [#61]: https://github.com/straube/multiple-domain/issues/61
 [#59]: https://github.com/straube/multiple-domain/issues/59
 [#58]: https://github.com/straube/multiple-domain/issues/58
