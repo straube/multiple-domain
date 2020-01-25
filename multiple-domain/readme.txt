@@ -119,7 +119,11 @@ and your page will be redirected. In this case, there are two ways to solve this
 
 == Changelog ==
 
-= 1.0.3
+= 1.0.4 =
+
+* Fixed assertions in admin views.
+
+= 1.0.3 =
 
 * Fixed XSS vulnerability in canonical/alternate tags. ([#71])
 
