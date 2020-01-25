@@ -333,9 +333,23 @@ class MultipleDomainSettings
 
         ob_start();
         if (is_array($data)) {
-            extract($data);
+            extract($this->replaceNull($data));
         }
         include $path;
         return ob_get_clean();
+    }
+
+    /**
+     * Replace all `null` values in an array.
+     *
+     * @param  array $array The original array.
+     * @param  mixed $replacement The value to replace the `null` occurrences.
+     * @return array The array with replaced values.
+     */
+    private function replaceNull($array, $replacement = '')
+    {
+        return array_map(function ($value) use ($replacement) {
+            return $value === null ? $replacement : $value;
+        }, $array);
     }
 }
