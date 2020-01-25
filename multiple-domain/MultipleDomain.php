@@ -881,6 +881,7 @@ class MultipleDomain
      */
     private function outputHrefLangTag($url, $lang = 'x-default')
     {
+        $url = htmlentities($url);
         $lang = str_replace('_', '-', $lang);
         printf('<link rel="alternate" href="%s" hreflang="%s" />', $url, $lang);
     }
@@ -894,6 +895,7 @@ class MultipleDomain
      */
     private function outputCanonicalTag($url)
     {
+        $url = htmlentities($url);
         printf('<link rel="canonical" href="%s" />', $url);
     }
 }
