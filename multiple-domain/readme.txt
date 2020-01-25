@@ -119,6 +119,10 @@ and your page will be redirected. In this case, there are two ways to solve this
 
 == Changelog ==
 
+= 1.0.3
+
+* Fixed XSS vulnerability in canonical/alternate tags. ([#71])
+
 = 1.0.2 =
 
 * Added low memory option. (Refer to https://github.com/straube/multiple-domain/issues/45 on how to enable it)

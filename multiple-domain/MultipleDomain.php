@@ -12,7 +12,7 @@
  * @author  João Faria <https://github.com/jffaria>
  * @author  Raphael Stäbler <https://github.com/blazer82>
  * @author  Tobias Keller <https://github.com/Tobias-Keller>
- * @version 1.0.2
+ * @version 1.0.3
  * @package multiple-domain
  */
 class MultipleDomain
@@ -24,7 +24,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '1.0.2';
+    const VERSION = '1.0.3';
 
     /**
      * The number of the default HTTP port.
