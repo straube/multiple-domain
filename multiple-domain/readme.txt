@@ -119,6 +119,10 @@ and your page will be redirected. In this case, there are two ways to solve this
 
 == Changelog ==
 
+= 1.0.5 =
+
+* Fixed issue with system routes when a base path is defined.
+
 = 1.0.4 =
 
 * Fixed assertions in admin views.
