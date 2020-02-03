@@ -491,7 +491,7 @@ class MultipleDomain
         $base = ltrim($base, '/');
         $uri = ltrim($uri, '/');
 
-        if (empty($base)) {
+        if (empty($base) || preg_match('/^wp-[a-z]+(\.php|\/|$)/i', $uri)) {
             return;
         }
 
