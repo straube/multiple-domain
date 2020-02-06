@@ -255,6 +255,9 @@ class MultipleDomain
 
         // Add body class based on domain
         add_filter('body_class', [ $this, 'addDomainBodyClass' ]);
+
+        // Stop WP built in Canonical URL if this plugin has 'Add canonical links' enabled
+        add_filter('get_canonical_url', [ $this, 'getCanonicalUrl' ]);
     }
 
     /**
@@ -897,5 +900,20 @@ class MultipleDomain
     {
         $url = htmlentities($url);
         printf('<link rel="canonical" href="%s" />', $url);
+    }
+
+    /**
+     * Filter override WordPress built-in canonical tag generation if using the this plugin's canonical tag feature
+     *
+     * @param $url
+     * @return string
+     */
+    public function getCanonicalUrl($url)
+    {
+        // If *not* using the plugin's canonical tags, then return this URL. Otherwise, don't
+        if (!$this->shouldAddCanonical()) {
+            return $url;
+        }
+        return '';
     }
 }
