@@ -652,16 +652,9 @@ class MultipleDomain
          */
         global $wp;
 
-        $uri = '/' . ltrim(add_query_arg([], $wp->request), '/');
-        $currentProtocol = $this->getCurrentProtocol();
+        $uri = home_url(add_query_arg([], $wp->request)) . '/';
 
-        $protocol = $this->getDomainProtocol($this->originalDomain);
-        if ($protocol === 'auto') {
-            $protocol = $currentProtocol;
-        }
-        $protocol .= '://';
-
-        $this->outputCanonicalTag($protocol . $this->originalDomain . $uri);
+        $this->outputCanonicalTag($uri);
     }
 
     /**
