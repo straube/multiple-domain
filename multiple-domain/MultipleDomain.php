@@ -652,7 +652,7 @@ class MultipleDomain
          */
         global $wp;
 
-        $uri = '/' . ltrim(add_query_arg([], $wp->request), '/');
+        $uri = home_url(add_query_arg([], $wp->request), 'relative') . '/';
         $currentProtocol = $this->getCurrentProtocol();
 
         $protocol = $this->getDomainProtocol($this->originalDomain);
