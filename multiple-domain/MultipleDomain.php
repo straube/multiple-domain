@@ -5,14 +5,17 @@
  *
  * Core features.
  *
+ * Contributors:
+ *
+ *  - Clay Allsopp <https://github.com/clayallsopp>
+ *  - Alexander Nosov <https://github.com/cyberaleks>
+ *  - João Faria <https://github.com/jffaria>
+ *  - Raphael Stäbler <https://github.com/blazer82>
+ *  - Tobias Keller <https://github.com/Tobias-Keller>
+ *  - Maxime Granier <https://github.com/maxgranier>
+ *
  * @author  Gustavo Straube <https://github.com/straube>
- * @author  Vivek Athalye <https://github.com/vnathalye>
- * @author  Clay Allsopp <https://github.com/clayallsopp>
- * @author  Alexander Nosov <https://github.com/cyberaleks>
- * @author  João Faria <https://github.com/jffaria>
- * @author  Raphael Stäbler <https://github.com/blazer82>
- * @author  Tobias Keller <https://github.com/Tobias-Keller>
- * @version 1.0.5
+ * @version 1.0.6
  * @package multiple-domain
  */
 class MultipleDomain
@@ -24,7 +27,7 @@ class MultipleDomain
      * @var   string
      * @since 0.3
      */
-    const VERSION = '1.0.5';
+    const VERSION = '1.0.6';
 
     /**
      * The number of the default HTTP port.

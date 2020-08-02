@@ -6,7 +6,7 @@
  * Integration with WordPress admin.
  *
  * @author  Gustavo Straube <https://github.com/straube>
- * @version 1.0.5
+ * @version 1.0.6
  * @since   0.11.0
  * @package multiple-domain
  */

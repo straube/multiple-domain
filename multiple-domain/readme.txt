@@ -2,7 +2,7 @@
 Contributors: GustavoStraube, cyberaleks, jffaria
 Tags: multiple, domains, redirect
 Requires at least: 4.0
-Tested up to: 5.2.4
+Tested up to: 5.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -119,6 +119,10 @@ and your page will be redirected. In this case, there are two ways to solve this
 
 == Changelog ==
 
+= 1.0.6 =
+
+* Fix URI generated for canonical tag.
+
 = 1.0.5 =
 
 * Fixed issue with system routes when a base path is defined.
@@ -129,7 +133,7 @@ and your page will be redirected. In this case, there are two ways to solve this
 
 = 1.0.3 =
 
-* Fixed XSS vulnerability in canonical/alternate tags. ([#71])
+* Fixed XSS vulnerability in canonical/alternate tags.
 
 = 1.0.2 =
 
@@ -231,7 +235,7 @@ and your page will be redirected. In this case, there are two ways to solve this
 * Moved `MultipleDomain` class to its own file.
 * Fix: #14 Remove `filter_input` from plugin.
 * Attempt to fix #22.
-* Added `MULTIPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization. Fixes #20.
+* Added `MULTIPLE_DOMAIN_DOMAIN_LANG` constant for theme/plugin customization.
 * Fix: #21 No 'Access-Control-Allow-Origin' header is present on the requested resource
 
 = 0.7.1 =
