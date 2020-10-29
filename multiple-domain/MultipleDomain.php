@@ -491,6 +491,14 @@ class MultipleDomain
          */
         do_action('multiple_domain_redirect', $this->domain);
 
+        /*
+         * Also allow developers to disable the default redirection logic.
+         */
+        $disable = apply_filters('multiple_domain_disable_redirect', $this->domain);
+        if ($disable === true) {
+            return;
+        }
+
         $base = $this->getDomainBase();
         $uri = !empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null;
 
