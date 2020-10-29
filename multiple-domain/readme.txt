@@ -73,8 +73,8 @@ are now deprecated. They still available for backcompat but will be removed in f
 
 = Can I create a custom access restriction logic for each domain? =
 
-Yes. You can use the `multiple_domain_redirect` action to do that. Please check
-https://github.com/straube/multiple-domain/issues/2 for an example on how to do that.
+Yes. You can use the `multiple_domain_redirect` action and `multiple_domain_redirect_disable` filter do that. Please
+check https://github.com/straube/multiple-domain/issues/2 for an example on how to use both.
 
 = Can I get the language associated with the current domain? =
 
