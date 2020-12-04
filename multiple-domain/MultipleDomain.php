@@ -1,5 +1,7 @@
 <?php
 
+namespace MultipleDomain;
+
 /**
  * Mutiple Domain WordPress plugin.
  *
@@ -46,7 +48,7 @@ class MultipleDomain
     /**
      * The plugin instance.
      *
-     * @var   \MultipleDomain
+     * @var   \MultipleDomain\MultipleDomain
      * @since 0.8.4
      */
     private static $instance;
@@ -157,7 +159,7 @@ class MultipleDomain
     /**
      * Get the single plugin instance.
      *
-     * @return \MultipleDomain The plugin instance.
+     * @return \MultipleDomain\MultipleDomain The plugin instance.
      * @since  0.8.4
      */
     public static function instance()
@@ -706,6 +708,7 @@ class MultipleDomain
      */
     public function registerYoastVars()
     {
+        // @phpstan-ignore-next-line
         wpseo_register_var_replacement(
             '%%multiple_domain%%',
             [ $this, 'getDomain' ],

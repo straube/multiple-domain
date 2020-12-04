@@ -10,6 +10,8 @@ parameters:
         phpcs:
             standard: PSR2
             triggered_by: ['php']
+            ignore_patterns:
+              - tests/
         phpcpd:
             directory: '.'
             exclude: ['vendor', 'tests']

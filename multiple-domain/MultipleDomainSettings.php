@@ -1,5 +1,7 @@
 <?php
 
+namespace MultipleDomain;
+
 /**
  * Mutiple Domain settings.
  *
@@ -16,7 +18,7 @@ class MultipleDomainSettings
     /**
      * The plugin core instance.
      *
-     * @var \MultipleDomain
+     * @var \MultipleDomain\MultipleDomain
      */
     private $core;
 
@@ -25,7 +27,7 @@ class MultipleDomainSettings
      *
      * Adds actions and filters required by the plugin for the admin.
      *
-     * @param \MultipleDomain $core The core plugin class instance.
+     * @param \MultipleDomain\MultipleDomain $core The core plugin class instance.
      */
     public function __construct(MultipleDomain $core)
     {
