@@ -1,5 +1,13 @@
 # Multiple Domain
 
+## Support SLA and Next releases
+
+TL;DR - This plugin is not under active development anymore. New issues and support requests won't be addressed.
+
+Read the details here: https://github.com/straube/multiple-domain/issues/82
+
+## About
+
 [![Build Status](https://travis-ci.com/straube/multiple-domain.svg?branch=master)](https://travis-ci.com/straube/multiple-domain)
 
 Multiple Domain allows you having more than one domain in a single WordPress installation. This plugin doesn't support
